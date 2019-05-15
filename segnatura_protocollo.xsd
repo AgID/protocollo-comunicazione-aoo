@@ -11,7 +11,7 @@
  
 	version="3.0"		  
 > 
-	<xsd:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
+	<xsd:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="import_schemas\xmldsig-core-schema.xsd"/>
 																									  
 	
 	<xsd:element name="SegnaturaInformatica" type="prot:SegnaturaInformaticaType">

@@ -1,750 +1,123 @@
-<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.protocollo.gov.agid.it/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="DestinatarioServiceImplService" targetNamespace="http://ws.protocollo.gov.agid.it/">
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions 
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:tns="http://ws.protocollo.comunicazione.aoo.destinatario/" 
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:soapbind="http://schemas.xmlsoap.org/soap/http" 
+  name="ProtocolloDestinatarioService" 
+  targetNamespace="http://ws.protocollo.comunicazione.aoo.destinatario/">
+ 
   <wsdl:types>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.w3.org/2000/09/xmldsig#" elementFormDefault="qualified" targetNamespace="http://www.w3.org/2000/09/xmldsig#" version="1.0">
 
-  <xs:element name="CanonicalizationMethod" type="tns:CanonicalizationMethodType"/>
-
-  <xs:element name="DSAKeyValue" type="tns:DSAKeyValueType"/>
-
-  <xs:element name="DigestMethod" type="tns:DigestMethodType"/>
-
-  <xs:element name="DigestValue" type="xs:base64Binary"/>
-
-  <xs:element name="KeyInfo" type="tns:KeyInfoType"/>
-
-  <xs:element name="KeyName" type="xs:string"/>
-
-  <xs:element name="KeyValue" type="tns:KeyValueType"/>
-
-  <xs:element name="Manifest" type="tns:ManifestType"/>
-
-  <xs:element name="MgmtData" type="xs:string"/>
-
-  <xs:element name="Object" type="tns:ObjectType"/>
-
-  <xs:element name="PGPData" type="tns:PGPDataType"/>
-
-  <xs:element name="RSAKeyValue" type="tns:RSAKeyValueType"/>
-
-  <xs:element name="Reference" type="tns:ReferenceType"/>
-
-  <xs:element name="RetrievalMethod" type="tns:RetrievalMethodType"/>
-
-  <xs:element name="SPKIData" type="tns:SPKIDataType"/>
-
-  <xs:element name="Signature" type="tns:SignatureType"/>
-
-  <xs:element name="SignatureMethod" type="tns:SignatureMethodType"/>
-
-  <xs:element name="SignatureProperties" type="tns:SignaturePropertiesType"/>
-
-  <xs:element name="SignatureProperty" type="tns:SignaturePropertyType"/>
-
-  <xs:element name="SignatureValue" type="tns:SignatureValueType"/>
-
-  <xs:element name="SignedInfo" type="tns:SignedInfoType"/>
-
-  <xs:element name="Transform" type="tns:TransformType"/>
-
-  <xs:element name="Transforms" type="tns:TransformsType"/>
-
-  <xs:element name="X509Data" type="tns:X509DataType"/>
-
-  <xs:complexType name="SignatureType">
-    <xs:sequence>
-      <xs:element name="SignedInfo" type="tns:SignedInfoType"/>
-      <xs:element name="SignatureValue" type="tns:SignatureValueType"/>
-      <xs:element minOccurs="0" name="KeyInfo" type="tns:KeyInfoType"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="Object" type="tns:ObjectType"/>
-    </xs:sequence>
-    <xs:attribute name="Id" type="xs:ID"/>
-  </xs:complexType>
-
-  <xs:complexType name="SignedInfoType">
-    <xs:sequence>
-      <xs:element name="CanonicalizationMethod" type="tns:CanonicalizationMethodType"/>
-      <xs:element name="SignatureMethod" type="tns:SignatureMethodType"/>
-      <xs:element maxOccurs="unbounded" name="Reference" type="tns:ReferenceType"/>
-    </xs:sequence>
-    <xs:attribute name="Id" type="xs:ID"/>
-  </xs:complexType>
-
-  <xs:complexType mixed="true" name="CanonicalizationMethodType">
-    <xs:sequence>
-      <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##other" processContents="lax"/>
-    </xs:sequence>
-    <xs:attribute name="Algorithm" type="xs:anyURI" use="required"/>
-  </xs:complexType>
-
-  <xs:complexType mixed="true" name="ObjectType">
-    <xs:sequence>
-      <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##other" processContents="lax"/>
-    </xs:sequence>
-    <xs:attribute name="Id" type="xs:ID"/>
-    <xs:attribute name="MimeType" type="xs:string"/>
-    <xs:attribute name="Encoding" type="xs:anyURI"/>
-  </xs:complexType>
-
-  <xs:complexType name="X509IssuerSerialType">
-    <xs:sequence>
-      <xs:element name="X509IssuerName" type="xs:string"/>
-      <xs:element name="X509SerialNumber" type="xs:integer"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="X509DataType">
-    <xs:sequence>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="X509IssuerSerial" type="tns:X509IssuerSerialType"/>
-        <xs:element name="X509SKI" type="xs:base64Binary"/>
-        <xs:element name="X509SubjectName" type="xs:string"/>
-        <xs:element name="X509Certificate" type="xs:base64Binary"/>
-        <xs:element name="X509CRL" type="xs:base64Binary"/>
-        <xs:any namespace="##other" processContents="lax"/>
-      </xs:choice>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType mixed="true" name="SignatureMethodType">
-    <xs:sequence>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="HMACOutputLength" type="xs:integer"/>
-        <xs:any namespace="##other" processContents="lax"/>
-      </xs:choice>
-    </xs:sequence>
-    <xs:attribute name="Algorithm" type="xs:anyURI" use="required"/>
-  </xs:complexType>
-
-  <xs:complexType name="SignaturePropertiesType">
-    <xs:sequence>
-      <xs:element maxOccurs="unbounded" name="SignatureProperty" type="tns:SignaturePropertyType"/>
-    </xs:sequence>
-    <xs:attribute name="Id" type="xs:ID"/>
-  </xs:complexType>
-
-  <xs:complexType mixed="true" name="SignaturePropertyType">
-    <xs:sequence>
-      <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##other" processContents="lax"/>
-    </xs:sequence>
-    <xs:attribute name="Target" type="xs:anyURI" use="required"/>
-    <xs:attribute name="Id" type="xs:ID"/>
-  </xs:complexType>
-
-  <xs:complexType name="RetrievalMethodType">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Transforms" type="tns:TransformsType"/>
-    </xs:sequence>
-    <xs:attribute name="URI" type="xs:anyURI"/>
-    <xs:attribute name="Type" type="xs:anyURI"/>
-  </xs:complexType>
-
-  <xs:complexType name="TransformsType">
-    <xs:sequence>
-      <xs:element maxOccurs="unbounded" name="Transform" type="tns:TransformType"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType mixed="true" name="TransformType">
-    <xs:sequence>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="XPath" type="xs:string"/>
-        <xs:any namespace="##other" processContents="lax"/>
-      </xs:choice>
-    </xs:sequence>
-    <xs:attribute name="Algorithm" type="xs:anyURI" use="required"/>
-  </xs:complexType>
-
-  <xs:complexType name="SignatureValueType">
-    <xs:simpleContent>
-      <xs:extension base="xs:base64Binary">
-        <xs:attribute name="Id" type="xs:ID"/>
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-
-  <xs:complexType name="PGPDataType">
-    <xs:sequence>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="PGPKeyID" type="xs:base64Binary"/>
-        <xs:element name="PGPKeyPacket" type="xs:base64Binary"/>
-        <xs:any namespace="##other" processContents="lax"/>
-      </xs:choice>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType mixed="true" name="DigestMethodType">
-    <xs:sequence>
-      <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##other" processContents="lax"/>
-    </xs:sequence>
-    <xs:attribute name="Algorithm" type="xs:anyURI" use="required"/>
-  </xs:complexType>
-
-  <xs:complexType name="ManifestType">
-    <xs:sequence>
-      <xs:element maxOccurs="unbounded" name="Reference" type="tns:ReferenceType"/>
-    </xs:sequence>
-    <xs:attribute name="Id" type="xs:ID"/>
-  </xs:complexType>
-
-  <xs:complexType name="ReferenceType">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Transforms" type="tns:TransformsType"/>
-      <xs:element name="DigestMethod" type="tns:DigestMethodType"/>
-      <xs:element name="DigestValue" type="xs:base64Binary"/>
-    </xs:sequence>
-    <xs:attribute name="Id" type="xs:ID"/>
-    <xs:attribute name="URI" type="xs:anyURI"/>
-    <xs:attribute name="Type" type="xs:anyURI"/>
-  </xs:complexType>
-
-  <xs:complexType name="DSAKeyValueType">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="P" type="xs:base64Binary"/>
-      <xs:element minOccurs="0" name="Q" type="xs:base64Binary"/>
-      <xs:element minOccurs="0" name="G" type="xs:base64Binary"/>
-      <xs:element name="Y" type="xs:base64Binary"/>
-      <xs:element minOccurs="0" name="J" type="xs:base64Binary"/>
-      <xs:element minOccurs="0" name="Seed" type="xs:base64Binary"/>
-      <xs:element minOccurs="0" name="PgenCounter" type="xs:base64Binary"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="RSAKeyValueType">
-    <xs:sequence>
-      <xs:element name="Modulus" type="xs:base64Binary"/>
-      <xs:element name="Exponent" type="xs:base64Binary"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="SPKIDataType">
-    <xs:sequence>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="SPKISexp" type="xs:base64Binary"/>
-        <xs:any namespace="##other" processContents="lax"/>
-      </xs:choice>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType mixed="true" name="KeyInfoType">
-    <xs:sequence>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="tns:KeyName"/>
-        <xs:element ref="tns:KeyValue"/>
-        <xs:element ref="tns:RetrievalMethod"/>
-        <xs:element ref="tns:X509Data"/>
-        <xs:element ref="tns:PGPData"/>
-        <xs:element ref="tns:SPKIData"/>
-        <xs:element ref="tns:MgmtData"/>
-        <xs:any namespace="##other" processContents="lax"/>
-      </xs:choice>
-    </xs:sequence>
-    <xs:attribute name="Id" type="xs:ID"/>
-  </xs:complexType>
-
-  <xs:complexType mixed="true" name="KeyValueType">
-    <xs:sequence>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="tns:DSAKeyValue"/>
-        <xs:element ref="tns:RSAKeyValue"/>
-        <xs:any namespace="##other" processContents="lax"/>
-      </xs:choice>
-    </xs:sequence>
-  </xs:complexType>
-
-</xs:schema>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.agid.gov.it/protocollo/messaggi/" xmlns:ns2="http://www.w3.org/2000/09/xmldsig#" xmlns:ns1="http://www.agid.gov.it/protocollo/" elementFormDefault="qualified" targetNamespace="http://www.agid.gov.it/protocollo/messaggi/" version="1.0">
-
-  <xs:import namespace="http://www.agid.gov.it/protocollo/"/>
-
-  <xs:import namespace="http://www.w3.org/2000/09/xmldsig#"/>
-
-  <xs:complexType name="RequestMessaggioInoltroType">
-    <xs:sequence>
-      <xs:element name="Segnatura" type="ns1:SegnaturaInformaticaType"/>
-      <xs:element name="Documento" type="tns:FileType"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="Allegato" type="tns:FileType"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="FileType">
-    <xs:simpleContent>
-      <xs:extension base="xs:base64Binary">
-        <xs:attribute ref="tns:nomeFile" use="required"/>
-        <xs:attribute ref="tns:mimeType" use="required"/>
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-
-  <xs:complexType name="ResponseMessaggioInoltroType">
-    <xs:sequence>
-      <xs:element name="Identificatore" type="ns1:IdentificatoreType"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="RequestAnnullamentoInoltroMittenteType">
-    <xs:sequence>
-      <xs:element name="Identificatore" type="ns1:IdentificatoreType"/>
-      <xs:element name="RiferimentoProvvedimento" type="xs:string"/>
-      <xs:element minOccurs="0" name="Note" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="ResponseAnnullamentoInoltroMittenteType">
-    <xs:sequence>
-      <xs:element name="Identificatore" type="ns1:IdentificatoreType"/>
-      <xs:element minOccurs="0" name="MotivoIrricevibilita" type="xs:string"/>
-      <xs:element minOccurs="0" name="NonPresente" type="xs:boolean"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="ResponseConfermaMessaggioInoltroType">
-    <xs:sequence>
-      <xs:element name="Identificatore" type="ns1:IdentificatoreType"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="RequestConfermaMessaggioInoltroType">
-    <xs:sequence>
-      <xs:element name="Identificatore" type="ns1:IdentificatoreType"/>
-      <xs:element minOccurs="0" name="Irricevibilità" type="xs:string"/>
-      <xs:element minOccurs="0" name="Anomalia" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="RequestAnnullamentoInoltroDestinatarioType">
-    <xs:sequence>
-      <xs:element name="Identificatore" type="ns1:IdentificatoreType"/>
-      <xs:element name="RiferimentoProvvedimento" type="xs:string"/>
-      <xs:element name="Note" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="ResponseAnnullamentoInoltroDestinatarioType">
-    <xs:sequence>
-      <xs:element name="Identificatore" type="ns1:IdentificatoreType"/>
-      <xs:element minOccurs="0" name="MotivoIrricevibilita" type="xs:string"/>
-      <xs:element minOccurs="0" name="NonPresente" type="xs:boolean"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:attribute name="mimeType" type="xs:string"/>
-
-  <xs:attribute name="nomeFile" type="xs:string"/>
-
-</xs:schema>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.agid.gov.it/protocollo/" xmlns:ns1="http://www.w3.org/2000/09/xmldsig#" elementFormDefault="qualified" targetNamespace="http://www.agid.gov.it/protocollo/" version="1.0">
-
-  <xs:import namespace="http://www.w3.org/2000/09/xmldsig#"/>
-
-  <xs:element name="SegnaturaInformatica" type="tns:SegnaturaInformaticaType"/>
-
-  <xs:complexType name="SegnaturaInformaticaType">
-    <xs:sequence>
-      <xs:element name="Intestazione" type="tns:IntestazioneType"/>
-      <xs:element name="Descrizione" type="tns:DescrizioneType"/>
-      <xs:element minOccurs="0" name="Riferimenti" type="tns:RiferimentiType"/>
-      <xs:element minOccurs="0" name="PiuInfo" type="tns:PiuInfoType"/>
-      <xs:element ref="ns1:Signature"/>
-    </xs:sequence>
-    <xs:attribute ref="tns:versione" use="required"/>
-    <xs:attribute ref="tns:lang" use="required"/>
-  </xs:complexType>
-
-  <xs:complexType name="IntestazioneType">
-    <xs:sequence>
-      <xs:element name="Identificatore" type="tns:IdentificatoreType"/>
-      <xs:element name="Origine" type="tns:OrigineType"/>
-      <xs:element maxOccurs="unbounded" name="Destinazione" type="tns:DestinazioneType"/>
-      <xs:element name="Oggetto" type="xs:string"/>
-      <xs:element minOccurs="0" name="OraRegistrazione" type="tns:OraRegistrazioneType"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="PerConoscenza" type="tns:DestinazioneType"/>
-      <xs:element minOccurs="0" name="Risposta" type="tns:RispostaType"/>
-      <xs:element minOccurs="0" name="Riservato" type="xs:string"/>
-      <xs:element minOccurs="0" name="InterventoOperatore" type="xs:string"/>
-      <xs:element minOccurs="0" name="RiferimentoDocumentiCartacei" type="xs:boolean"/>
-      <xs:element minOccurs="0" name="RiferimentiTelematici" type="xs:boolean"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="Classifica" type="tns:ClassificaType"/>
-      <xs:element minOccurs="0" name="Note" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="IdentificatoreType">
-    <xs:sequence>
-      <xs:element name="CodiceAmministrazione" type="xs:string"/>
-      <xs:element name="CodiceAOO" type="xs:string"/>
-      <xs:element name="CodiceRegistro" type="xs:string"/>
-      <xs:element name="NumeroRegistrazione" type="xs:string"/>
-      <xs:element name="DataRegistrazione" type="xs:date"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="OrigineType">
-    <xs:sequence>
-      <xs:element name="IndirizzoTelematico" type="tns:IndirizzoTelematicoType"/>
-      <xs:element name="Mittente" type="tns:MittenteType"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="IndirizzoTelematicoType">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
-        <xs:attribute ref="tns:tipo"/>
-        <xs:attribute ref="tns:note"/>
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-
-  <xs:complexType name="MittenteType">
-    <xs:sequence>
-      <xs:element name="Amministrazione" type="tns:AmministrazioneType"/>
-      <xs:element name="AOO" type="tns:AOOType"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="AmministrazioneType">
-    <xs:sequence>
-      <xs:element name="Denominazione" type="xs:string"/>
-      <xs:element minOccurs="0" name="CodiceAmministrazione" type="xs:string"/>
-      <xs:element minOccurs="0" name="UnitaOrganizzativa" type="tns:UnitaOrganizzativaType"/>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="Ruolo" type="tns:RuoloType"/>
-        <xs:element name="Persona" type="tns:PersonaType"/>
-      </xs:choice>
-      <xs:element minOccurs="0" name="IndirizzoPostale" type="tns:IndirizzoPostaleType"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="IndirizzoTelematico" type="tns:IndirizzoTelematicoType"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="Telefono" type="tns:TelefonoType"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="Fax" type="tns:TelefonoType"/>
-    </xs:sequence>
-    <xs:attribute ref="tns:tipo"/>
-  </xs:complexType>
-
-  <xs:complexType name="UnitaOrganizzativaType">
-    <xs:sequence>
-      <xs:element name="Denominazione" type="xs:string"/>
-      <xs:element minOccurs="0" name="CodiceAmministrazione" type="xs:string"/>
-      <xs:element minOccurs="0" name="UnitaOrganizzativa" type="tns:AmministrazioneType"/>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="Ruolo" type="tns:RuoloType"/>
-        <xs:element name="Persona" type="tns:PersonaType"/>
-      </xs:choice>
-      <xs:element minOccurs="0" name="IndirizzoPostale" type="tns:IndirizzoPostaleType"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="IndirizzoTelematico" type="tns:IndirizzoTelematicoType"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="Telefono" type="tns:TelefonoType"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="Fax" type="tns:TelefonoType"/>
-    </xs:sequence>
-    <xs:attribute ref="tns:tipo"/>
-  </xs:complexType>
-
-  <xs:complexType name="RuoloType">
-    <xs:sequence>
-      <xs:element name="Denominazione" type="xs:string"/>
-      <xs:element minOccurs="0" name="Identificativo" type="xs:string"/>
-      <xs:element minOccurs="0" name="Persona" type="tns:PersonaType"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="PersonaType">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Denominazione" type="xs:string"/>
-      <xs:element minOccurs="0" name="Nome" type="xs:string"/>
-      <xs:element minOccurs="0" name="Cognome" type="xs:string"/>
-      <xs:element minOccurs="0" name="Titolo" type="xs:string"/>
-      <xs:element minOccurs="0" name="CodiceFiscale" type="xs:string"/>
-      <xs:element minOccurs="0" name="Identificativo" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="IndirizzoPostaleType">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Denominazione" type="xs:string"/>
-      <xs:element minOccurs="0" name="Toponimo" type="tns:ToponimoType"/>
-      <xs:element minOccurs="0" name="Civico" type="xs:string"/>
-      <xs:element minOccurs="0" name="CAP" type="xs:string"/>
-      <xs:element minOccurs="0" name="Comune" type="tns:ComuneType"/>
-      <xs:element minOccurs="0" name="Provincia" type="xs:string"/>
-      <xs:element minOccurs="0" name="Nazione" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="ToponimoType">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
-        <xs:attribute ref="tns:dug"/>
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-
-  <xs:complexType name="ComuneType">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
-        <xs:attribute ref="tns:CodiceISTAT"/>
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-
-  <xs:complexType name="TelefonoType">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
-        <xs:attribute ref="tns:note"/>
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-
-  <xs:complexType name="AOOType">
-    <xs:sequence>
-      <xs:element name="Denominazione" type="xs:string"/>
-      <xs:element minOccurs="0" name="CodiceAOO" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="DestinazioneType">
-    <xs:sequence>
-      <xs:element name="IndirizzoTelematico" type="tns:IndirizzoTelematicoType"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="Destinatario" type="tns:DestinatarioType"/>
-    </xs:sequence>
-    <xs:attribute ref="tns:confermaRicezione"/>
-  </xs:complexType>
-
-  <xs:complexType name="DestinatarioType">
-    <xs:sequence>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="Amministrazione" type="tns:AmministrazioneType"/>
-        <xs:element name="AOO" type="tns:AOOType"/>
-        <xs:element name="Denominazione" type="xs:string"/>
-        <xs:element name="Persona" type="tns:PersonaType"/>
-        <xs:element name="IndirizzoTelematico" type="tns:IndirizzoTelematicoType"/>
-        <xs:element name="Telefono" type="tns:TelefonoType"/>
-        <xs:element name="Fax" type="tns:TelefonoType"/>
-        <xs:element name="IndirizzoPostale" type="tns:IndirizzoPostaleType"/>
-      </xs:choice>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="MetadatiEsterniType">
-    <xs:sequence>
-      <xs:element name="NomeFile" type="xs:string"/>
-      <xs:element minOccurs="0" name="Impronta" type="tns:ImprontaType"/>
-    </xs:sequence>
-    <xs:attribute ref="tns:codifica" use="required"/>
-    <xs:attribute ref="tns:estensione"/>
-    <xs:attribute ref="tns:formato" use="required"/>
-  </xs:complexType>
-
-  <xs:complexType name="ImprontaType">
-    <xs:simpleContent>
-      <xs:extension base="xs:base64Binary">
-        <xs:attribute ref="tns:algoritmo"/>
-        <xs:attribute ref="tns:nomeFile" use="required"/>
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-
-  <xs:complexType name="ProcedimentoType">
-    <xs:complexContent>
-      <xs:extension base="tns:ContestoProceduraleType">
+    <xs:schema 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:msgprot="http://www.agid.gov.it/protocollo/messaggi/"
+      xmlns:prot="http://www.agid.gov.it/protocollo/"
+      xmlns:tns="http://ws.protocollo.comunicazione.aoo.destinatario/" 
+      targetNamespace="http://ws.protocollo.comunicazione.aoo.destinatario/" 
+      elementFormDefault="qualified" version="1.0">
+
+      <xs:import namespace="http://www.agid.gov.it/protocollo/messaggi/" schemaLocation="../messaggio_protocollo.xsd"/>
+      <xs:import namespace="http://www.agid.gov.it/protocollo/" schemaLocation="../segnatura_protocollo_slim.xsd"/>
+
+
+      <xs:element name="inoltro" type="tns:InoltroType"/>
+      <xs:element name="inoltroResponse" type="tns:InoltroResponseType"/>
+
+      <xs:element name="annullamentoInoltro" type="tns:AnnullamentoInoltroType"/>
+      <xs:element name="annullamentoInoltroResponse" type="tns:AnnullamentoInoltroResponseType"/>
+     
+     
+      <xs:complexType name="InoltroType">
         <xs:sequence>
-          <xs:element minOccurs="0" name="Responsabile" type="tns:PersonaType"/>
-          <xs:element minOccurs="0" name="DataTermine" type="xs:date"/>
+          <xs:element minOccurs="0" name="message" type="tns:RequestMessaggioInoltroType"/>
         </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+      </xs:complexType>
+      
+      <xs:complexType name="InoltroResponseType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:ResponseMessaggioInoltroType"/>
+        </xs:sequence>
+      </xs:complexType>
+      
+      
+      <xs:complexType name="AnnullamentoInoltroType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="message" type="tns:RequestAnnullamentoInoltroMittenteType"/>
+        </xs:sequence>
+      </xs:complexType>
+      
+      <xs:complexType name="AnnullamentoInoltroResponseType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:ResponseAnnullamentoInoltroMittenteType"/>
+        </xs:sequence>
+      </xs:complexType>
 
-  <xs:complexType name="ContestoProceduraleType">
-    <xs:sequence>
-      <xs:element name="CodiceAmministrazione" type="xs:string"/>
-      <xs:element name="CodiceAOO" type="xs:string"/>
-      <xs:element name="Identificativo" type="xs:string"/>
-      <xs:element minOccurs="0" name="Tipo" type="xs:string"/>
-      <xs:element minOccurs="0" name="Oggetto" type="xs:string"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="Classifica" type="tns:ClassificaType"/>
-      <xs:element minOccurs="0" name="DataAvvio" type="xs:date"/>
-      <xs:element minOccurs="0" name="Note" type="xs:string"/>
-      <xs:element minOccurs="0" name="PiuInfo" type="tns:PiuInfoType"/>
-    </xs:sequence>
-  </xs:complexType>
+      <xsd:complexType name="RequestMessaggioInoltroType">
+        <xs:sequence>
+          <xs:element name="messaggio" type="msgprot:MessaggioProtocolloType"/>
+        </xs:sequence>
+      </xsd:complexType>
 
-  <xs:complexType name="ClassificaType">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="CodiceAmministrazione" type="xs:string"/>
-      <xs:element minOccurs="0" name="CodiceAOO" type="xs:string"/>
-      <xs:element name="Denominazione" type="xs:string"/>
-      <xs:element maxOccurs="unbounded" name="Livello" type="tns:LivelloType"/>
-    </xs:sequence>
-  </xs:complexType>
+      <xsd:complexType name="ResponseMessaggioInoltroType">
+        <xsd:sequence>
+          <xsd:element name="Identificatore" type="prot:IdentificatoreType"/>
+        </xsd:sequence>
+      </xsd:complexType>
 
-  <xs:complexType name="LivelloType">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
-        <xs:attribute ref="tns:nome"/>
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
+      <xsd:complexType name="RequestAnnullamentoInoltroMittenteType">
+        <xsd:sequence>
+          <xsd:element name="Identificatore" type="prot:IdentificatoreType"/>
+          <xsd:element name="RiferimentoProvvedimento" type="xsd:string"/>
+          <xsd:element name="Note" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
 
-  <xs:complexType name="PiuInfoType">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="MetadatiInterni" type="xs:string"/>
-      <xs:element minOccurs="0" name="MetadatiEsterni" type="tns:MetadatiEsterniType"/>
-    </xs:sequence>
-    <xs:attribute ref="tns:XMLSchema" use="required"/>
-  </xs:complexType>
+      <xsd:complexType name="ResponseAnnullamentoInoltroMittenteType">
+        <xsd:sequence>
+          <xsd:element name="Identificatore" type="prot:IdentificatoreType"/>
+          <xsd:choice minOccurs="0">
+            <xsd:element name="MotivoIrricevibilita" type="xsd:string"/>
+            <xsd:element name="NonPresente" type="xsd:boolean" fixed="true"/>
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:complexType>
 
-  <xs:complexType name="OraRegistrazioneType">
-    <xs:simpleContent>
-      <xs:extension base="xs:anySimpleType">
-        <xs:attribute ref="tns:tempo"/>
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-
-  <xs:complexType name="DescrizioneType">
-    <xs:sequence>
-      <xs:element name="Documento" type="tns:DocumentoType"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="Allegati" type="tns:DocumentoType"/>
-      <xs:element minOccurs="0" name="Note" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="DocumentoType">
-    <xs:sequence>
-      <xs:element name="Impronta" type="tns:ImprontaType"/>
-      <xs:element minOccurs="0" name="CollocazioneTelematica" type="xs:string"/>
-      <xs:element minOccurs="0" name="TitoloDocumento" type="xs:string"/>
-      <xs:element minOccurs="0" name="TipoDocumento" type="xs:string"/>
-      <xs:element minOccurs="0" name="Oggetto" type="xs:string"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="Classifica" type="tns:ClassificaType"/>
-      <xs:element minOccurs="0" name="NumeroPagine" type="xs:int"/>
-      <xs:element minOccurs="0" name="Note" type="xs:string"/>
-      <xs:element minOccurs="0" name="PiuInfo" type="tns:PiuInfoType"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="MessaggioType">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Identificatore" type="tns:IdentificatoreType"/>
-      <xs:element minOccurs="0" name="DescrizioneMessaggio" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="RispostaType">
-    <xs:sequence>
-      <xs:element name="IndirizzoTelematico" type="tns:IndirizzoTelematicoType"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="RiferimentiType">
-    <xs:sequence>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="Messaggio" type="tns:MessaggioType"/>
-        <xs:element name="ContestoProcedurale" type="tns:ContestoProceduraleType"/>
-        <xs:element name="Procedimento" type="tns:ProcedimentoType"/>
-      </xs:choice>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:attribute name="CodiceISTAT" type="xs:string"/>
-
-  <xs:attribute name="XMLSchema" type="xs:NMTOKEN"/>
-
-  <xs:attribute name="algoritmo" type="xs:string"/>
-
-  <xs:attribute name="codifica" type="xs:string"/>
-
-  <xs:attribute name="confermaRicezione" type="xs:boolean"/>
-
-  <xs:attribute name="dug" type="xs:string"/>
-
-  <xs:attribute name="estensione" type="xs:NMTOKEN"/>
-
-  <xs:attribute name="formato" type="xs:anySimpleType"/>
-
-  <xs:attribute name="lang" type="xs:NMTOKEN"/>
-
-  <xs:attribute name="nome" type="xs:string"/>
-
-  <xs:attribute name="nomeFile" type="xs:string"/>
-
-  <xs:attribute name="note" type="xs:string"/>
-
-  <xs:attribute name="tempo" type="xs:string"/>
-
-  <xs:attribute name="tipo" type="xs:string"/>
-
-  <xs:attribute name="versione" type="xs:NMTOKEN"/>
-
-</xs:schema>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.protocollo.gov.agid.it/" xmlns:ns2="http://www.agid.gov.it/protocollo/messaggi/" xmlns:ns1="http://www.agid.gov.it/protocollo/" elementFormDefault="unqualified" targetNamespace="http://ws.protocollo.gov.agid.it/" version="1.0">
-
-  <xs:import namespace="http://www.agid.gov.it/protocollo/"/>
-
-  <xs:import namespace="http://www.agid.gov.it/protocollo/messaggi/"/>
-
-  <xs:element name="annullamentoInoltro" type="tns:annullamentoInoltro"/>
-
-  <xs:element name="annullamentoInoltroResponse" type="tns:annullamentoInoltroResponse"/>
-
-  <xs:element name="inoltro" type="tns:inoltro"/>
-
-  <xs:element name="inoltroResponse" type="tns:inoltroResponse"/>
-
-  <xs:complexType name="inoltro">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="arg0" type="ns2:RequestMessaggioInoltroType"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="inoltroResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="ns2:ResponseMessaggioInoltroType"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="annullamentoInoltro">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="arg0" type="ns2:RequestAnnullamentoInoltroMittenteType"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="annullamentoInoltroResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="ns2:ResponseAnnullamentoInoltroMittenteType"/>
-    </xs:sequence>
-  </xs:complexType>
-
-</xs:schema>
+    </xs:schema>
   </wsdl:types>
-  <wsdl:message name="annullamentoInoltro">
-    <wsdl:part element="tns:annullamentoInoltro" name="parameters">
-    </wsdl:part>
-  </wsdl:message>
+
+  
   <wsdl:message name="inoltro">
-    <wsdl:part element="tns:inoltro" name="parameters">
-    </wsdl:part>
+    <wsdl:part element="tns:inoltro" name="parameters"> </wsdl:part>
   </wsdl:message>
+  
   <wsdl:message name="inoltroResponse">
-    <wsdl:part element="tns:inoltroResponse" name="parameters">
-    </wsdl:part>
+    <wsdl:part element="tns:inoltroResponse" name="parameters"> </wsdl:part>
   </wsdl:message>
+ 
+  <wsdl:message name="annullamentoInoltro">
+    <wsdl:part element="tns:annullamentoInoltro" name="parameters"> </wsdl:part>
+  </wsdl:message>
+ 
   <wsdl:message name="annullamentoInoltroResponse">
-    <wsdl:part element="tns:annullamentoInoltroResponse" name="parameters">
-    </wsdl:part>
+    <wsdl:part element="tns:annullamentoInoltroResponse" name="parameters"> </wsdl:part>
   </wsdl:message>
-  <wsdl:portType name="DestinatarioService">
+  
+  
+
+  <wsdl:portType name="ProtocolloDestinatarioPortType">
     <wsdl:operation name="inoltro">
-      <wsdl:input message="tns:inoltro" name="inoltro">
-    </wsdl:input>
-      <wsdl:output message="tns:inoltroResponse" name="inoltroResponse">
-    </wsdl:output>
+      <wsdl:input message="tns:inoltro" name="inoltro"> </wsdl:input>
+      <wsdl:output message="tns:inoltroResponse" name="inoltroResponse"> </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="annullamentoInoltro">
-      <wsdl:input message="tns:annullamentoInoltro" name="annullamentoInoltro">
-    </wsdl:input>
-      <wsdl:output message="tns:annullamentoInoltroResponse" name="annullamentoInoltroResponse">
-    </wsdl:output>
+      <wsdl:input message="tns:annullamentoInoltro" name="annullamentoInoltro"> </wsdl:input>
+      <wsdl:output message="tns:annullamentoInoltroResponse" name="annullamentoInoltroResponse"> </wsdl:output>
     </wsdl:operation>
-    <wsp:PolicyReference URI="#DefaultPolicy"/>
   </wsdl:portType>
-  <wsdl:binding name="DestinatarioServiceImplServiceSoapBinding" type="tns:DestinatarioService">
+
+  <wsdl:binding name="ProtocolloDestinatarioServiceBinding" type="tns:ProtocolloDestinatarioPortType">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="inoltro">
       <soap:operation soapAction="" style="document"/>
@@ -765,56 +138,10 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="DestinatarioServiceImplService">
-    <wsdl:port binding="tns:DestinatarioServiceImplServiceSoapBinding" name="DestinatarioServiceImplPort">
+  <wsdl:service name="ProtocolloDestinatarioService">
+    <wsdl:port binding="tns:ProtocolloDestinatarioServiceBinding" name="ProtocolloDestinatarioService">
       <soap:address location="http://localhost:8080/proto-test/protocollo/destinatario"/>
     </wsdl:port>
   </wsdl:service>
-    <wsp:Policy xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" wsu:Id="DefaultPolicy">
-	<wsp:ExactlyOne>
-		<wsp:All>
-			<sp:AsymmetricBinding>
-				<wsp:Policy>
-					<sp:InitiatorSignatureToken>
-						<wsp:Policy>
-							<sp:X509Token>
-								<wsp:Policy>
-									<sp:WssX509V3Token11/>
-								</wsp:Policy>
-							</sp:X509Token>
-						</wsp:Policy>
-					</sp:InitiatorSignatureToken>
-					<sp:RecipientSignatureToken>
-						<wsp:Policy>
-							<sp:X509Token>
-								<wsp:Policy>
-									<sp:WssX509V3Token11/>
-								</wsp:Policy>
-							</sp:X509Token>
-						</wsp:Policy>
-					</sp:RecipientSignatureToken>
-					<sp:IncludeTimestamp/>
-					<sp:OnlySignEntireHeadersAndBody/>
-					<sp:AlgorithmSuite>
-						<wsp:Policy>
-							<!-- Important: Override Signature Algorithms if it must be different from RSA-SHA1 -->
-							<sp:Basic256Sha256/>
-						</wsp:Policy>
-					</sp:AlgorithmSuite>
-				</wsp:Policy>
-			</sp:AsymmetricBinding>
-			<sp:Wss11>
-				<wsp:Policy>
-					<sp:MustSupportRefEmbeddedToken/>
-				</wsp:Policy>
-			</sp:Wss11>
 
-			<sp:SignedParts>
-				<sp:Body/>
-				<sp:Header Name="Timestamp" Namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"/>
-			</sp:SignedParts>
-
-		</wsp:All>
-	</wsp:ExactlyOne>
-</wsp:Policy>
 </wsdl:definitions>
