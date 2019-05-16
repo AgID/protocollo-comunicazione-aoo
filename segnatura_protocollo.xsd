@@ -1,720 +1,295 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<xsd:schema 
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	xmlns:prot="http://www.agid.gov.it/protocollo/"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-												
+	
 	targetNamespace="http://www.agid.gov.it/protocollo/" 
 	
 	elementFormDefault="qualified" 
 	attributeFormDefault="qualified"          
- 
+	
 	version="3.0"		  
-> 
-	<xsd:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="import_schemas\xmldsig-core-schema.xsd"/>
-																									  
+	> 
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="import_schemas\xmldsig-core-schema.xsd"/>
 	
-	<xsd:element name="SegnaturaInformatica" type="prot:SegnaturaInformaticaType">
-		<xsd:annotation>
-			<xsd:documentation>
-Elemento root che definisce la struttura di una segnatura informatica.
-			</xsd:documentation>
-		</xsd:annotation>
-	</xsd:element>
+	<xs:element name="SegnaturaInformatica" type="prot:SegnaturaInformaticaType"/>
 	
-	<xsd:complexType name="SegnaturaInformaticaType">
-		<xsd:annotation>
-			<xsd:documentation>				
-Si compone di quattro sezioni, di cui due obbligatorie (Intestazione e Descrizione) ed due opzionali (Riferimenti e PiuInfo): 					
-- la sezione Intestazione contiene i dati identificativi e le informazioni fondamentali del messaggio
-- la sezione Descrizione contiene le informazioni descrittive riguardanti il contenuto del messaggio e le impronte del documento primario e allegati					
-- la sezione Riferimenti contiene le informazioni relative al contesto generale di cui il messaggio fa parte
-- la sezione PiuInfo contiene eventuali ulteriori informazioni
-- la sezione Signatura per permettere la firma della segnatura di protocollo conformemente al profilo XAdES baseline B level signatures definito in ETSI EN 319 132-1 v1.1.1																																											
-
-Gli attributi della Segnatura definiscono la versione di riferimento del formato ed il linguaggio usato nella definizione dei valori testuali.
-
-L'attributo "versione" ha valore fisso, pari al numero della versione, espressa in Semantic Versioning 2.0.0 (es.: MAJOR.MINOR.PATCH).
-
-L'attributo standard “lang” ha come valore fisso il token "it" (codice standard ISO 639) ed indica l'uso della lingua italiana come default per il contenuto testuale degli elementi XML.
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="Intestazione" type="prot:IntestazioneType"/>			
-			<xsd:element name="Descrizione" type="prot:DescrizioneType"/>			
-			<xsd:element name="Riferimenti" type="prot:RiferimentiType" minOccurs="0"/>
-			<xsd:element name="PiuInfo" type="prot:PiuInfoType" minOccurs="0"/>	
-			<xsd:element ref="ds:Signature"/>
-		</xsd:sequence>
-		<xsd:attribute name="versione" type="xsd:NMTOKEN" fixed="3.0.0" use="required"/>
-		<xsd:attribute name="lang" type="xsd:NMTOKEN" fixed="it" use="required"/>
-	</xsd:complexType>
-	
-	<xsd:complexType name="IntestazioneType">
-		<xsd:annotation>
-			<xsd:documentation>
-L'elemento Intestazione di Segnatura Informatica e` obbligatorio e contiene gli elementi essenziali di identificazione e caratterizzazione amministrativa del Messaggio Protocollato. Contiene anche le informazioni relative alla trasmissione del messaggio, sia dal punto di vista telematico che amministrativo. 				
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="Identificatore" type="prot:IdentificatoreType"/>
-			<xsd:element name="Origine" type="prot:OrigineType"/>
-			<xsd:element name="Destinazione" type="prot:DestinazioneType" maxOccurs="unbounded"/>            
-			<xsd:element name="Oggetto" type="xsd:string"/>
-			<xsd:element name="OraRegistrazione" type="prot:OraRegistrazioneType" minOccurs="0"/>
-			<xsd:element name="PerConoscenza" type="prot:DestinazioneType" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element name="Risposta" type="prot:RispostaType" minOccurs="0"/>			
-			<xsd:element name="Riservato" type="xsd:string" minOccurs="0"/>			
-			<xsd:element name="InterventoOperatore" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="RiferimentoDocumentiCartacei" type="xsd:boolean" minOccurs="0"/> 			
-			<xsd:element name="RiferimentiTelematici" type="xsd:boolean" minOccurs="0"/>
-			<xsd:element name="Classifica" type="prot:ClassificaType" minOccurs="0" maxOccurs="unbounded"/>			
-			<xsd:element name="Note" type="xsd:string" minOccurs="0"/>                   
-		</xsd:sequence>
-	</xsd:complexType>
-
-	<xsd:complexType name="IdentificatoreType">
-		<xsd:annotation>
-			<xsd:documentation>				
-Contiene le informazioni identificative riferite alla segnatura di protocollo. 
-
-L'elemento Identificatore inserito al primo livello nell'Intestazione riporta i dati dell'Identificatore di registrazione del messaggio protocollato.
-
-Nelle altre posizioni in cui viene utilizzato esso riporta i dati di un generico Identificatore di protocollo il cui significato e` desumibile dal contesto. 				
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="CodiceAmministrazione" type="prot:CodiceAmministrazioneType"/>
-			<xsd:element name="CodiceAOO" type="prot:CodiceAOOType"/>
-			<xsd:element name="CodiceRegistro" type="prot:CodiceRegistroType"/>
-			<xsd:element name="NumeroRegistrazione" type="prot:NumeroRegistrazioneType"/>			
-			<xsd:element name="DataRegistrazione" type="xsd:date"/>
-		</xsd:sequence>
-	</xsd:complexType>
-	
-	<xsd:complexType name="OrigineType">
-		<xsd:annotation>
-			<xsd:documentation>
-Riporta i dati telematici ed amministrativi del mittente del messaggio protocollato.
+	<xs:complexType name="SegnaturaInformaticaType">
+		<xs:annotation>
+			<xs:documentation>
+				La segnatura di protocollo contine i metadati relativi ad un messaggio di protocollo.
 				
-La descrizione dell'Origine deve essere specificata nel modo più completo possibile. 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="IndirizzoTelematico" type="prot:IndirizzoTelematicoType"/>
-			<xsd:element name="Mittente" type="prot:MittenteType"/>            
-		</xsd:sequence>
-	</xsd:complexType>
+				Un messaggio di protocollo è determinato da:
+				- documento primario
+				- eventuali allegati
+				- la segnatura di protocollo qui definita
+				
+				La segnatura di protocollo è associata in forma permanente al documento primario e agli allegati che con esso formano il messaggio di protocollo
+				includendo nella segnatatura di protocollo le impronte (digest) del documento primario e degli allegati e assicurando l’autenticità e integrità
+				della segnatura di protocollo firmando la stessa implementando il profilo XAdES baseline B level signatures definito in ETSI EN 319 132-1 v1.1.1				
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Intestazione" type="prot:IntestazioneType"/>			
+			<xs:element name="Descrizione" type="prot:DescrizioneType"/>					
+			<xs:element ref="ds:Signature"/>
+		</xs:sequence>
+		<xs:attribute name="versione" type="xs:NMTOKEN" fixed="3.0.0" use="required"/>
+		<xs:attribute name="lang" type="xs:NMTOKEN" fixed="it" use="required"/>
+	</xs:complexType>
 	
-	<xsd:complexType name="DestinazioneType">
-		<xsd:annotation>
-			<xsd:documentation>
-Contiene i dati telematici ed amministrativi di un singolo destinatario del messaggio protocollato.	
-
-Se la destinazione del messaggio protocollato e` una amministrazione, “IndirizzoTelematico” deve corrispondere:
- - nel caso della posta elettronica, all’indirizzo della casella istituzionale della AOO destinataria o di altra casella di posta dell’amministrazione pubblicata nell’indice delle amministrazioni e/o nel manuale di gestione 
- - nel caso della cooperazione applicativa, all’URI che specifica l’indirizzo per il binding del servizio esposto					
-
-L'attributo “ConfermaRicezione” indica la richiesta di invio di una conferma di ricezione da parte del destinatario. 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>			
-			<xsd:element name="IndirizzoTelematico" type="prot:IndirizzoTelematicoType"/>
-			<xsd:element name="Destinatario" type="prot:DestinatarioType" minOccurs="0" maxOccurs="unbounded"/>
-		</xsd:sequence>
-		<xsd:attribute name="confermaRicezione" type="xsd:boolean" default="false"/>			
-	</xsd:complexType>
+	<xs:complexType name="IntestazioneType">
+		<xs:annotation>
+			<xs:documentation>
+				L'intestazione contiene gli elementi essenziali di identificazione e caratterizzazione amministrativa del messaggio di protocollato. 
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+			<xs:element name="Oggetto" type="xs:string"/>									
+			<xs:element name="Classifica" type="prot:ClassificaType" />			
+			<xs:element name="Fascicolo" type="prot:FascicoloType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
 	
-	<xsd:complexType name="OraRegistrazioneType">
-		<xsd:annotation>
-			<xsd:documentation>
-Indica l’ora di creazione della registrazione di protocollo espressa secondo il ISO 8601 esteso (hh:mm:ss[,ddd] – es.16:09:19,710; si noti che l'indicazione dei millisecondi e` opzionale).	
-
-L'attributo “tempo” descrive il tipo di misurazione temporale utilizzata:
- - Il token "locale" indica il tempo locale non sincronizzato del sistema dove la registrazione di protocollo e` stata creata
- - Il token "spc" indica il tempo sincronizzato di SPC
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:simpleContent>
-			<xsd:extension base="xsd:time">
-				<xsd:attribute name="tempo" default="locale">
-					<xsd:simpleType>
-						<xsd:restriction base="xsd:NMTOKEN">
-							<xsd:enumeration value="spc"/>							
-							<xsd:enumeration value="locale"/>
-						</xsd:restriction>
-					</xsd:simpleType>
-				</xsd:attribute>
-			</xsd:extension>            
-		</xsd:simpleContent>        
-	</xsd:complexType>
+	<xs:complexType name="FascicoloType">
+		<xs:annotation>
+			<xs:documentation>
+				Il fascicolo riporta il riferimento al fascicolo prevedendo la Denominazione e il relativo CodiceFascicolo
+			</xs:documentation>
+		</xs:annotation>		
+		<xs:sequence>
+			<xs:element name="Denominazione" type="xs:string"/>
+			<xs:element name="CodiceFascicolo" type="xs:string"/>				
+		</xs:sequence>
+	</xs:complexType>
 	
-	<xsd:complexType name="RispostaType">
-		<xsd:annotation>
-			<xsd:documentation>
-Indica un indirizzo telematico da utilizzarsi per le risposte automatiche (quali ConfermaRicezione, NotificaEccezione, AggiornamentoConferma, AnnullamentoProtocollazione).	
-
-Viene specificato solo se non coincidente con l'indirizzo telematico indicato nell'elemento “Origine” e può essere diverso da quello di una casella istituzionale in quanto le suddette riposte non sono soggette a protocollazione.	
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="IndirizzoTelematico" type="prot:IndirizzoTelematicoType"/>
-		</xsd:sequence>
-	</xsd:complexType>
+	<xs:complexType name="IdentificatoreType">
+		<xs:annotation>
+			<xs:documentation>
+				Contiene le informazioni identificative riferite alla segnatura di protocollo.
+			</xs:documentation>
+		</xs:annotation>		
+		<xs:sequence>
+			<xs:element name="CodiceAmministrazione" type="prot:CodiceAmministrazioneType"/>
+			<xs:element name="CodiceAOO" type="prot:CodiceAOOType"/>
+			<xs:element name="CodiceRegistro" type="prot:CodiceRegistroType"/>
+			<xs:element name="NumeroRegistrazione" type="prot:NumeroRegistrazioneType"/>			
+			<xs:element name="DataRegistrazione" type="xs:date"/>
+			<xs:element name="OraRegistrazione" type="xs:time" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
 	
-	<xsd:complexType name="MittenteType">
-		<xsd:annotation>
-			<xsd:documentation>
-Descrive il mittente del messaggio protocollato.	
-
-La descrizione di un mittente istituzionale in forma estesa e strutturata si configura come la descrizione di un percorso all'interno di una struttura organizzativa. Il formato di descrizione di tale percorso e` compatibile con lo schema dell'indice delle pubbliche amministrazioni.	
-
-E` comunque prevista la possibilità di descrizioni non strutturate, cioè interamente testuali, di parte o di tutti gli elementi coinvolti al fine di garantire la compatibilità con sistemi informatici che utilizzano dati in forma non strutturata o in una forma strutturata non compatibile con quella descritta. Il ricorso a tali descrizioni testuali andrebbe evitato qualora possibile, comunque, se utilizzata, la descrizione testuale non deve tuttavia contenere forme di strutturazione surrettizia (uso di "comma-separated values").	
-
-La denominazione della AOO mittente deve corrispondere al CodiceAOO indicato nell'elemento “Identificatore” del messaggio protocollato e all'IndirizzoTelematico della casella istituzionale dell’elemento “Amministrazione”. 	
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="Amministrazione" type="prot:AmministrazioneType"/>
-			<xsd:element name="AOO" type="prot:AOOType"/>
-		</xsd:sequence>
-	</xsd:complexType>
+	<xs:complexType name="DescrizioneType">
+		<xs:sequence>	
+			<xs:element name="Mittente" type="prot:SoggettoType" minOccurs="0"/>
+			<xs:element name="Destinatario" type="prot:SoggettoType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="DocumentoPrimario" type="prot:DocumentoType"/>			
+			<xs:element name="Allegati" type="prot:DocumentoType" minOccurs="0" maxOccurs="unbounded"/>						
+		</xs:sequence>
+	</xs:complexType>
 	
-	<xsd:complexType name="DestinatarioType">
-		<xsd:annotation>
-			<xsd:documentation>
-Descrive il destinatario del messaggio protocollato.
-
-La descrizione del Destinatario deve includere come minimo la denominazione della Amministrazione oppure una denominazione generica oppure il riferimento ad una persona fisica.
-
-Si noti che la specifica del Destinatario e` opzionale e pertanto l'inserimento di un simile elemento privo di informazioni significative e` inutile. 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:choice>
-				<xsd:sequence>
-					<xsd:element name="Amministrazione" type="prot:AmministrazioneType"/>
-					<xsd:element name="AOO" type="prot:AOOType" minOccurs="0"/>
-				</xsd:sequence>
-				<xsd:sequence>					
-					<xsd:element name="Denominazione" type="xsd:string"/>
-					<xsd:element name="Persona" type="prot:PersonaType" minOccurs="0" maxOccurs="unbounded"/>
-				</xsd:sequence>
-				<xsd:element name="Persona" type="prot:PersonaType" maxOccurs="unbounded"/>
-			</xsd:choice>
-			<xsd:element name="IndirizzoTelematico" type="prot:IndirizzoTelematicoType" minOccurs="0"/>
-			<xsd:element name="Telefono" type="prot:TelefonoType" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element name="Fax" type="prot:TelefonoType" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element name="IndirizzoPostale" type="prot:IndirizzoPostaleType" minOccurs="0"/>
-		</xsd:sequence>
-	</xsd:complexType>
+	<xs:complexType name="DocumentoType">  
+		<xs:sequence>
+			<xs:element name="Tipologia" type="xs:string" minOccurs="0"/>
+			<xs:element name="Descrizione" type="xs:string" minOccurs="0"/>
+			<xs:element name="Impronta" type="prot:ImprontaType"/>			
+		</xs:sequence>
+		<xs:attribute name="nomeFile" type="xs:string" use="required"/>
+		<xs:attribute name="mimeType" type="xs:string" use="required"/>
+		<xs:attribute name="firmatoDigitalmente" type="xs:boolean"/>
+		<xs:attribute name="marcaturaTemporale" type="xs:boolean"/>
+		<xs:attribute name="sigillatoElettronicamente" type="xs:boolean"/>
+	</xs:complexType>
 	
-	<xsd:complexType name="AmministrazioneType">
-		<xsd:annotation>
-			<xsd:documentation>				
-Rappresenta l'elemento radice della descrizione estesa e strutturata di un mittente o destinatario istituzionale, inteso come percorso all'interno di una struttura organizzativa. 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>			
-			<xsd:element name="Denominazione" type="xsd:string"/>
-			<xsd:element name="CodiceAmministrazione" type="prot:CodiceAmministrazioneType" minOccurs="0"/>
-			<xsd:choice>
-				<xsd:element name="UnitaOrganizzativa" type="prot:UnitaOrganizzativaType"/>
-				<xsd:sequence>
-					<xsd:choice minOccurs="0" maxOccurs="unbounded">
-						<xsd:element name="Ruolo" type="prot:RuoloType"/>                        
-						<xsd:element name="Persona" type="prot:PersonaType"/>
-					</xsd:choice>
-					<xsd:element name="IndirizzoPostale" type="prot:IndirizzoPostaleType"/>
-					<xsd:element name="IndirizzoTelematico" type="prot:IndirizzoTelematicoType" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="Telefono" type="prot:TelefonoType" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="Fax" type="prot:TelefonoType" minOccurs="0" maxOccurs="unbounded"/>
-				</xsd:sequence>
-			</xsd:choice>
-		</xsd:sequence>
-		<xsd:attribute name="tipo" default="permanente">
-			<xsd:simpleType>
-				<xsd:restriction base="xsd:NMTOKEN">
-					<xsd:enumeration value="permanente"/>
-					<xsd:enumeration value="temporanea"/>
-				</xsd:restriction>
-			</xsd:simpleType>
-		</xsd:attribute>
-	</xsd:complexType>
+	<xs:complexType name="SoggettoType">
+		<xs:choice>
+			<xs:element name="Persona" type="prot:PersonaType"/>
+			
+			<xs:sequence>			
+				<xs:element name="Denominazione" type="xs:string"/>			
+				<xs:choice>
+					<xs:element name="Contatti" type="prot:ContattiType"/>				
+					<xs:element name="UnitaOrganizzativa" type="prot:SoggettoType"/>
+					<xs:element name="Persona" type="prot:PersonaType"/>				
+				</xs:choice>
+			</xs:sequence>
+		</xs:choice>				
+	</xs:complexType>
 	
-	<xsd:complexType name="UnitaOrganizzativaType">
-		<xsd:annotation>
-			<xsd:documentation>
-Rappresenta un elemento nel percorso che descrive una struttura organizzativa.
-
-L'attributo “tipo” descrive il tipo di unità organizzativa. Un'unita` organizzativa temporanea potrebbe essere infatti istituita in una amministrazione a fronte di eventi speciali o per emergenza. 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="Denominazione" type="xsd:string"/>
-			<xsd:element name="CodiceAmministrazione" type="prot:CodiceAmministrazioneType" minOccurs="0"/>
-			<xsd:choice>
-				<xsd:element name="UnitaOrganizzativa" type="prot:AmministrazioneType"/>
-				<xsd:sequence>
-					<xsd:choice minOccurs="0" maxOccurs="unbounded">
-						<xsd:element name="Ruolo" type="prot:RuoloType"/>                        
-						<xsd:element name="Persona" type="prot:PersonaType"/>
-					</xsd:choice>
-					<xsd:element name="IndirizzoPostale" type="prot:IndirizzoPostaleType" minOccurs="0"/>
-					<xsd:element name="IndirizzoTelematico" type="prot:IndirizzoTelematicoType" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="Telefono" type="prot:TelefonoType" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="Fax" type="prot:TelefonoType" minOccurs="0" maxOccurs="unbounded"/>
-				</xsd:sequence>
-			</xsd:choice>
-		</xsd:sequence>
-		<xsd:attribute name="tipo" default="permanente">
-			<xsd:simpleType>
-				<xsd:restriction base="xsd:NMTOKEN">
-					<xsd:enumeration value="permanente"/>
-					<xsd:enumeration value="temporanea"/>
-				</xsd:restriction>
-			</xsd:simpleType>
-		</xsd:attribute>
-	</xsd:complexType>
+	<xs:complexType name="IndirizzoPostaleType">		
+		<xs:sequence>
+			<xs:element name="Toponimo" type="prot:ToponimoType"/>
+			<xs:element name="Civico" type="xs:string"/>            
+			<xs:element name="CAP" type="prot:CAPType"/>
+			<xs:element name="Comune" type="prot:ComuneType"/>
+			<xs:element name="Provincia" type="xs:string"/>
+			<xs:element name="Nazione" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
 	
-	<xsd:complexType name="IndirizzoPostaleType">
-		<xsd:annotation>
-			<xsd:documentation>				
-Indica tipicamente la sede di un'unita` organizzativa o amministrazione o l'indirizzo di un cittadino o altro ente esterno alla pubblica amministrazione. 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:choice>
-			<xsd:element name="Denominazione" type="xsd:string"/>			
-			<xsd:sequence>
-				<xsd:element name="Toponimo" type="prot:ToponimoType"/>
-				<xsd:element name="Civico" type="xsd:string"/>            
-				<xsd:element name="CAP" type="prot:CAPType"/>
-				<xsd:element name="Comune" type="prot:ComuneType"/>
-				<xsd:element name="Provincia" type="xsd:string"/>
-				<xsd:element name="Nazione" type="xsd:string" minOccurs="0"/>
-			</xsd:sequence>
-		</xsd:choice>
-	</xsd:complexType>
+	<xs:complexType name="ToponimoType">
+		<xs:sequence>
+			<!-- denominazione urbanistica generica o qualitficatore del toponimo (e.g., via, viale, piazza, ecc.) -->
+			<xs:element name="dug" type="xs:string"/>
+			<!-- denominazione urbanistica ufficiale o nome della strada -->
+			<xs:element name="duf" type="xs:string"/>
+		</xs:sequence>		
+	</xs:complexType>
 	
-	<xsd:complexType name="ToponimoType">
-		<xsd:annotation>
-			<xsd:documentation>
-Contiene il toponimo (es. "Verdi", "XX Settembre") che fa parte dell’elemento “Indirizzo”.
-
-L'attributo “dug” (Denominazione Urbanistica Generica) consente di definire informazioni come "Via","Viale" o "Piazza". 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:simpleContent>
-			<xsd:extension base="xsd:string">
-				<xsd:attribute name="dug" type="xsd:string"/>        
-			</xsd:extension>
-		</xsd:simpleContent>        
-	</xsd:complexType>
+	<xs:simpleType name="CAPType">		
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{6}"/>
+		</xs:restriction>
+	</xs:simpleType>
 	
-	<xsd:simpleType name="CAPType">
-		<xsd:annotation>
-			<xsd:documentation>			
-Contiene il codice di avviamento postale che fa parte dell’elemento “Indirizzo”. 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:restriction base="xsd:string">
-			<xsd:pattern value="[0-9]{6}"></xsd:pattern>
-		</xsd:restriction>
-	</xsd:simpleType>
+	<xs:complexType name="ComuneType">		
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="CodiceISTAT" type="prot:CodiceISTATType"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
 	
-	<xsd:complexType name="ComuneType">
-		<xsd:annotation>
-			<xsd:documentation>
-Contiene il nome del Comune che fa parte dell’elemento “Indirizzo”.
-
-Il valore dell'attributo opzionale “codiceISTAT” deve essere formato da sei cifre decimali con giustificazione mediante zeri (es. "018190"). 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:simpleContent>
-			<xsd:extension base="xsd:string">
-				<xsd:attribute name="CodiceISTAT" type="prot:CodiceISTATType"/>
-			</xsd:extension>
-		</xsd:simpleContent>
-	</xsd:complexType>
+	<xs:simpleType name="CodiceISTATType">		
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{6}"/>
+		</xs:restriction>
+	</xs:simpleType>
 	
-	<xsd:simpleType name="CodiceISTATType">
-		<xsd:annotation>
-			<xsd:documentation>
-Codice ISTAT Comune nel formato a sei cifre decimali con giustificazione mediante zeri (es. "018190").
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:restriction base="xsd:string">
-			<xsd:pattern value="[0-9]{6}"/>
-		</xsd:restriction>
-	</xsd:simpleType>
+	<xs:complexType name="TelefonoType">		
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="note" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
 	
-	<xsd:complexType name="TelefonoType">
-		<xsd:annotation>
-			<xsd:documentation>
-Contiene il numero di telefono di un'unita` organizzativa o di una amministrazione o di un destinatario. 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:simpleContent>
-			<xsd:extension base="xsd:string">
-				<xsd:attribute name="note" type="xsd:string"/>
-			</xsd:extension>
-		</xsd:simpleContent>
-	</xsd:complexType>
+	<xs:complexType name="ImprontaType">		
+		<xs:simpleContent>
+			<xs:extension base="xs:base64Binary">
+				<xs:attribute name="algoritmo" type="xs:string" default="SHA-256"/>				
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
 	
-	<xsd:complexType name="RuoloType">
-		<xsd:annotation>
-			<xsd:documentation>
-Contiene la specifica del ruolo ricoperto da una persona fisica. 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="Denominazione" type="xsd:string"/>         
-			<xsd:element name="Identificativo" type="prot:IdentificativoType" minOccurs="0"/>
-			<xsd:element name="Persona" type="prot:PersonaType" minOccurs="0"/>
-		</xsd:sequence>
-	</xsd:complexType>
-		
-	<xsd:complexType name="AOOType">
-		<xsd:annotation>
-			<xsd:documentation>
-Contiene l’Area Organizzativa Omogenea di un mittente o destinatario istituzionale specificandone la denominazione ed eventualmente il codice. 	
-
-Ad una AOO corrisponde un insieme di unità organizzative dell’amministrazione che usufruiscono, in modo omogeneo e coordinato, dei servizi informatici per la gestione dei flussi documentali, ed in particolare, del servizio di protocollazione.	
-
-A tal fine ciascuna AOO deve adottare un sistema informatico che fornisce le funzionalità di registrazione dei documenti in entrata ed in uscita.	
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="Denominazione" type="xsd:string"/>
-			<xsd:element name="CodiceAOO" type="prot:CodiceAOOType" minOccurs="0"/>
-		</xsd:sequence>
-	</xsd:complexType>
+	<xs:complexType name="ClassificaType">		
+		<xs:sequence>
+			<xs:element name="Denominazione" type="xs:string"/>
+			<xs:choice>
+				<xs:element name="Codice" type="xs:string"/>
+				<xs:element name="Livello" type="prot:LivelloType" maxOccurs="unbounded"/>	
+			</xs:choice>			
+		</xs:sequence>
+	</xs:complexType>
 	
-	<xsd:complexType name="DescrizioneType">
-		<xsd:annotation>
-			<xsd:documentation>
-L'elemento opzionale “Descrizione” contiene la descrizione strutturata del contenuto del messaggio protocollato. 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="Documento" type="prot:DocumentoType"/>			
-			<xsd:element name="Allegati" type="prot:DocumentoType" minOccurs="0" maxOccurs="unbounded"/>			
-			<xsd:element name="Note" type="xsd:string" minOccurs="0"/>
-		</xsd:sequence>
-	</xsd:complexType>
+	<xs:complexType name="LivelloTypeEx">		
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="nome" type="xs:string"/>
+				<xs:attribute name="ordine" type="xs:integer"/>
+			</xs:extension>            
+		</xs:simpleContent>
+	</xs:complexType>
 	
-	<xsd:complexType name="ImprontaType">
-		<xsd:annotation>
-			<xsd:documentation>
-Singola impronta (digest) di un documento.
-
-L'attributo algoritmo identifica l'algoritmo di di has utilizzato per la produzione dell'impronta (digest), valore di default SHA-256.
-
-L'attributo codifica identifica la codifica utlizzata per l'impronta (digest), valore di default base64.
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:simpleContent>
-			<xsd:extension base="xsd:base64Binary">
-				<xsd:attribute name="algoritmo" type="xsd:string" default="SHA-256"/>
-				<xsd:attribute name="nomeFile" type="xsd:string" use="required"/>			
-			</xsd:extension>
-		</xsd:simpleContent>
-	</xsd:complexType>
-		
-	<xsd:complexType name="RiferimentiType">
-		<xsd:annotation>
-			<xsd:documentation>
-L'elemento opzionale “Riferimenti” contiene i riferimenti ad altri messaggi protocollati o contesti procedurali o specifico procedimento. 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:choice maxOccurs="unbounded">
-			<xsd:element name="Messaggio" type="prot:MessaggioType"/>
-			<xsd:element name="ContestoProcedurale" type="prot:ContestoProceduraleType"/>
-			<xsd:element name="Procedimento" type="prot:ProcedimentoType"/>
-		</xsd:choice>
-	</xsd:complexType>
+	<xs:complexType name="LivelloType">
+		<xs:sequence>
+			<xs:element name="Codice">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="descrizione" type="xs:string" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SubLivello" type="prot:LivelloType" minOccurs="0"/>
+		</xs:sequence>			
+	</xs:complexType>
 	
-	<xsd:complexType name="MessaggioType">
-		<xsd:annotation>
-			<xsd:documentation>				
-Indica un riferimento ad un messaggio.
-
-Nella indicazione di un riferimento ad un messaggio protocollato deve essere usato l'Identificatore attribuito dalla AOO mittente; deve anche essere specificato l'Identificatore di prima registrazione se e solo se esso non coincide con il precedente
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:choice>
-				<xsd:element name="Identificatore" type="prot:IdentificatoreType"/>
-				<xsd:element name="DescrizioneMessaggio" type="xsd:string"/>
-			</xsd:choice>
-		</xsd:sequence>
-	</xsd:complexType>
+	<xs:complexType name="PersonaType">		
+		<xs:sequence>
+			<xs:element name="Nome" type="xs:string"/>					
+			<xs:element name="Cognome" type="xs:string"/>					
+			<xs:element name="Titolo" type="xs:string" minOccurs="0"/>
+			<xs:element name="CodiceFiscale" type="prot:CodiceFiscaleType" minOccurs="0"/>
+			<xs:element name="Identificativo" type="xs:string" minOccurs="0"/>
+			<xs:element name="Ruolo" type="xs:string" minOccurs="0"/>	
+			<xs:element name="Contatti" type="prot:ContattiType">								
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	
-	<xsd:complexType name="ProcedimentoType">
-		<xsd:annotation>
-			<xsd:documentation>				
-Indica un riferimento ad un procedimento (ai sensi della L. 241/90 e dell’articolo 41 del CAD).
-
-È formalmente identico all'elemento “ContestoProcedurale”, con l'aggiunta degli elementi “Responsabile” e “DataTermine”. 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="prot:ContestoProceduraleType">
-				<xsd:sequence>
-					<xsd:element name="Responsabile" type="prot:PersonaType" minOccurs="0"/>
-					<xsd:element name="DataTermine" type="xsd:date" minOccurs="0"/>	
-				</xsd:sequence>				
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
+	<xs:complexType name="ContattiType">
+		<xs:sequence>
+			<xs:element name="IndirizzoPostale" type="prot:IndirizzoPostaleType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="IndirizzoTelematico" type="prot:IndirizzoTelematicoType" maxOccurs="unbounded"/>
+			<xs:element name="Telefono" type="prot:TelefonoType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
 	
-	<xsd:complexType name="ContestoProceduraleType">
-		<xsd:annotation>
-			<xsd:documentation>
-Indica un riferimento ad un contesto procedurale ovvero lo svolgimento di un generico complesso di attività amministrative in qualche modo collegate. 					
-
-Un contesto procedurale e` pertanto un elemento aggregante di attività svolte all'interno di una o più Unità Organizzative associate alla stessa AOO; le azioni svolte nell'ambito di un contesto procedurale sono finalizzate alla produzione di un risultato, finale o intermedio, che ha valore anche all'esterno delle Unità 					Organizzative coinvolte.
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>			
-			<xsd:element name="CodiceAmministrazione" type="prot:CodiceAmministrazioneType"/>			
-			<xsd:element name="CodiceAOO" type="prot:CodiceAOOType"/>
-			<xsd:element name="Identificativo" type="prot:IdentificativoType"/>			
-			<xsd:element name="Tipo" type="xsd:string" minOccurs="0"/>			
-			<xsd:element name="Oggetto" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="Classifica" type="prot:ClassificaType" minOccurs="0" maxOccurs="unbounded"/>						
-			<xsd:element name="DataAvvio" type="xsd:date" minOccurs="0"/>
-			<xsd:element name="Note" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="PiuInfo" type="prot:PiuInfoType" minOccurs="0"/>
-		</xsd:sequence>
-	</xsd:complexType>
+	<xs:simpleType name="CodiceFiscaleType">		
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]"/>
+		</xs:restriction>
+	</xs:simpleType>
 	
-	<xsd:complexType name="DocumentoType">
-		<xsd:annotation>
-			<xsd:documentation>
-Specifica un riferimento ad un documento che costituisce parte integrante del messaggio protocollato.
-
-L’elemento “Documento”, che costituisce il primo elemento incluso nell’elemento “Descrizione”, si riferisce al documento primario del messaggio protocollato.
-
-Nell’indicazione del riferimento a un documento sono riportati i metadati per soddisfare le esigenze amministrative (es. indicazione di informazioni utili per il trattamento).
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="Impronta" type="prot:ImprontaType" />			
-			<xsd:element name="CollocazioneTelematica" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="TitoloDocumento" type="xsd:string" minOccurs="0"/>						
-			<xsd:element name="TipoDocumento" type="xsd:string" minOccurs="0"/>			
-			<xsd:element name="Oggetto" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="Classifica" type="prot:ClassificaType" minOccurs="0" maxOccurs="unbounded"/>			
-			<xsd:element name="NumeroPagine" type="xsd:int" minOccurs="0"/>
-			<xsd:element name="Note" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="PiuInfo" type="prot:PiuInfoType" minOccurs="0"/>
-		</xsd:sequence>
-	</xsd:complexType>
+	<xs:simpleType name="IdentificativoType">		
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Za-z0-9_\.\-]{1,16}"/>
+		</xs:restriction>  
+	</xs:simpleType>
 	
-	<xsd:complexType name="ClassificaType">
-		<xsd:annotation>
-			<xsd:documentation>
-Contiene l'indicazione di una classifica. È rappresentata da una codifica numerica strutturata in più livelli (es. 2.1.3.4) e da una denominazione.	
-
-Come elemento subordinato dell’elemento “Intestazione”, indica la classifica del messaggio protocollato.	
-
-Nelle altre posizioni indica una classifica attribuibile all'elemento a cui si riferisce.
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="CodiceAmministrazione" type="prot:CodiceAmministrazioneType" minOccurs="0"/>
-			<xsd:element name="CodiceAOO" type="prot:CodiceAOOType" minOccurs="0"/>
-			<xsd:element name="Denominazione" type="xsd:string"/>
-			<xsd:element name="Livello" type="prot:LivelloType" maxOccurs="unbounded"/>
-		</xsd:sequence>
-	</xsd:complexType>
+	<xs:complexType name="CodiceAmministrazioneType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="descrizione" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
 	
-	<xsd:complexType name="LivelloType">
-		<xsd:annotation>
-			<xsd:documentation>
-	Contiene l'indicazione del livello di una classifica. 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:simpleContent>
-			<xsd:extension base="xsd:string">
-				<xsd:attribute name="nome" type="xsd:string"/>
-			</xsd:extension>            
-		</xsd:simpleContent>
-	</xsd:complexType>
-
-	<xsd:complexType name="PersonaType">
-		<xsd:annotation>
-			<xsd:documentation>
-Contiene i riferimenti ad una persona fisica relativa al’elemento a cui si riferisce. 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:choice>				
-				<xsd:element name="Denominazione" type="xsd:string"/>
-				<xsd:sequence>					
-					<xsd:element name="Nome" type="xsd:string" minOccurs="0"/>					
-					<xsd:element name="Cognome" type="xsd:string"/>					
-					<xsd:element name="Titolo" type="xsd:string" minOccurs="0"/>
-					<xsd:element name="CodiceFiscale" type="prot:CodiceFiscaleType" minOccurs="0"/>
-				</xsd:sequence>
-			</xsd:choice>
-			<xsd:element name="Identificativo" type="prot:IdentificativoType" minOccurs="0"/>
-		</xsd:sequence>
-	</xsd:complexType>
+	<xs:complexType name="CodiceAOOType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="descrizione">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="[A-Za-z0-9_\.\-]{1,16}"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
 	
-	<xsd:simpleType name="CodiceFiscaleType">
-		<xsd:annotation>
-			<xsd:documentation>
-Codice Fiscale di una persona
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:restriction base="xsd:string">
-			<xsd:pattern value="[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]"/>
-		</xsd:restriction>
-	</xsd:simpleType>
+	<xs:simpleType name="CodiceRegistroType">		
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Za-z0-9_\.\-]{1,16}"/>
+		</xs:restriction>
+	</xs:simpleType>
 	
-	<xsd:simpleType name="IdentificativoType">
-		<xsd:annotation>
-			<xsd:documentation>
-Contiene un codice che consente di identificare univocamente un'entità dal punto di vista amministrativo.	
-
-La forma dell'Identificativo può essere stabilita dalla AOO che lo attribuisce, tuttavia il contenuto di tale elemento deve essere sufficiente per l’identificazione univoca dell’entità.	
-
-L’identificativo deve essere compatibile con la formazione di un identificativo telematico come URI, (Uniform Resource Identifier, RFC 1738).	
-
-L’identificativo e’ codificato mediante caratteri previsti dalla specifica US-ASCII a 8 bit. È composto da una sequenza di lettere maiuscole ([A-Z]), lettere minuscole ([a-z]), caratteri numerici ([0-9]) e dai caratteri '.' e '-' e '_'. Deve avere una lunghezza non superiore a 16 caratteri.				 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:restriction base="xsd:string">
-			<xsd:pattern value="[A-Za-z0-9_\.\-]{1,16}"/>
-		</xsd:restriction>  
-	</xsd:simpleType>
-
-	<xsd:simpleType name="CodiceAmministrazioneType">
-		<xsd:annotation>
-			<xsd:documentation>
-Contiene il codice dell’Amministrazione mittente o destinataria. Il codice e’ dato dal valore assegnato automaticamente all’Amministrazione dall’IPA in fase di accreditamento. 
-			</xsd:documentation>
-		</xsd:annotation>		
-		<xsd:restriction base="xsd:string"/>
-	</xsd:simpleType>
+	<xs:simpleType name="NumeroRegistrazioneType">			
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{7,}"/>
+		</xs:restriction>  
+	</xs:simpleType>
 	
-	<xsd:simpleType name="CodiceAOOType">
-		<xsd:annotation>
-			<xsd:documentation>
-Contiene il codice dell’Area Organizzativa Omogenea di un mittente o destinatario istituzionale attribuito in modo univoco dalla amministrazione di cui la AOO fa parte. 	
-
-Il codice e’ codificato mediante un sottoinsieme dei caratteri previsti dalla specifica US-ASCII a 8 bit. È composto da lettere maiuscole ([A-Z]), lettere minuscole ([a-z]), caratteri numerici ([0-9]) e dai caratteri “-”  e “_” e “.”. Deve avere una lunghezza non superiore a 16 caratteri.
-			</xsd:documentation>
-		</xsd:annotation>			
-		<xsd:restriction base="xsd:string">
-			<xsd:pattern value="[A-Za-z0-9_\.\-]{1,16}"/>
-		</xsd:restriction>
-	</xsd:simpleType>
+	<xs:complexType name="IndirizzoTelematicoType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="tipo" default="smtp">
+					<xs:simpleType>
+						<xs:restriction base="xs:NMTOKEN">
+							<xs:enumeration value="url"/>
+							<xs:enumeration value="smtp"/>
+							<xs:enumeration value="other"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="note" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
 	
-	<xsd:simpleType name="CodiceRegistroType">
-		<xsd:annotation>
-			<xsd:documentation>
-Contiene il codice identificativo del registro di protocollo, degli altri registri di cui all’articolo 53, comma 5, del Testo unico, dei repertori e degli archivi gestiti nell’ambito del sistema unico di gestione documentale e protocollo informatico. È attribuito dalla amministrazione al registro nell’ambito della AOO in cui è stato definito.	
-
-Il codice è codificato mediante un sottoinsieme dei caratteri previsti dalla specifica US-ASCII a 8 bit; il codice è composto da lettere maiuscole ([A-Z]), lettere minuscole ([a-z]), caratteri numerici ([0-9]) e dai caratteri “-” e “_” e “.”. Deve avere una lunghezza non superiore a 16 caratteri.
-			</xsd:documentation>
-		</xsd:annotation>		
-		<xsd:restriction base="xsd:string">
-			<xsd:pattern value="[A-Za-z0-9_\.\-]{1,16}"/>
-		</xsd:restriction>
-	</xsd:simpleType>
-
-	<xsd:simpleType name="NumeroRegistrazioneType">
-		<xsd:annotation>
-			<xsd:documentation>
-Contiene il numero della registrazione di protocollo formato da almeno sette cifre decimali, con giustificazione mediante zeri (es. il numero 1 deve essere codificato come 0000001). 
-			</xsd:documentation>
-		</xsd:annotation>		
-		<xsd:restriction base="xsd:string">
-			<xsd:pattern value="[0-9]{7,}"/>
-		</xsd:restriction>  
-	</xsd:simpleType>
-	
-	<xsd:complexType name="IndirizzoTelematicoType">
-		<xsd:annotation>
-			<xsd:documentation>
-Contiene un indirizzo utilizzato per la trasmissione telematica che corrisponde:
-- nel caso della posta elettronica, ad un indirizzo SMTP che deve essere sintatticamente conforme a quanto previsto dalle specifiche pubbliche RFC 822 e RFC2822
-- nel caso della cooperazione applicativa, ad una URI che deve essere sintatticamente conforme a quanto previsto dalla specifica pubblica RFC 1738
-
-Qualunque sia il tipo di protocollo di trasporto telematico adottato, la specifica di un IndirizzoTelematico deve essere completa e non ambigua.	
-
-L'attributo “tipo” descrive il tipo di indirizzo telematico utilizzato.
-- il token "smtp" indica un indirizzo SMTP
-- il token "uri" indica un indirizzo telematico specificato secondo la sintassi delle URI, non e` ammesso l'uso di questo tipo per l'indicazione di un indirizzo SMTP (es. tramite una URI "mailto:")
-- il token "other" e` da utilizzarsi per l'indicazione di tipo di sistemi di messaging diversi da quelli utilizzati su internet (es. sistemi proprietari)
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:simpleContent>
-			<xsd:extension base="xsd:string">
-				<xsd:attribute name="tipo" default="smtp">
-					<xsd:simpleType>
-						<xsd:restriction base="xsd:NMTOKEN">
-							<xsd:enumeration value="uri"/>
-							<xsd:enumeration value="smtp"/>
-							<xsd:enumeration value="other"/>
-						</xsd:restriction>
-					</xsd:simpleType>
-				</xsd:attribute>
-				<xsd:attribute name="note" type="xsd:string"/>
-			</xsd:extension>
-		</xsd:simpleContent>
-	</xsd:complexType>
-	
-	<xsd:complexType name="PiuInfoType">
-		<xsd:annotation>
-			<xsd:documentation>				
-L'elemento opzionale “PiuInfo” contiene ulteriori informazioni, che non è possibile associare ad altri elementi, relative all’elemento padre cui si riferisce.	
-
-Qualora due o più amministrazioni stabiliscano di scambiarsi informazioni non previste tra quelle definite, esse possono estenderle con le informazioni specifiche stabilite di comune accordo utilizzando questo elemento.	
-
-Tali informazioni devono essere strutturate nel formato XML, utilizzando uno Schema XML la cui localizzazione e’ specificata nell’attributo “XMLSchema” dell’elemento.	
-
-L’insieme di queste informazioni costituisce un corpo che può essere inserito direttamente all’interno (nell’elemento subordinato “MetadatiInterni”) o all’esterno (nell’elemento subordinato “MetadatiEsterni).	
-
-Nel secondo caso, tale insieme individua concretamente un file specificato dall’elemento “MetadatiEsterni”.	
-
-In particolare, all’interno dell’elemento “Segnatura”, l’elemento subordinato “PiuInfo” può essere utilizzato per descrivere i documenti trasmessi coerentemente con uno schema che utilizzi un insieme di metadati specializzato nel dominio: quindi “PiuInfo”, qui definito il più genericamente possibile ai fini dell’interoperabilità, offre ampi margini d’intervento per l’elaborazione di raffinamenti ovvero per la definizione di strutture di metadati adeguate allo specifico contesto d’uso.				
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:choice>			
-			<xsd:element name="MetadatiInterni" type="xsd:string"/>
-			<xsd:element name="MetadatiEsterni" type="prot:MetadatiEsterniType"/>
-		</xsd:choice>
-		<xsd:attribute name="XMLSchema" type="xsd:NMTOKEN" use="required"/>
-	</xsd:complexType>
-	
-	<xsd:complexType name="MetadatiEsterniType">
-		<xsd:annotation>
-			<xsd:documentation>
-Contiene le informazioni dell’elemento “PiuInfo” contenute all’esterno in un file XML le cui caratteristiche sono descritte nei suoi elementi subordinati. 
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="NomeFile" type="xsd:string"/>
-			<xsd:element name="Impronta" type="prot:ImprontaType" minOccurs="0"/>
-		</xsd:sequence>
-		<xsd:attribute name="codifica" use="required">
-			<xsd:simpleType>
-				<xsd:restriction base="xsd:NMTOKEN">
-					<xsd:enumeration value="binary"/>
-					<xsd:enumeration value="xtoken"/>
-					<xsd:enumeration value="quotedprintable"/>
-					<xsd:enumeration value="7bit"/>
-					<xsd:enumeration value="base64"/>
-					<xsd:enumeration value="8bit"/>
-				</xsd:restriction>
-			</xsd:simpleType>
-		</xsd:attribute>
-		<xsd:attribute name="estensione" type="xsd:NMTOKEN"/>
-		<xsd:attribute name="formato" type="xsd:anySimpleType" use="required"/>
-	</xsd:complexType>
-
-</xsd:schema>
+</xs:schema>
