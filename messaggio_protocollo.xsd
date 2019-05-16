@@ -8,7 +8,7 @@
     attributeFormDefault="qualified"          
     >
     
-    <xsd:import namespace="http://www.agid.gov.it/protocollo/" schemaLocation="./segnatura_protocollo_slim.xsd"/>
+    <xsd:import namespace="http://www.agid.gov.it/protocollo/" schemaLocation="./segnatura_protocollo.xsd"/>
     
     <xsd:complexType name="MessaggioProtocolloType">
         <xsd:sequence>
