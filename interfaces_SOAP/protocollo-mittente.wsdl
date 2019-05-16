@@ -34,7 +34,7 @@
           <xs:element name="IdentificatoreMittente" type="prot:IdentificatoreType"/>
           <xs:choice>
             <xs:element name="IdentificatoreDestinatario" type="prot:IdentificatoreType"/>
-            <xs:element name="Anomalia" type="tns:AnomalieType" />         
+            <xs:element name="Anomalia" type="tns:AnomalieConfermaType" />         
           </xs:choice>                    
         </xs:sequence>
       </xs:complexType>
@@ -47,7 +47,8 @@
       
       <xs:complexType name="RequestAnnullamentoInoltroDestinatarioType">
         <xs:sequence>
-          <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+          <xs:element name="IdentificatoreMittente" type="prot:IdentificatoreType"/>
+          <xs:element name="IdentificatoreDestinatario" type="prot:IdentificatoreType"/>
           <xs:element name="RiferimentoProvvedimento" type="xs:string"/>
           <xs:element name="Note" type="xs:string"/>
         </xs:sequence>
@@ -55,32 +56,46 @@
       
       <xs:complexType name="ResponseAnnullamentoInoltroDestinatarioType">
         <xs:sequence>
-          <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
-          <xs:choice minOccurs="0">
-            <xs:element name="MotivoIrricevibilita" type="xs:string"/>
-            <xs:element name="NonPresente" type="xs:boolean" fixed="true"/>    
-          </xs:choice>          
+          <xs:element name="IdentificatoreMittente" type="prot:IdentificatoreType"/>
+          <xs:element name="IdentificatoreDestinatario" type="prot:IdentificatoreType"/>
+          <xs:element minOccurs="0" name="Anomalia" type="tns:AnomalieAnnullamentoType" />    
         </xs:sequence>
       </xs:complexType>
       
 
       <!-- DATA TYPE -->
       
-       <xs:complexType name="AnomalieType">
+       <xs:complexType name="AnomalieConfermaType">
         <xs:simpleContent>
-          <xs:extension base="tns:AnomalieEnum">
+          <xs:extension base="tns:AnomalieConfermaEnum">
             <xs:attribute name="info" type="xs:string"/>
           </xs:extension>
         </xs:simpleContent>
       </xs:complexType>
       
-      <xs:simpleType name="AnomalieEnum">
+      <xs:simpleType name="AnomalieConfermaEnum">
         <xs:restriction base="xs:string">
           <xs:enumeration value="000_Irricevibile"/>
           <xs:enumeration value="003_DocumentoAllegatiNonLeggibili"/>
           <xs:enumeration value="004_DocumentoAllegatiErroreValidazioneFirma"/>
           <xs:enumeration value="005_DocumentoAllegatiErroreVaidazioneMarcaTemporale"/>
           <xs:enumeration value="006_DocumentoAllegatiErroreValidazioneSigillo"/>
+        </xs:restriction>
+      </xs:simpleType>
+      
+      
+      <xs:complexType name="AnomalieAnnullamentoType">
+        <xs:simpleContent>
+          <xs:extension base="tns:AnomalieAnnullamentoEnum">
+            <xs:attribute name="info" type="xs:string" />
+          </xs:extension>
+        </xs:simpleContent>
+      </xs:complexType>
+      
+      <xs:simpleType name="AnomalieAnnullamentoEnum">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="000_Irricevibilita"/>
+          <xs:enumeration value="007_ErroreIdentificatoreNonTrovato"/>
         </xs:restriction>
       </xs:simpleType>
       
