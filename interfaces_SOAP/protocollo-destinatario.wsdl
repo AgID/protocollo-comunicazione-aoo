@@ -19,45 +19,21 @@
       elementFormDefault="qualified" version="1.0">
 
       <xs:import namespace="http://www.agid.gov.it/protocollo/messaggi/" schemaLocation="../messaggio_protocollo.xsd"/>
-      <xs:import namespace="http://www.agid.gov.it/protocollo/" schemaLocation="../segnatura_protocollo_slim.xsd"/>
+      <xs:import namespace="http://www.agid.gov.it/protocollo/" schemaLocation="../segnatura_protocollo.xsd"/>
 
 
-      <xs:element name="inoltro" type="tns:InoltroType"/>
-      <xs:element name="inoltroResponse" type="tns:InoltroResponseType"/>
+      <xs:element name="RequestMessageInoltro" type="tns:RequestMessaggioInoltroType"/>
+      <xs:element name="ResponseMessageInoltro" type="tns:ResponseMessaggioInoltroType"/>
 
-      <xs:element name="annullamentoInoltro" type="tns:AnnullamentoInoltroType"/>
-      <xs:element name="annullamentoInoltroResponse" type="tns:AnnullamentoInoltroResponseType"/>
-     
-     
-      <xs:complexType name="InoltroType">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="message" type="tns:RequestMessaggioInoltroType"/>
-        </xs:sequence>
-      </xs:complexType>
+      <xs:element name="RequestAnnullamentoInoltroMittente" type="tns:RequestAnnullamentoInoltroMittenteType"/>
+      <xs:element name="ResponseAnnullamentoInoltroMittente" type="tns:ResponseAnnullamentoInoltroMittenteType"/>
       
-      <xs:complexType name="InoltroResponseType">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="return" type="tns:ResponseMessaggioInoltroType"/>
-        </xs:sequence>
-      </xs:complexType>
-      
-      
-      <xs:complexType name="AnnullamentoInoltroType">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="message" type="tns:RequestAnnullamentoInoltroMittenteType"/>
-        </xs:sequence>
-      </xs:complexType>
-      
-      <xs:complexType name="AnnullamentoInoltroResponseType">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="return" type="tns:ResponseAnnullamentoInoltroMittenteType"/>
-        </xs:sequence>
-      </xs:complexType>
+   
 
       <xsd:complexType name="RequestMessaggioInoltroType">
-        <xs:sequence>
-          <xs:element name="messaggio" type="msgprot:MessaggioProtocolloType"/>
-        </xs:sequence>
+        <xs:complexContent>
+          <xs:extension base="msgprot:MessaggioProtocolloType"></xs:extension>
+        </xs:complexContent>
       </xsd:complexType>
 
       <xsd:complexType name="ResponseMessaggioInoltroType">
@@ -83,57 +59,70 @@
           </xsd:choice>
         </xsd:sequence>
       </xsd:complexType>
+      
+      
+      
+      <!-- DATA TYPE -->
+      
+      <xsd:simpleType name="AnomalieType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="001_ValidazioneFirma"/>
+          <xsd:enumeration value="002_AnomaliaImpronte"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      
+      
 
     </xs:schema>
   </wsdl:types>
 
   
-  <wsdl:message name="inoltro">
-    <wsdl:part element="tns:inoltro" name="parameters"> </wsdl:part>
+  <wsdl:message name="RequestMessageInoltro">
+    <wsdl:part element="tns:RequestMessageInoltro" name="parameters"> </wsdl:part>
   </wsdl:message>
   
-  <wsdl:message name="inoltroResponse">
-    <wsdl:part element="tns:inoltroResponse" name="parameters"> </wsdl:part>
+  <wsdl:message name="ResponseMessageInoltro">
+    <wsdl:part element="tns:ResponseMessageInoltro" name="parameters"> </wsdl:part>
   </wsdl:message>
  
-  <wsdl:message name="annullamentoInoltro">
-    <wsdl:part element="tns:annullamentoInoltro" name="parameters"> </wsdl:part>
+  <wsdl:message name="RequestAnnullamentoInoltroMittente">
+    <wsdl:part element="tns:RequestAnnullamentoInoltroMittente" name="parameters"> </wsdl:part>
   </wsdl:message>
  
-  <wsdl:message name="annullamentoInoltroResponse">
-    <wsdl:part element="tns:annullamentoInoltroResponse" name="parameters"> </wsdl:part>
+  <wsdl:message name="ResponseAnnullamentoInoltroMittente">
+    <wsdl:part element="tns:ResponseAnnullamentoInoltroMittente" name="parameters"> </wsdl:part>
   </wsdl:message>
   
   
 
   <wsdl:portType name="ProtocolloDestinatarioPortType">
-    <wsdl:operation name="inoltro">
-      <wsdl:input message="tns:inoltro" name="inoltro"> </wsdl:input>
-      <wsdl:output message="tns:inoltroResponse" name="inoltroResponse"> </wsdl:output>
+    <wsdl:operation name="MessaggioInoltro">
+      <wsdl:input message="tns:RequestMessageInoltro" name="RequestMessageInoltro"> </wsdl:input>
+      <wsdl:output message="tns:ResponseMessageInoltro" name="ResponseMessageInoltro"> </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="annullamentoInoltro">
-      <wsdl:input message="tns:annullamentoInoltro" name="annullamentoInoltro"> </wsdl:input>
-      <wsdl:output message="tns:annullamentoInoltroResponse" name="annullamentoInoltroResponse"> </wsdl:output>
+    <wsdl:operation name="AnnullamentoInoltroMittente">
+      <wsdl:input message="tns:RequestAnnullamentoInoltroMittente" name="RequestAnnullamentoInoltroMittente"> </wsdl:input>
+      <wsdl:output message="tns:ResponseAnnullamentoInoltroMittente" name="ResponseAnnullamentoInoltroMittente"> </wsdl:output>
     </wsdl:operation>
   </wsdl:portType>
 
   <wsdl:binding name="ProtocolloDestinatarioServiceBinding" type="tns:ProtocolloDestinatarioPortType">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="inoltro">
+    <wsdl:operation name="MessaggioInoltro">
       <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="inoltro">
+      <wsdl:input name="RequestMessageInoltro">
         <soap:body use="literal"/>
       </wsdl:input>
-      <wsdl:output name="inoltroResponse">
+      <wsdl:output name="ResponseMessageInoltro">
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="annullamentoInoltro">
+    <wsdl:operation name="AnnullamentoInoltroMittente">
       <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="annullamentoInoltro">
+      <wsdl:input name="RequestAnnullamentoInoltroMittente">
         <soap:body use="literal"/>
       </wsdl:input>
-      <wsdl:output name="annullamentoInoltroResponse">
+      <wsdl:output name="ResponseAnnullamentoInoltroMittente">
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>

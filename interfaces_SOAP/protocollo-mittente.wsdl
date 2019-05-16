@@ -21,7 +21,7 @@
       
       
       <xs:import namespace="http://www.agid.gov.it/protocollo/messaggi/" schemaLocation="../messaggio_protocollo.xsd"/>
-      <xs:import namespace="http://www.agid.gov.it/protocollo/" schemaLocation="../segnatura_protocollo_slim.xsd"/>
+      <xs:import namespace="http://www.agid.gov.it/protocollo/" schemaLocation="../segnatura_protocollo.xsd"/>
       
       <xs:element name="confermaInoltro" type="tns:ConfermaInoltroType"/>
       <xs:element name="confermaInoltroResponse" type="tns:ConfermaInoltroResponseType"/>
