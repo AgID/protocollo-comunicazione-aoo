@@ -23,36 +23,11 @@
       <xs:import namespace="http://www.agid.gov.it/protocollo/messaggi/" schemaLocation="../messaggio_protocollo.xsd"/>
       <xs:import namespace="http://www.agid.gov.it/protocollo/" schemaLocation="../segnatura_protocollo.xsd"/>
       
-      <xs:element name="confermaInoltro" type="tns:ConfermaInoltroType"/>
-      <xs:element name="confermaInoltroResponse" type="tns:ConfermaInoltroResponseType"/>
+      <xs:element name="RequestConfermaMessaggioInoltro" type="tns:RequestConfermaMessaggioInoltroType"/>
+      <xs:element name="ResponseConfermaMessaggioInoltro" type="tns:ResponseConfermaMessaggioInoltroType"/>
       
-      <xs:element name="annullamentoInoltro" type="tns:AnnullamentoInoltroType"/>
-      <xs:element name="annullamentoInoltroResponse" type="tns:AnullamentoInoltroResponseType"/>
-      
-      <xs:complexType name="ConfermaInoltroType">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="message" type="tns:RequestConfermaMessaggioInoltroType"/>
-        </xs:sequence>
-      </xs:complexType>
-     
-      <xs:complexType name="ConfermaInoltroResponseType">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="return" type="tns:ResponseConfermaMessaggioInoltroType"/>
-        </xs:sequence>
-      </xs:complexType>
-      
-      
-      <xs:complexType name="AnnullamentoInoltroType">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="message" type="tns:RequestAnnullamentoInoltroDestinatarioType"/>
-        </xs:sequence>
-      </xs:complexType>
-      
-      <xs:complexType name="AnullamentoInoltroResponseType">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="return" type="tns:ResponseAnnullamentoInoltroDestinatarioType"/>
-        </xs:sequence>
-      </xs:complexType>
+      <xs:element name="RequestAnnullamentoInoltroDestinatario" type="tns:RequestAnnullamentoInoltroDestinatarioType"/>
+      <xs:element name="ResponseAnnullamentoInoltroDestinatario" type="tns:ResponseAnnullamentoInoltroDestinatarioType"/>
       
       <xsd:complexType name="RequestConfermaMessaggioInoltroType">
         <xsd:sequence>
@@ -105,40 +80,40 @@
   </wsdl:types>
   
   
-  <wsdl:message name="confermaInoltro">
-    <wsdl:part element="tns:confermaInoltro" name="parameters">
+  <wsdl:message name="RequestConfermaMessaggioInoltro">
+    <wsdl:part element="tns:RequestConfermaMessaggioInoltro" name="parameters">
     </wsdl:part>
   </wsdl:message>
   
-  <wsdl:message name="confermaInoltroResponse">
-    <wsdl:part element="tns:confermaInoltroResponse" name="parameters">
+  <wsdl:message name="ResponseConfermaMessaggioInoltro">
+    <wsdl:part element="tns:ResponseConfermaMessaggioInoltro" name="parameters">
     </wsdl:part>
   </wsdl:message>
   
-  <wsdl:message name="annullamentoInoltro">
-    <wsdl:part element="tns:annullamentoInoltro" name="parameters">
+  <wsdl:message name="RequestAnnullamentoInoltroDestinatario">
+    <wsdl:part element="tns:RequestAnnullamentoInoltroDestinatario" name="parameters">
     </wsdl:part>
   </wsdl:message>
   
-  <wsdl:message name="annullamentoInoltroResponse">
-    <wsdl:part element="tns:annullamentoInoltroResponse" name="parameters">
+  <wsdl:message name="ResponseAnnullamentoInoltroDestinatario">
+    <wsdl:part element="tns:ResponseAnnullamentoInoltroDestinatario" name="parameters">
     </wsdl:part>
   </wsdl:message>
   
   
   <wsdl:portType name="ProtocolloMittentePortType">
     
-    <wsdl:operation name="confermaInoltro">
-      <wsdl:input message="tns:confermaInoltro" name="confermaInoltro">
+    <wsdl:operation name="ConfermaMessaggioInoltro">
+      <wsdl:input message="tns:RequestConfermaMessaggioInoltro" name="RequestConfermaMessaggioInoltro">
       </wsdl:input>
-      <wsdl:output message="tns:confermaInoltroResponse" name="confermaInoltroResponse">
+      <wsdl:output message="tns:ResponseConfermaMessaggioInoltro" name="ResponseConfermaMessaggioInoltro">
       </wsdl:output>
     </wsdl:operation>
     
-    <wsdl:operation name="annullamentoInoltro">
-      <wsdl:input message="tns:annullamentoInoltro" name="annullamentoInoltro">
+    <wsdl:operation name="AnnullamentoInoltroDestinatario">
+      <wsdl:input message="tns:RequestAnnullamentoInoltroDestinatario" name="RequestAnnullamentoInoltroDestinatario">
     </wsdl:input>
-      <wsdl:output message="tns:annullamentoInoltroResponse" name="annullamentoInoltroResponse">
+      <wsdl:output message="tns:ResponseAnnullamentoInoltroDestinatario" name="ResponseAnnullamentoInoltroDestinatario">
     </wsdl:output>
     </wsdl:operation>
    
@@ -148,22 +123,22 @@
   <wsdl:binding name="ProtocolloMittenteServiceBinding" type="tns:ProtocolloMittentePortType">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
     
-    <wsdl:operation name="confermaInoltro">
+    <wsdl:operation name="ConfermaMessaggioInoltro">
       <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="confermaInoltro">
+      <wsdl:input name="RequestConfermaMessaggioInoltro">
         <soap:body use="literal"/>
       </wsdl:input>
-      <wsdl:output name="confermaInoltroResponse">
+      <wsdl:output name="ResponseConfermaMessaggioInoltro">
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
     
-    <wsdl:operation name="annullamentoInoltro">
+    <wsdl:operation name="AnnullamentoInoltroDestinatario">
       <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="annullamentoInoltro">
+      <wsdl:input name="RequestAnnullamentoInoltroDestinatario">
         <soap:body use="literal"/>
       </wsdl:input>
-      <wsdl:output name="annullamentoInoltroResponse">
+      <wsdl:output name="ResponseAnnullamentoInoltroDestinatario">
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
