@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <wsdl:definitions 
-  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
   xmlns:tns="http://ws.protocollo.comunicazione.aoo.mittente/" 
   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
@@ -29,50 +29,57 @@
       <xs:element name="RequestAnnullamentoInoltroDestinatario" type="tns:RequestAnnullamentoInoltroDestinatarioType"/>
       <xs:element name="ResponseAnnullamentoInoltroDestinatario" type="tns:ResponseAnnullamentoInoltroDestinatarioType"/>
       
-      <xsd:complexType name="RequestConfermaMessaggioInoltroType">
-        <xsd:sequence>
-          <xsd:element name="Identificatore" type="prot:IdentificatoreType"/>
-          <xsd:choice minOccurs="0">
-            <xsd:element name="Irricevibilità" type="xsd:string"/>
-            <xsd:element name="Anomalia" type="tns:AnomalieType" />    
-          </xsd:choice>                                
-        </xsd:sequence>
-      </xsd:complexType>
+      <xs:complexType name="RequestConfermaMessaggioInoltroType">
+        <xs:sequence>
+          <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+          <xs:element minOccurs="0" name="Anomalia" type="tns:AnomalieType" />                               
+        </xs:sequence>
+      </xs:complexType>
       
-      <xsd:complexType name="ResponseConfermaMessaggioInoltroType">
-        <xsd:sequence>
-          <xsd:element name="Identificatore" type="prot:IdentificatoreType"/>
-        </xsd:sequence>
-      </xsd:complexType>  
+      <xs:complexType name="ResponseConfermaMessaggioInoltroType">
+        <xs:sequence>
+          <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+        </xs:sequence>
+      </xs:complexType>  
       
-      <xsd:complexType name="RequestAnnullamentoInoltroDestinatarioType">
-        <xsd:sequence>
-          <xsd:element name="Identificatore" type="prot:IdentificatoreType"/>
-          <xsd:element name="RiferimentoProvvedimento" type="xsd:string"/>
-          <xsd:element name="Note" type="xsd:string"/>
-        </xsd:sequence>
-      </xsd:complexType>
+      <xs:complexType name="RequestAnnullamentoInoltroDestinatarioType">
+        <xs:sequence>
+          <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+          <xs:element name="RiferimentoProvvedimento" type="xs:string"/>
+          <xs:element name="Note" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
       
-      <xsd:complexType name="ResponseAnnullamentoInoltroDestinatarioType">
-        <xsd:sequence>
-          <xsd:element name="Identificatore" type="prot:IdentificatoreType"/>
-          <xsd:choice minOccurs="0">
-            <xsd:element name="MotivoIrricevibilita" type="xsd:string"/>
-            <xsd:element name="NonPresente" type="xsd:boolean" fixed="true"/>    
-          </xsd:choice>          
-        </xsd:sequence>
-      </xsd:complexType>
+      <xs:complexType name="ResponseAnnullamentoInoltroDestinatarioType">
+        <xs:sequence>
+          <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+          <xs:choice minOccurs="0">
+            <xs:element name="MotivoIrricevibilita" type="xs:string"/>
+            <xs:element name="NonPresente" type="xs:boolean" fixed="true"/>    
+          </xs:choice>          
+        </xs:sequence>
+      </xs:complexType>
       
 
       <!-- DATA TYPE -->
       
-      <xsd:simpleType name="AnomalieType">
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="001_ValidazioneFirma"/>
-          <xsd:enumeration value="002_AnomaliaImpronte"/>
-          <xsd:enumeration value="003_DocumentoAllegatiNonLeggibili"/>
-        </xsd:restriction>
-      </xsd:simpleType>
+       <xs:complexType name="AnomalieType">
+        <xs:simpleContent>
+          <xs:extension base="tns:AnomalieEnum">
+            <xs:attribute name="info" type="xs:string"/>
+          </xs:extension>
+        </xs:simpleContent>
+      </xs:complexType>
+      
+      <xs:simpleType name="AnomalieEnum">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="000_Irricevibile"/>
+          <xs:enumeration value="003_DocumentoAllegatiNonLeggibili"/>
+          <xs:enumeration value="004_DocumentoAllegatiErroreValidazioneFirma"/>
+          <xs:enumeration value="005_DocumentoAllegatiErroreVaidazioneMarcaTemporale"/>
+          <xs:enumeration value="006_DocumentoAllegatiErroreValidazioneSigillo"/>
+        </xs:restriction>
+      </xs:simpleType>
       
 
     </xs:schema>

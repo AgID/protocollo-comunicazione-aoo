@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <wsdl:definitions 
-  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
   xmlns:tns="http://ws.protocollo.comunicazione.aoo.destinatario/" 
   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
@@ -30,49 +30,55 @@
       
    
 
-      <xsd:complexType name="RequestMessaggioInoltroType">
+      <xs:complexType name="RequestMessaggioInoltroType">
         <xs:complexContent>
           <xs:extension base="msgprot:MessaggioProtocolloType"></xs:extension>
         </xs:complexContent>
-      </xsd:complexType>
+      </xs:complexType>
 
-      <xsd:complexType name="ResponseMessaggioInoltroType">
-        <xsd:sequence>
-          <xsd:element name="Identificatore" type="prot:IdentificatoreType"/>
-        </xsd:sequence>
-      </xsd:complexType>
+      <xs:complexType name="ResponseMessaggioInoltroType">
+        <xs:sequence>
+          <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+          <xs:element minOccurs="0" name="Anomalia" type="tns:AnomalieType" />       
+        </xs:sequence>
+      </xs:complexType>
 
-      <xsd:complexType name="RequestAnnullamentoInoltroMittenteType">
-        <xsd:sequence>
-          <xsd:element name="Identificatore" type="prot:IdentificatoreType"/>
-          <xsd:element name="RiferimentoProvvedimento" type="xsd:string"/>
-          <xsd:element name="Note" type="xsd:string" minOccurs="0"/>
-        </xsd:sequence>
-      </xsd:complexType>
+      <xs:complexType name="RequestAnnullamentoInoltroMittenteType">
+        <xs:sequence>
+          <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+          <xs:element name="RiferimentoProvvedimento" type="xs:string"/>
+          <xs:element name="Note" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:complexType>
 
-      <xsd:complexType name="ResponseAnnullamentoInoltroMittenteType">
-        <xsd:sequence>
-          <xsd:element name="Identificatore" type="prot:IdentificatoreType"/>
-          <xsd:choice minOccurs="0">
-            <xsd:element name="MotivoIrricevibilita" type="xsd:string"/>
-            <xsd:element name="NonPresente" type="xsd:boolean" fixed="true"/>
-          </xsd:choice>
-        </xsd:sequence>
-      </xsd:complexType>
-      
+      <xs:complexType name="ResponseAnnullamentoInoltroMittenteType">
+        <xs:sequence>
+          <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+          <xs:choice minOccurs="0">
+            <xs:element name="MotivoIrricevibilita" type="xs:string"/>
+            <xs:element name="NonPresente" type="xs:boolean" fixed="true"/>
+          </xs:choice>
+        </xs:sequence>
+      </xs:complexType>
       
       
       <!-- DATA TYPE -->
       
-      <xsd:simpleType name="AnomalieType">
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="001_ValidazioneFirma"/>
-          <xsd:enumeration value="002_AnomaliaImpronte"/>
-        </xsd:restriction>
-      </xsd:simpleType>
+      <xs:complexType name="AnomalieType">
+        <xs:simpleContent>
+          <xs:extension base="tns:AnomalieEnum">
+            <xs:attribute name="info" type="xs:string" />
+          </xs:extension>
+        </xs:simpleContent>
+      </xs:complexType>
       
+      <xs:simpleType name="AnomalieEnum">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="001_ValidazioneFirma"/>
+          <xs:enumeration value="002_AnomaliaImpronte"/>
+        </xs:restriction>
+      </xs:simpleType>
       
-
     </xs:schema>
   </wsdl:types>
 
