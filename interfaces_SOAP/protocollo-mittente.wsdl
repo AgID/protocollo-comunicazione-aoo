@@ -31,14 +31,17 @@
       
       <xs:complexType name="RequestConfermaMessaggioInoltroType">
         <xs:sequence>
-          <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
-          <xs:element minOccurs="0" name="Anomalia" type="tns:AnomalieType" />                               
+          <xs:element name="IdentificatoreMittente" type="prot:IdentificatoreType"/>
+          <xs:choice>
+            <xs:element name="IdentificatoreDestinatario" type="prot:IdentificatoreType"/>
+            <xs:element name="Anomalia" type="tns:AnomalieType" />         
+          </xs:choice>                    
         </xs:sequence>
       </xs:complexType>
       
       <xs:complexType name="ResponseConfermaMessaggioInoltroType">
         <xs:sequence>
-          <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+          <xs:element name="IdentificatoreMittente" type="prot:IdentificatoreType"/>
         </xs:sequence>
       </xs:complexType>  
       

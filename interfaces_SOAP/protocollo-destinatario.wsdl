@@ -38,14 +38,14 @@
 
       <xs:complexType name="ResponseMessaggioInoltroType">
         <xs:sequence>
-          <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+          <xs:element name="IdentificatoreMittente" type="prot:IdentificatoreType"/>
           <xs:element minOccurs="0" name="Anomalia" type="tns:AnomalieType" />       
         </xs:sequence>
       </xs:complexType>
 
       <xs:complexType name="RequestAnnullamentoInoltroMittenteType">
         <xs:sequence>
-          <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+          <xs:element name="IdentificatoreMittente" type="prot:IdentificatoreType"/>
           <xs:element name="RiferimentoProvvedimento" type="xs:string"/>
           <xs:element name="Note" type="xs:string" minOccurs="0"/>
         </xs:sequence>
