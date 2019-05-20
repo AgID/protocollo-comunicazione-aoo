@@ -21,13 +21,18 @@
 				La segnatura di protocollo contine i metadati relativi ad un messaggio di protocollo.
 				
 				Un messaggio di protocollo è determinato da:
-				- documento primario
-				- eventuali allegati
-				- la segnatura di protocollo qui definita
-				
+					- documento primario
+					- eventuali allegati
+					- la segnatura di protocollo qui definita
+					
 				La segnatura di protocollo è associata in forma permanente al documento primario e agli allegati che con esso formano il messaggio di protocollo
 				includendo nella segnatatura di protocollo le impronte (digest) del documento primario e degli allegati e assicurando l’autenticità e integrità
-				della segnatura di protocollo firmando la stessa implementando il profilo XAdES baseline B level signatures definito in ETSI EN 319 132-1 v1.1.1				
+				della segnatura di protocollo firmando la stessa implementando il profilo XAdES baseline B level signatures definito in ETSI EN 319 132-1 v1.1.1.
+
+				La segnatura di protocollo è caratterizzata da:
+				- Intestazione
+				- Descrizione
+				- Signature
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
@@ -42,7 +47,13 @@
 	<xs:complexType name="IntestazioneType">
 		<xs:annotation>
 			<xs:documentation>
-				L'intestazione contiene gli elementi essenziali di identificazione e caratterizzazione amministrativa del messaggio di protocollato. 
+				L'intestazione contiene i metadati essenziali per l'identificazione e caratterizzazione amministrativa del messaggio di protocollato.
+				
+				L'intestazione è caratterizzata da:
+				- Identificatore
+				- Oggetto
+				- Classifica
+				- Fascicolo
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
@@ -51,6 +62,56 @@
 			<xs:element name="Classifica" type="prot:ClassificaType" />			
 			<xs:element name="Fascicolo" type="prot:FascicoloType" minOccurs="0" />
 		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="IdentificatoreType">
+		<xs:annotation>
+			<xs:documentation>
+				Contiene i metadati identificativi della segnatura di protocollo.
+				
+				L'indentificativo è caratterizzato da:
+					- CodiceAmministrazione
+					- CodiceAOO
+					- CodiceRegistro 
+					- NumeroRegistrazione
+					- DataRegistrazione
+					- OraRegistrazione
+			</xs:documentation>
+		</xs:annotation>		
+		<xs:sequence>
+			<xs:element name="CodiceAmministrazione" type="prot:CodiceAmministrazioneType"/>
+			<xs:element name="CodiceAOO" type="prot:CodiceAOOType"/>
+			<xs:element name="CodiceRegistro" type="prot:CodiceRegistroType"/>
+			<xs:element name="NumeroRegistrazione" type="prot:NumeroRegistrazioneType"/>			
+			<xs:element name="DataRegistrazione" type="xs:date"/>
+			<xs:element name="OraRegistrazione" type="xs:time" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CodiceAmministrazioneType">
+		<xs:annotation>
+			<xs:documentation>
+				Contiene il codice IPA dell'amministrazione indica all'amministrazione e, in maniera opzionale, la descrizione della stessa.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="descrizione" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	
+	<xs:complexType name="CodiceAOOType">
+		<xs:annotation>
+			<xs:documentation>
+				Contiene il codice IPA dell'AOO indicato dall'amministrazione e, in maniera opzionale, la descrizione della stessa.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="prot:String16Type">
+				<xs:attribute name="descrizione" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
 	</xs:complexType>
 	
 	<xs:complexType name="FascicoloType">
@@ -65,23 +126,22 @@
 		</xs:sequence>
 	</xs:complexType>
 	
-	<xs:complexType name="IdentificatoreType">
-		<xs:annotation>
-			<xs:documentation>
-				Contiene le informazioni identificative riferite alla segnatura di protocollo.
-			</xs:documentation>
-		</xs:annotation>		
+	<xs:complexType name="ClassificaType">		
 		<xs:sequence>
-			<xs:element name="CodiceAmministrazione" type="prot:CodiceAmministrazioneType"/>
-			<xs:element name="CodiceAOO" type="prot:CodiceAOOType"/>
-			<xs:element name="CodiceRegistro" type="prot:CodiceRegistroType"/>
-			<xs:element name="NumeroRegistrazione" type="prot:NumeroRegistrazioneType"/>			
-			<xs:element name="DataRegistrazione" type="xs:date"/>
-			<xs:element name="OraRegistrazione" type="xs:time" minOccurs="0"/>
+			<xs:element name="Denominazione" type="xs:string"/>
+			<xs:choice>
+				<xs:element name="Codice" type="xs:string"/>
+				<xs:element name="Livello" type="prot:LivelloType" maxOccurs="unbounded"/>	
+			</xs:choice>			
 		</xs:sequence>
 	</xs:complexType>
 	
 	<xs:complexType name="DescrizioneType">
+		<xs:annotation>
+			<xs:documentation>
+				
+			</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>	
 			<xs:element name="Mittente" type="prot:SoggettoType" minOccurs="0"/>
 			<xs:element name="Destinatario" type="prot:SoggettoType" minOccurs="0" maxOccurs="unbounded"/>
@@ -174,16 +234,6 @@
 		</xs:simpleContent>
 	</xs:complexType>
 	
-	<xs:complexType name="ClassificaType">		
-		<xs:sequence>
-			<xs:element name="Denominazione" type="xs:string"/>
-			<xs:choice>
-				<xs:element name="Codice" type="xs:string"/>
-				<xs:element name="Livello" type="prot:LivelloType" maxOccurs="unbounded"/>	
-			</xs:choice>			
-		</xs:sequence>
-	</xs:complexType>
-	
 	<xs:complexType name="LivelloTypeEx">		
 		<xs:simpleContent>
 			<xs:extension base="xs:string">
@@ -235,33 +285,16 @@
 		</xs:restriction>
 	</xs:simpleType>
 	
+	<xs:simpleType name="String16Type">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Za-z0-9_\.\-]{1,16}"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="IdentificativoType">		
 		<xs:restriction base="xs:string">
 			<xs:pattern value="[A-Za-z0-9_\.\-]{1,16}"/>
 		</xs:restriction>  
 	</xs:simpleType>
-	
-	<xs:complexType name="CodiceAmministrazioneType">
-		<xs:simpleContent>
-			<xs:extension base="xs:string">
-				<xs:attribute name="descrizione" type="xs:string" use="required"/>
-			</xs:extension>
-		</xs:simpleContent>
-	</xs:complexType>
-	
-	<xs:complexType name="CodiceAOOType">
-		<xs:simpleContent>
-			<xs:extension base="xs:string">
-				<xs:attribute name="descrizione">
-					<xs:simpleType>
-						<xs:restriction base="xs:string">
-							<xs:pattern value="[A-Za-z0-9_\.\-]{1,16}"/>
-						</xs:restriction>
-					</xs:simpleType>
-				</xs:attribute>
-			</xs:extension>
-		</xs:simpleContent>
-	</xs:complexType>
 	
 	<xs:simpleType name="CodiceRegistroType">		
 		<xs:restriction base="xs:string">
