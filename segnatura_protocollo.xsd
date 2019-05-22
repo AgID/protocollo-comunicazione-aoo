@@ -18,7 +18,7 @@
 	<xs:complexType name="SegnaturaInformaticaType">
 		<xs:annotation>
 			<xs:documentation>
-				La segnatura di protocollo contine i metadati relativi ad un messaggio di protocollo.
+				La segnatura di protocollo contine i dati relativi ad un messaggio di protocollo.
 				
 				Un messaggio di protocollo è determinato da:
 					- documento primario
@@ -30,9 +30,9 @@
 				della segnatura di protocollo firmando la stessa implementando il profilo XAdES baseline B level signatures definito in ETSI EN 319 132-1 v1.1.1.
 
 				La segnatura di protocollo è caratterizzata da:
-				- Intestazione, i metadati necessari per idividuare univocamente il messaggio di protocollo
-				- Descrizione, i metadati aggiuntivi del messaggio di protocollo
-				- Signature, i dati e medati della firma dell'XML (profilo XAdES baseline B level signatures definito in ETSI EN 319 132-1 v1.1.1) 
+				- Intestazione, i dati necessari per idividuare univocamente il messaggio di protocollo
+				- Descrizione, i dati aggiuntivi del messaggio di protocollo
+				- Signature, i dati e metadati della firma dell'XML (profilo XAdES baseline B level signatures definito in ETSI EN 319 132-1 v1.1.1) 
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
@@ -47,10 +47,10 @@
 	<xs:complexType name="IntestazioneType">
 		<xs:annotation>
 			<xs:documentation>
-				L'intestazione contiene i metadati essenziali per l'identificazione e caratterizzazione amministrativa del messaggio di protocollato.
+				L'intestazione contiene i dati essenziali per l'identificazione e caratterizzazione amministrativa del messaggio di protocollato.
 				
 				L'intestazione è caratterizzata da:
-				- Identificatore, i metadati per identificare univocamente il messaggio di protocollo conformemente in attuazione all'art. 55 del DPR 445/2000 
+				- Identificatore, i dati per identificare univocamente il messaggio di protocollo conformemente in attuazione all'art. 55 del DPR 445/2000 
 				- Oggetto, sintesi dei contenuti di carattere giuridico, amministrativo e narrativo di un documento 
 				- Classifica, la categoria del Titolario di classificazione associato al messaggio di protocollo 
 				- Fascicolo, opzionalmente, il fascicolo entro cui è presente il messaggio di protocollo
@@ -67,7 +67,7 @@
 	<xs:complexType name="IdentificatoreType">
 		<xs:annotation>
 			<xs:documentation>
-				Contiene i metadati identificativi della segnatura di protocollo.
+				Contiene i dati identificativi della segnatura di protocollo.
 				
 				L'indentificativo è caratterizzato da:
 					- CodiceAmministrazione, il codice IPA dell'amministrazione
@@ -141,10 +141,33 @@
 		</xs:sequence>
 	</xs:complexType>
 	
+	<xs:complexType name="LivelloType">
+		<xs:annotation>
+			<xs:documentation>
+				Il livello riporta i dati relativi alla categoria, classe ed eventuale sottoclasse
+				
+				Il livello è composto dal codice della categoria, classe ed eventuale sottoclasse e la relativa descrizione
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Livello">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="descrizione" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SubLivello" type="prot:LivelloType" minOccurs="0"/>
+		</xs:sequence>			
+	</xs:complexType>
+	
+	
 	<xs:complexType name="DescrizioneType">
 		<xs:annotation>
 			<xs:documentation>
-				La descrizione contiene i metadati descrittivi del messaggio di protocollato.
+				La descrizione contiene i dati descrittivi del messaggio di protocollato.
 				
 				La descrizione è caratterizzata da:
 				- Mittente, riferimento del mittente (organizzazione o persona)
@@ -164,7 +187,7 @@
 	<xs:complexType name="DocumentoType">
 		<xs:annotation>
 			<xs:documentation>
-				Il documento contiene i metadati per referenziare un documento (documento primario o allegato) del messaggio di protocollo
+				Il documento contiene i dati per referenziare un documento (documento primario o allegato) del messaggio di protocollo
 				
 				Il documento è caratterizzato da:
 				- Descrizione, la descrizione del contenuto dello specifico documento
@@ -190,16 +213,16 @@
 	<xs:complexType name="SoggettoType">
 		<xs:annotation>
 			<xs:documentation>
-				Il soggetto contiene i metadati per referenziare un corrispondente
+				Il soggetto contiene i dati per referenziare un corrispondente
 				
 				Sulla base delle necessità è possibile indicare:
 					- una organizzazione
 						es. <Organizzazione>
-								<Descrizione codiceIPA="codiceIPA">Organizzazione</Descrizione>       
+								<Riferimento codiceIPA="codiceIPA">Organizzazione</Riferimento>       
 							</Organizzazione>							
 					- una specifica unità organizzativa di una organizzazione
 						es. <Organizzazione>
-								<Descrizione codiceIPA="codiceIPAOrganizzazione">Organizzazione</Descrizione> 
+								<Riferimento codiceIPA="codiceIPAOrganizzazione">Organizzazione</Riferimento> 
 								<UnitaOrganizzativa>
 									<Descrizione codiceIPA="codiceIPAUnitaOrganizzativa">UnitaOrganizzativa</Descrizione>
 								</UnitaOrganizzativa>       
@@ -208,36 +231,58 @@
 						es. <Persona>...</Persona>
 					- una persona fisica relativa ad una organizzazione
 						es. <Organizzazione>
-								<Descrizione codiceIPA="codiceIPA">Organizzazione</Descrizione> 
+								<Riferimento codiceIPA="codiceIPA">Organizzazione</Riferimento> 
 								<Persona>...</Persona>      
 							</Organizzazione>
 					- una persona fisica relativa ad una specifica unità organizzativa di una organizzazione
 						es. <Organizzazione>
-								<Descrizione codiceIPA="codiceIPAOrganizzazione">Organizzazione</Descrizione> 
+								<Riferimento codiceIPA="codiceIPAOrganizzazione">Organizzazione</Riferimento> 
 								<UnitaOrganizzativa>
 									<Descrizione codiceIPA="codiceIPAUnitaOrganizzativa">UnitaOrganizzativa</Descrizione>
 									<Persona>...</Persona>
 								</UnitaOrganizzativa>       
 							</Organizzazione>					
+				
+				Il soggetto è caratterizzato da:
+				- il alternativa:
+					- Organizzazione, un'organizzazione 
 			</xs:documentation>
 		</xs:annotation>
 		<xs:choice>
-			<xs:element name="Organizzazione">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="Descrizione" type="prot:DescrizioneOrganizzazioneType"/>                            
-						<xs:choice minOccurs="0">
-							<xs:element name="UnitaOrganizzativa" type="prot:UnitaOrganizzativaType"/>
-							<xs:element name="Persona" type="xs:string"/>
-						</xs:choice>                	
-					</xs:sequence>                    
-				</xs:complexType>    
-			</xs:element>            			
+			<xs:element name="Organizzazione" type="prot:OrganizzativaType"/>
 			<xs:element name="Persona" type="xs:string"/>							
 		</xs:choice>				
 	</xs:complexType>
 	
-	<xs:complexType name="DescrizioneOrganizzazioneType">
+	<xs:complexType name="OrganizzativaType">
+		<xs:annotation>
+			<xs:documentation>
+				L'organizzativa contiene i dati di un'unità organizzativa o unità organizzativa
+				
+				L'unità organizzativa è caratterizzata da:
+				- Nome, il nome dell'unità organizzativa
+				- in alternativa:
+					- UnitaOrganizzativa, una sottounità organizzativa di livello inferiore
+					- Persona, il riferimento ad una persona fidica
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Riferimento" type="prot:NomeOrganizzazioneType"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="UnitaOrganizzativa" type="prot:OrganizzativaType"/>
+				<xs:element name="Persona" type="xs:string"/>
+			</xs:choice>            
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="NomeOrganizzazioneType">
+		<xs:annotation>
+			<xs:documentation>
+				Il nome organizzazione contiene i riferimenti ad un'organizzazione o unità organizzativa
+				
+				Il nome organizzazione è caratterizzata dal nome dell'organizzazione o dell'unità organizzativa e, quando esiste, il codice IPA della stessa
+			</xs:documentation>
+		</xs:annotation>
 		<xs:simpleContent>
 			<xs:extension base="xs:string">
 				<xs:attribute name="codiceIPA" type="xs:string"/>
@@ -245,118 +290,172 @@
 		</xs:simpleContent> 
 	</xs:complexType>
 	
-	<xs:complexType name="UnitaOrganizzativaType">
-		<xs:sequence>
-			<xs:element name="Descrizione" type="prot:DescrizioneOrganizzazioneType"/>
-			<xs:choice minOccurs="0">
-				<xs:element name="UnitaOrganizzativa" type="prot:UnitaOrganizzativaType"/>
-				<xs:element name="Persona" type="xs:string"/>
-			</xs:choice>            
-		</xs:sequence>
-	</xs:complexType>
-	
-	<xs:complexType name="IndirizzoPostaleType">		
+	<xs:complexType name="IndirizzoPostaleType">
+		<xs:annotation>
+			<xs:documentation>
+				L'indirizzo contiene i dati relativi ad un'indirizzo.
+				
+				L'indirizzo è caratterizzato da:
+				- Toponimo, il riferimento al nome proprio del luogo 
+				- Civico, il riferimento assegnato allo specifico immobile 
+				- CAP, il codice di avviamento postale 
+				- Comune, il riferimento al Comune
+				- Provincia, la provincia 
+				- Nazione, la denominazione della nazione e il codice ISO 3166-1 alpha-3
+			</xs:documentation>
+		</xs:annotation>		
 		<xs:sequence>
 			<xs:element name="Toponimo" type="prot:ToponimoType"/>
 			<xs:element name="Civico" type="xs:string"/>            
 			<xs:element name="CAP" type="prot:CAPType"/>
-			<xs:element name="Comune" type="prot:ComuneType"/>
-			<xs:element name="Provincia" type="xs:string"/>
-			<xs:element name="Nazione" type="xs:string" minOccurs="0"/>
+			<xs:element name="Comune" type="prot:ComuneType"/>			
+			<xs:element name="Nazione" default="Italia">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="codice3166" default="ITA"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	
 	<xs:complexType name="ToponimoType">
-		<xs:sequence>
-			<!-- denominazione urbanistica generica o qualitficatore del toponimo (e.g., via, viale, piazza, ecc.) -->
-			<xs:element name="dug" type="xs:string"/>
-			<!-- denominazione urbanistica ufficiale o nome della strada -->
+		<xs:annotation>
+			<xs:documentation>
+				Il toponimo contiene il riferimento al nome proprio del luogo
+				
+				Il toponimo è carattirizzato da:
+				- dug, denominazione urbanistica generica o qualitficatore del toponimo (e.g., via, viale, piazza, ecc.)
+				- duf, denominazione urbanistica ufficiale o nome della strada
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>			
+			<xs:element name="dug" type="xs:string"/>			
 			<xs:element name="duf" type="xs:string"/>
 		</xs:sequence>		
 	</xs:complexType>
 	
-	<xs:simpleType name="CAPType">		
+	<xs:simpleType name="CAPType">
+		<xs:annotation>
+			<xs:documentation>
+				Il CAP contiene il codice di avviamento postale
+			</xs:documentation>
+		</xs:annotation>		
 		<xs:restriction base="xs:string">
 			<xs:pattern value="[0-9]{6}"/>
 		</xs:restriction>
 	</xs:simpleType>
 	
-	<xs:complexType name="ComuneType">		
+	<xs:complexType name="ComuneType">
+		<xs:annotation>
+			<xs:documentation>
+				Il Comune contiene il riferimento al Comune
+				
+				Il Comune è caratterizzato dalla denominazione del Comune e il relativo codice ISTAT a 6 cifre
+			</xs:documentation>
+		</xs:annotation>		
 		<xs:simpleContent>
 			<xs:extension base="xs:string">
-				<xs:attribute name="CodiceISTAT" type="prot:CodiceISTATType"/>
+				<xs:attribute name="CodiceISTAT" type="prot:CodiceISTATComune6Type" use="required"/>
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
 	
-	<xs:simpleType name="CodiceISTATType">		
+	<xs:simpleType name="CodiceISTATComune6Type">
+		<xs:annotation>
+			<xs:documentation>
+				Il codice ISTAT del Comune a 6 cifre
+			</xs:documentation>
+		</xs:annotation>		
 		<xs:restriction base="xs:string">
 			<xs:pattern value="[0-9]{6}"/>
 		</xs:restriction>
 	</xs:simpleType>
 	
-	<xs:complexType name="TelefonoType">		
-		<xs:simpleContent>
-			<xs:extension base="xs:string">
-				<xs:attribute name="note" type="xs:string"/>
-			</xs:extension>
-		</xs:simpleContent>
-	</xs:complexType>
-	
-	<xs:complexType name="ImprontaType">		
+	<xs:complexType name="ImprontaType">
+		<xs:annotation>
+			<xs:documentation>
+				L'impronta contiene il digest di un documento elettronico
+				
+				L'impronta è caratterizzata dalla codifica base64 del digest calcolato applicando l'algoritmo specifico
+			</xs:documentation>
+		</xs:annotation>		
 		<xs:simpleContent>
 			<xs:extension base="xs:base64Binary">
 				<xs:attribute name="algoritmo" type="xs:string" default="SHA-256"/>				
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
-	
-	<xs:complexType name="LivelloTypeEx">		
-		<xs:simpleContent>
-			<xs:extension base="xs:string">
-				<xs:attribute name="nome" type="xs:string"/>
-				<xs:attribute name="ordine" type="xs:integer"/>
-			</xs:extension>            
-		</xs:simpleContent>
-	</xs:complexType>
-	
-	<xs:complexType name="LivelloType">
-		<xs:sequence>
-			<xs:element name="Livello">
-				<xs:complexType>
-					<xs:simpleContent>
-						<xs:extension base="xs:string">
-							<xs:attribute name="descrizione" type="xs:string"/>
-						</xs:extension>
-					</xs:simpleContent>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="SubLivello" type="prot:LivelloType" minOccurs="0"/>
-		</xs:sequence>			
-	</xs:complexType>
-	
-	<xs:complexType name="PersonaType">		
+			
+	<xs:complexType name="PersonaType">
+		<xs:annotation>
+			<xs:documentation>
+				La persona contiene i dati relativi ad una persona fisica
+				
+				La persona è caratterizzata da:
+				- Nome, il nome
+				- Cognome, il cognome
+				- Titolo, il titolo (es. Sig., Dott., ...)
+				- CodiceFiscale, il codice fiscale 
+				- Contatti, i contatti della persona
+			</xs:documentation>
+		</xs:annotation>		
 		<xs:sequence>
 			<xs:element name="Nome" type="xs:string"/>					
 			<xs:element name="Cognome" type="xs:string"/>					
 			<xs:element name="Titolo" type="xs:string" minOccurs="0"/>
-			<xs:element name="CodiceFiscale" type="prot:CodiceFiscaleType" minOccurs="0"/>
-			<xs:element name="Identificativo" type="xs:string" minOccurs="0"/>
-			<xs:element name="Ruolo" type="xs:string" minOccurs="0"/>	
+			<xs:element name="CodiceFiscale" type="prot:CodiceFiscaleType" minOccurs="0"/>				
 			<xs:element name="Contatti" type="prot:ContattiType">								
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	
 	<xs:complexType name="ContattiType">
+		<xs:annotation>
+			<xs:documentation>
+				L'insieme di contatti, e nel dettaglio:
+				- IndirizzoPostale, un'indirizzo relativo
+				- IndirizzoTelematico, un'indirizzo elettronico
+				- Telefono, un conctatto telefonico
+			</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="IndirizzoPostale" type="prot:IndirizzoPostaleType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="IndirizzoTelematico" type="prot:IndirizzoTelematicoType" maxOccurs="unbounded"/>
-			<xs:element name="Telefono" type="prot:TelefonoType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Telefono" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	
-	<xs:simpleType name="CodiceFiscaleType">		
+	<xs:complexType name="IndirizzoTelematicoType">
+		<xs:annotation>
+			<xs:documentation>
+				Un'indirizzo telematico utilizzato per la trasmissione telematica
+				
+				I tipi di indirizzi telematici sono:
+				- smtp, nel caso della posta elettronica
+				- url, nel caso di interfacce di servizio (API REST o SOAP)
+				- other, in casi differenti dai precedenti				
+			</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="tipo" default="smtp">
+					<xs:simpleType>
+						<xs:restriction base="xs:NMTOKEN">							
+							<xs:enumeration value="smtp"/>
+							<xs:enumeration value="url"/>
+							<xs:enumeration value="other"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="note" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	
+	<xs:simpleType name="CodiceFiscaleType">
 		<xs:restriction base="xs:string">
 			<xs:pattern value="[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]"/>
 		</xs:restriction>
@@ -379,22 +478,5 @@
 			<xs:pattern value="[0-9]{7,}"/>
 		</xs:restriction>  
 	</xs:simpleType>
-	
-	<xs:complexType name="IndirizzoTelematicoType">
-		<xs:simpleContent>
-			<xs:extension base="xs:string">
-				<xs:attribute name="tipo" default="smtp">
-					<xs:simpleType>
-						<xs:restriction base="xs:NMTOKEN">
-							<xs:enumeration value="url"/>
-							<xs:enumeration value="smtp"/>
-							<xs:enumeration value="other"/>
-						</xs:restriction>
-					</xs:simpleType>
-				</xs:attribute>
-				<xs:attribute name="note" type="xs:string"/>
-			</xs:extension>
-		</xs:simpleContent>
-	</xs:complexType>
 	
 </xs:schema>
