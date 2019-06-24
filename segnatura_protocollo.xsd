@@ -250,7 +250,7 @@
 		</xs:annotation>
 		<xs:choice>
 			<xs:element name="Organizzazione" type="prot:OrganizzativaType"/>
-			<xs:element name="Persona" type="xs:string"/>							
+			<xs:element name="Persona" type="prot:PersonaType"/>							
 		</xs:choice>				
 	</xs:complexType>
 	
@@ -270,7 +270,7 @@
 			<xs:element name="Riferimento" type="prot:NomeOrganizzazioneType"/>
 			<xs:choice minOccurs="0">
 				<xs:element name="UnitaOrganizzativa" type="prot:OrganizzativaType"/>
-				<xs:element name="Persona" type="xs:string"/>
+				<xs:element name="Persona" type="prot:PersonaType"/>
 			</xs:choice>            
 		</xs:sequence>
 	</xs:complexType>

@@ -8,7 +8,6 @@
   name="ProtocolloDestinatarioService" 
   targetNamespace="http://ws.protocollo.comunicazione.aoo.mittente/">
   
-  
   <wsdl:types>
     
     <xs:schema 
@@ -61,9 +60,6 @@
           <xs:element minOccurs="0" name="Anomalia" type="tns:AnomalieAnnullamentoType" />    
         </xs:sequence>
       </xs:complexType>
-      
-
-      <!-- DATA TYPE -->
       
        <xs:complexType name="AnomalieConfermaType">
         <xs:simpleContent>
