@@ -73,7 +73,6 @@
         <xs:restriction base="xs:string">          
           <xs:enumeration value="001_ValidazioneFirma"/>
           <xs:enumeration value="002_AnomaliaImpronte"/> 
-          <xs:enumeration value="008_ValidazioneSchema"/>
         </xs:restriction>
       </xs:simpleType>
       
