@@ -178,7 +178,7 @@
 		</xs:annotation>
 		<xs:sequence>	
 			<xs:element name="Mittente" type="prot:SoggettoType" minOccurs="0"/>
-			<xs:element name="Destinatario" type="prot:SoggettoType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Destinatario" type="prot:SoggettoType" minOccurs="1" maxOccurs="unbounded"/>
 			<xs:element name="DocumentoPrimario" type="prot:DocumentoType"/>			
 			<xs:element name="Allegato" type="prot:DocumentoType" minOccurs="0" maxOccurs="unbounded"/>						
 		</xs:sequence>
