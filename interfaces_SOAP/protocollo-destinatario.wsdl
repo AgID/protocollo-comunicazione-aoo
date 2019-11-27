@@ -71,9 +71,9 @@
       
       <xs:simpleType name="AnomalieInoltroEnum">
         <xs:restriction base="xs:string">
-          <xs:enumeration value="001_ValidazioneSchema"/>
-          <xs:enumeration value="002_ValidazioneFirma"/>
-          <xs:enumeration value="003_AnomaliaImpronte"/>                    
+          <xs:enumeration value="000_ValidazioneSchema"/>
+          <xs:enumeration value="001_ValidazioneFirma"/>
+          <xs:enumeration value="002_AnomaliaImpronte"/>                    
         </xs:restriction>
       </xs:simpleType>
       
