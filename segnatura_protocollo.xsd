@@ -113,7 +113,7 @@
 		</xs:sequence>
 	</xs:complexType>
 	
-	<xs:complexType name="ClassificaType">
+		<xs:complexType name="ClassificaType">
 		<xs:annotation>
 			<xs:documentation>
 				La classificazione riporta il valore attribuito al messaggio di protocollo.
@@ -184,7 +184,7 @@
 		</xs:sequence>
 	</xs:complexType>
 	
-	<xs:complexType name="DocumentoType">
+		<xs:complexType name="DocumentoType">
 		<xs:annotation>
 			<xs:documentation>
 				Il documento contiene i dati per referenziare un documento (documento primario o allegato) del messaggio di protocollo
@@ -211,7 +211,7 @@
 	</xs:complexType>
 	
 	<xs:complexType name="SoggettoType">
-		<xs:annotation>
+		<xs:annotation>			
 			<xs:documentation>
 				Il soggetto contiene i dati per referenziare un corrispondente
 				
@@ -459,12 +459,6 @@
 		<xs:restriction base="xs:string">
 			<xs:pattern value="[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]"/>
 		</xs:restriction>
-	</xs:simpleType>
-	
-	<xs:simpleType name="IdentificativoType">		
-		<xs:restriction base="xs:string">
-			<xs:pattern value="[A-Za-z0-9_\.\-]{1,16}"/>
-		</xs:restriction>  
 	</xs:simpleType>
 	
 	<xs:simpleType name="CodiceRegistroType">		
