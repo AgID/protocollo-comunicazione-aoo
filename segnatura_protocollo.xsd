@@ -455,7 +455,7 @@
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="IndirizzoPostale" type="prot:IndirizzoPostaleType" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="IndirizzoTelematico" type="prot:IndirizzoTelematicoType" maxOccurs="unbounded"/>
+			<xs:element name="IndirizzoTelematico" type="prot:IndirizzoTelematicoType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="Telefono" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
