@@ -36,7 +36,7 @@
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Intestazione" type="prot:IntestazioneType"/>			
+			<xs:element name="Intestazione" type="prot:IntestazioneType"/>	
 			<xs:element name="Descrizione" type="prot:DescrizioneType"/>					
 			<xs:element ref="ds:Signature"/>
 		</xs:sequence>
@@ -50,17 +50,19 @@
 				L'intestazione contiene i dati essenziali per l'identificazione e caratterizzazione amministrativa del messaggio di protocollato.
 				
 				L'intestazione è caratterizzata da:
-				- Identificatore, i dati per identificare univocamente il messaggio di protocollo conformemente in attuazione all'art. 55 del DPR 445/2000 
+				- Identificatore, i dati per identificare univocamente il messaggio di protocollo conformemente in attuazione all'art. 55 del DPR 445/2000
+				- PrimaRegistrazione, 
 				- Oggetto, sintesi dei contenuti di carattere giuridico, amministrativo e narrativo di un documento 
 				- Classifica, la categoria del Titolario di classificazione associato al messaggio di protocollo 
 				- Fascicolo, opzionalmente, il fascicolo entro cui è presente il messaggio di protocollo
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+			<xs:element name="Identificatore" type="prot:IdentificatoreType"/>			
 			<xs:element name="Oggetto" type="xs:string"/>									
 			<xs:element name="Classifica" type="prot:ClassificaType" />			
 			<xs:element name="Fascicolo" type="prot:FascicoloType" minOccurs="0" />
+			<xs:element name="Riservato" type="prot:RiservatoType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	
@@ -141,6 +143,21 @@
 		</xs:sequence>
 	</xs:complexType>
 	
+	<xs:complexType name="RiservatoType">
+		<xs:annotation>
+			<xs:documentation>
+				Esprime la circostanza di un messggio riservato.
+				
+				Assicurare la riservatezza nell'ambito dell'organizzazione della AOO ricevente è a carico della stessa
+			</xs:documentation>			
+		</xs:annotation>	
+		<xs:simpleContent>
+			<xs:extension base="xs:boolean">
+				<xs:attribute name="note" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	
 	<xs:complexType name="LivelloType">
 		<xs:annotation>
 			<xs:documentation>
@@ -162,7 +179,6 @@
 			<xs:element name="SubLivello" type="prot:LivelloType" minOccurs="0"/>
 		</xs:sequence>			
 	</xs:complexType>
-	
 	
 	<xs:complexType name="DescrizioneType">
 		<xs:annotation>
