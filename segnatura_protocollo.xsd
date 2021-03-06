@@ -201,7 +201,8 @@
 		</xs:annotation>
 		<xs:sequence>			
 			<xs:element name="Descrizione" type="xs:string" minOccurs="0"/>
-			<xs:element name="Impronta" type="prot:ImprontaType"/>			
+			<xs:element name="Impronta" type="prot:ImprontaType"/>
+			<xs:element name="CollocazioneTelematica" type="prot:CollocazioneTelematicaType"/>			
 		</xs:sequence>
 		<xs:attribute name="nomeFile" type="xs:string" use="required"/>
 		<xs:attribute name="mimeType" type="xs:string" use="required"/>
@@ -209,6 +210,21 @@
 		<xs:attribute name="marcaturaTemporale" type="xs:boolean"/>
 		<xs:attribute name="sigillatoElettronicamente" type="xs:boolean"/>
 	</xs:complexType>
+	
+	<xs:complexType name="CollocazioneTelematicaType">
+		<xs:annotation>
+			<xs:documentation>
+				Specifica un riferimento esterno come URI, cioe` Uniform Resource Identifier (RFC 1738)
+				- TimeToLive, numero di millisecondi di disponibilità della risorsa
+			</xs:documentation>			
+		</xs:annotation>		
+		<xs:simpleContent>
+			<xs:extension base="xs:anyURI">
+				<xs:attribute name="TimeToLive" type="xs:integer"/>
+				<xs:attribute name="AuthorizationHTTPHeaderValue" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>	
 	
 	<xs:complexType name="SoggettoType">
 		<xs:annotation>			
