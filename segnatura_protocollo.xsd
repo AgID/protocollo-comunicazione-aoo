@@ -255,7 +255,7 @@
 		<xs:choice>
 			<xs:element name="PA" type="prot:AmministrazioneType"/>
 			<xs:element name="PersonaGuiridica" type="prot:PersonaGiuridicaType"/>
-			<xs:element name="PersonaFisica" type="prot:PersonaType"/>
+			<xs:element name="PersonaFisica" type="prot:PersonaFisicaType"/>
 										
 		</xs:choice>				
 	</xs:complexType>
@@ -267,11 +267,14 @@
 			<xs:element name="CodiceIPAPA" type="xs:string" minOccurs="0"/>
 			<xs:sequence minOccurs="0">							
 				<xs:element name="CodiceIPAAOO" type="prot:CodiceIPA" minOccurs="0"/>
+				<xs:element name="ContattiAOO" type="prot:ContattiType" minOccurs="0"/>
 				<xs:sequence minOccurs="0">						
 					<xs:element name="CodiceIPAUO" type="prot:CodiceIPA" minOccurs="0"/>
+					<xs:element name="ContattiUO" type="prot:ContattiType" minOccurs="0"/>
 				</xs:sequence>
-			</xs:sequence>
-			<xs:element name="PersonaFisica" type="prot:PersonaType" minOccurs="0"/>
+			</xs:sequence>			
+			<xs:element name="ContattiAmministrazione" type="prot:ContattiType" minOccurs="0"/>
+			<xs:element name="PersonaFisica" type="prot:PersonaFisicaType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	
@@ -281,8 +284,9 @@
 			<xs:choice >				
 				<xs:element name="CF" type="prot:CodiceFiscaleType"/>
 				<xs:element name="PIVA" type="prot:PartitaIVA"/>
-			</xs:choice>
-			<xs:element name="PersonaFisica" type="prot:PersonaType" minOccurs="0"/>			
+			</xs:choice>			
+			<xs:element name="ContattiPersonaGiuridica" type="prot:ContattiType" minOccurs="0"/>
+			<xs:element name="PersonaFisica" type="prot:PersonaFisicaType" minOccurs="0"/>			
 		</xs:sequence>
 	</xs:complexType>
 	
@@ -385,7 +389,7 @@
 		</xs:simpleContent>
 	</xs:complexType>
 			
-	<xs:complexType name="PersonaType">
+	<xs:complexType name="PersonaFisicaType">
 		<xs:annotation>
 			<xs:documentation>
 				La persona contiene i dati relativi ad una persona fisica
@@ -403,7 +407,7 @@
 			<xs:element name="Cognome" type="xs:string"/>					
 			<xs:element name="Titolo" type="xs:string" minOccurs="0"/>
 			<xs:element name="CodiceFiscale" type="prot:CodiceFiscaleType" minOccurs="0"/>				
-			<xs:element name="Contatti" type="prot:ContattiType">								
+			<xs:element name="Contatti" type="prot:ContattiType" minOccurs="0">								
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
