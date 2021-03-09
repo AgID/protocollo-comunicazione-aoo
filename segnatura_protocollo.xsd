@@ -102,6 +102,7 @@
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
+
 	
 	<xs:complexType name="FascicoloType">
 		<xs:annotation>
@@ -193,7 +194,7 @@
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>	
-			<xs:element name="Mittente" type="prot:SoggettoType" minOccurs="0"/>
+			<xs:element name="Mittente" type="prot:SoggettoType" minOccurs="1"/>
 			<xs:element name="Destinatario" type="prot:SoggettoType" minOccurs="1" maxOccurs="unbounded"/>
 			<xs:element name="DocumentoPrimario" type="prot:DocumentoType"/>			
 			<xs:element name="Allegato" type="prot:DocumentoType" minOccurs="0" maxOccurs="unbounded"/>						
@@ -245,81 +246,44 @@
 	<xs:complexType name="SoggettoType">
 		<xs:annotation>			
 			<xs:documentation>
-				Il soggetto contiene i dati per referenziare un corrispondente
-				
-				Sulla base delle necessità è possibile indicare:
-					- una organizzazione
-						es. <Organizzazione>
-								<Riferimento codiceIPA="codiceIPA">Organizzazione</Riferimento>       
-							</Organizzazione>							
-					- una specifica unità organizzativa di una organizzazione
-						es. <Organizzazione>
-								<Riferimento codiceIPA="codiceIPAOrganizzazione">Organizzazione</Riferimento> 
-								<UnitaOrganizzativa>
-									<Descrizione codiceIPA="codiceIPAUnitaOrganizzativa">UnitaOrganizzativa</Descrizione>
-								</UnitaOrganizzativa>       
-							</Organizzazione>	
-					- una persona fisica
-						es. <Persona>...</Persona>
-					- una persona fisica relativa ad una organizzazione
-						es. <Organizzazione>
-								<Riferimento codiceIPA="codiceIPA">Organizzazione</Riferimento> 
-								<Persona>...</Persona>      
-							</Organizzazione>
-					- una persona fisica relativa ad una specifica unità organizzativa di una organizzazione
-						es. <Organizzazione>
-								<Riferimento codiceIPA="codiceIPAOrganizzazione">Organizzazione</Riferimento> 
-								<UnitaOrganizzativa>
-									<Descrizione codiceIPA="codiceIPAUnitaOrganizzativa">UnitaOrganizzativa</Descrizione>
-									<Persona>...</Persona>
-								</UnitaOrganizzativa>       
-							</Organizzazione>					
-				
-				Il soggetto è caratterizzato da:
-				- il alternativa:
-					- Organizzazione, un'organizzazione 
+				Il soggetto contiene i dati per referenziare un corrispondente, che può essere:
+				- una PA (amministrazione -> AOO -> UO) ed opzionalmente una persona fisica interna dell'amministrazione
+				- una persona fisica
+				- una persona giuridica ed opzionalmente una persona fisica interna
 			</xs:documentation>
 		</xs:annotation>
 		<xs:choice>
-			<xs:element name="Organizzazione" type="prot:OrganizzativaType"/>
-			<xs:element name="Persona" type="prot:PersonaType"/>							
+			<xs:element name="PA" type="prot:AmministrazioneType"/>
+			<xs:element name="PersonaGuiridica" type="prot:PersonaGiuridicaType"/>
+			<xs:element name="PersonaFisica" type="prot:PersonaType"/>
+										
 		</xs:choice>				
 	</xs:complexType>
 	
-	<xs:complexType name="OrganizzativaType">
-		<xs:annotation>
-			<xs:documentation>
-				L'organizzativa contiene i dati di un'unità organizzativa o unità organizzativa
-				
-				L'unità organizzativa è caratterizzata da:
-				- Nome, il nome dell'unità organizzativa
-				- in alternativa:
-					- UnitaOrganizzativa, una sottounità organizzativa di livello inferiore
-					- Persona, il riferimento ad una persona fidica
-			</xs:documentation>
-		</xs:annotation>
+	<xs:complexType name="AmministrazioneType">
 		<xs:sequence>
-			<xs:element name="Riferimento" type="prot:NomeOrganizzazioneType"/>
-			<xs:choice minOccurs="0">
-				<xs:element name="UnitaOrganizzativa" type="prot:OrganizzativaType"/>
-				<xs:element name="Persona" type="prot:PersonaType"/>
-			</xs:choice>            
+			<xs:element name="DenominazionePA" type="xs:string"/>
+			<xs:element name="CFPA" type="prot:CodiceFiscaleType"/>
+			<xs:element name="CodiceIPAPA" type="xs:string" minOccurs="0"/>
+			<xs:sequence minOccurs="0">							
+				<xs:element name="CodiceIPAAOO" type="prot:CodiceIPA" minOccurs="0"/>
+				<xs:sequence minOccurs="0">						
+					<xs:element name="CodiceIPAUO" type="prot:CodiceIPA" minOccurs="0"/>
+				</xs:sequence>
+			</xs:sequence>
+			<xs:element name="PersonaFisica" type="prot:PersonaType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	
-	<xs:complexType name="NomeOrganizzazioneType">
-		<xs:annotation>
-			<xs:documentation>
-				Il nome organizzazione contiene i riferimenti ad un'organizzazione o unità organizzativa
-				
-				Il nome organizzazione è caratterizzata dal nome dell'organizzazione o dell'unità organizzativa e, quando esiste, il codice IPA della stessa
-			</xs:documentation>
-		</xs:annotation>
-		<xs:simpleContent>
-			<xs:extension base="xs:string">
-				<xs:attribute name="codiceIPA" type="xs:string"/>
-			</xs:extension>
-		</xs:simpleContent> 
+	<xs:complexType name="PersonaGiuridicaType">
+		<xs:sequence>
+			<xs:element name="Denominazione" type="xs:string"/>
+			<xs:choice >				
+				<xs:element name="CF" type="prot:CodiceFiscaleType"/>
+				<xs:element name="PIVA" type="prot:PartitaIVA"/>
+			</xs:choice>
+			<xs:element name="PersonaFisica" type="prot:PersonaType" minOccurs="0"/>			
+		</xs:sequence>
 	</xs:complexType>
 	
 	<xs:complexType name="IndirizzoPostaleType">
@@ -490,6 +454,12 @@
 	<xs:simpleType name="CodiceFiscaleType">
 		<xs:restriction base="xs:string">
 			<xs:pattern value="[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="PartitaIVA">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{11}"/>
 		</xs:restriction>
 	</xs:simpleType>
 	
