@@ -36,7 +36,7 @@
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Intestazione" type="prot:IntestazioneType"/>			
+			<xs:element name="Intestazione" type="prot:IntestazioneType"/>	
 			<xs:element name="Descrizione" type="prot:DescrizioneType"/>					
 			<xs:element ref="ds:Signature"/>
 		</xs:sequence>
@@ -50,17 +50,19 @@
 				L'intestazione contiene i dati essenziali per l'identificazione e caratterizzazione amministrativa del messaggio di protocollato.
 				
 				L'intestazione è caratterizzata da:
-				- Identificatore, i dati per identificare univocamente il messaggio di protocollo conformemente in attuazione all'art. 55 del DPR 445/2000 
+				- Identificatore, i dati per identificare univocamente il messaggio di protocollo conformemente in attuazione all'art. 55 del DPR 445/2000
+				- PrimaRegistrazione, 
 				- Oggetto, sintesi dei contenuti di carattere giuridico, amministrativo e narrativo di un documento 
 				- Classifica, la categoria del Titolario di classificazione associato al messaggio di protocollo 
 				- Fascicolo, opzionalmente, il fascicolo entro cui è presente il messaggio di protocollo
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+			<xs:element name="Identificatore" type="prot:IdentificatoreType"/>			
 			<xs:element name="Oggetto" type="xs:string"/>									
 			<xs:element name="Classifica" type="prot:ClassificaType" />			
 			<xs:element name="Fascicolo" type="prot:FascicoloType" minOccurs="0" />
+			<xs:element name="Riservato" type="prot:RiservatoType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	
@@ -100,6 +102,7 @@
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
+
 	
 	<xs:complexType name="FascicoloType">
 		<xs:annotation>
@@ -141,6 +144,21 @@
 		</xs:sequence>
 	</xs:complexType>
 	
+	<xs:complexType name="RiservatoType">
+		<xs:annotation>
+			<xs:documentation>
+				Esprime la circostanza di un messggio riservato.
+				
+				Assicurare la riservatezza nell'ambito dell'organizzazione della AOO ricevente è a carico della stessa
+			</xs:documentation>			
+		</xs:annotation>	
+		<xs:simpleContent>
+			<xs:extension base="xs:boolean">
+				<xs:attribute name="note" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	
 	<xs:complexType name="LivelloType">
 		<xs:annotation>
 			<xs:documentation>
@@ -163,7 +181,6 @@
 		</xs:sequence>			
 	</xs:complexType>
 	
-	
 	<xs:complexType name="DescrizioneType">
 		<xs:annotation>
 			<xs:documentation>
@@ -177,7 +194,7 @@
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>	
-			<xs:element name="Mittente" type="prot:SoggettoType" minOccurs="0"/>
+			<xs:element name="Mittente" type="prot:SoggettoType" minOccurs="1"/>
 			<xs:element name="Destinatario" type="prot:SoggettoType" minOccurs="1" maxOccurs="unbounded"/>
 			<xs:element name="DocumentoPrimario" type="prot:DocumentoType"/>			
 			<xs:element name="Allegato" type="prot:DocumentoType" minOccurs="0" maxOccurs="unbounded"/>						
@@ -201,7 +218,8 @@
 		</xs:annotation>
 		<xs:sequence>			
 			<xs:element name="Descrizione" type="xs:string" minOccurs="0"/>
-			<xs:element name="Impronta" type="prot:ImprontaType"/>			
+			<xs:element name="Impronta" type="prot:ImprontaType"/>
+			<xs:element name="CollocazioneTelematica" type="prot:CollocazioneTelematicaType"/>			
 		</xs:sequence>
 		<xs:attribute name="nomeFile" type="xs:string" use="required"/>
 		<xs:attribute name="mimeType" type="xs:string" use="required"/>
@@ -210,84 +228,61 @@
 		<xs:attribute name="sigillatoElettronicamente" type="xs:boolean"/>
 	</xs:complexType>
 	
+	<xs:complexType name="CollocazioneTelematicaType">
+		<xs:annotation>
+			<xs:documentation>
+				Specifica un riferimento esterno come URI, cioe` Uniform Resource Identifier (RFC 1738)
+				- TimeToLive, numero di millisecondi di disponibilità della risorsa
+			</xs:documentation>			
+		</xs:annotation>		
+		<xs:simpleContent>
+			<xs:extension base="xs:anyURI">
+				<xs:attribute name="TimeToLive" type="xs:integer"/>
+				<xs:attribute name="AuthorizationHTTPHeaderValue" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>	
+	
 	<xs:complexType name="SoggettoType">
 		<xs:annotation>			
 			<xs:documentation>
-				Il soggetto contiene i dati per referenziare un corrispondente
-				
-				Sulla base delle necessità è possibile indicare:
-					- una organizzazione
-						es. <Organizzazione>
-								<Riferimento codiceIPA="codiceIPA">Organizzazione</Riferimento>       
-							</Organizzazione>							
-					- una specifica unità organizzativa di una organizzazione
-						es. <Organizzazione>
-								<Riferimento codiceIPA="codiceIPAOrganizzazione">Organizzazione</Riferimento> 
-								<UnitaOrganizzativa>
-									<Descrizione codiceIPA="codiceIPAUnitaOrganizzativa">UnitaOrganizzativa</Descrizione>
-								</UnitaOrganizzativa>       
-							</Organizzazione>	
-					- una persona fisica
-						es. <Persona>...</Persona>
-					- una persona fisica relativa ad una organizzazione
-						es. <Organizzazione>
-								<Riferimento codiceIPA="codiceIPA">Organizzazione</Riferimento> 
-								<Persona>...</Persona>      
-							</Organizzazione>
-					- una persona fisica relativa ad una specifica unità organizzativa di una organizzazione
-						es. <Organizzazione>
-								<Riferimento codiceIPA="codiceIPAOrganizzazione">Organizzazione</Riferimento> 
-								<UnitaOrganizzativa>
-									<Descrizione codiceIPA="codiceIPAUnitaOrganizzativa">UnitaOrganizzativa</Descrizione>
-									<Persona>...</Persona>
-								</UnitaOrganizzativa>       
-							</Organizzazione>					
-				
-				Il soggetto è caratterizzato da:
-				- il alternativa:
-					- Organizzazione, un'organizzazione 
+				Il soggetto contiene i dati per referenziare un corrispondente, che può essere:
+				- una PA (amministrazione -> AOO -> UO) ed opzionalmente una persona fisica interna dell'amministrazione
+				- una persona fisica
+				- una persona giuridica ed opzionalmente un riferimento ad persona fisica interna
 			</xs:documentation>
 		</xs:annotation>
 		<xs:choice>
-			<xs:element name="Organizzazione" type="prot:OrganizzativaType"/>
-			<xs:element name="Persona" type="prot:PersonaType"/>							
+			<xs:element name="PA" type="prot:AmministrazioneType"/>
+			<xs:element name="PersonaGuiridica" type="prot:PersonaGiuridicaType"/>
+			<xs:element name="PersonaFisica" type="prot:PersonaFisicaType"/>								
 		</xs:choice>				
 	</xs:complexType>
 	
-	<xs:complexType name="OrganizzativaType">
-		<xs:annotation>
-			<xs:documentation>
-				L'organizzativa contiene i dati di un'unità organizzativa o unità organizzativa
-				
-				L'unità organizzativa è caratterizzata da:
-				- Nome, il nome dell'unità organizzativa
-				- in alternativa:
-					- UnitaOrganizzativa, una sottounità organizzativa di livello inferiore
-					- Persona, il riferimento ad una persona fidica
-			</xs:documentation>
-		</xs:annotation>
+	<xs:complexType name="AmministrazioneType">
 		<xs:sequence>
-			<xs:element name="Riferimento" type="prot:NomeOrganizzazioneType"/>
-			<xs:choice minOccurs="0">
-				<xs:element name="UnitaOrganizzativa" type="prot:OrganizzativaType"/>
-				<xs:element name="Persona" type="prot:PersonaType"/>
-			</xs:choice>            
+			<xs:element name="DenominazionePA" type="xs:string"/>
+			<xs:element name="CFPA" type="prot:CodiceFiscaleType"/>
+			<xs:element name="CodiceIPAPA" type="xs:string" minOccurs="0"/>
+			<xs:element name="CodiceIPAAOO" type="prot:CodiceIPA" minOccurs="0"/>
+			<xs:element name="ContattiAOO" type="prot:ContattiType" minOccurs="0"/>		
+			<xs:element name="CodiceIPAUO" type="prot:CodiceIPA" minOccurs="0"/>
+			<xs:element name="ContattiUO" type="prot:ContattiType" minOccurs="0"/>
+			<xs:element name="ContattiAmministrazione" type="prot:ContattiType" minOccurs="0"/>
+			<xs:element name="PersonaFisica" type="prot:PersonaFisicaType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	
-	<xs:complexType name="NomeOrganizzazioneType">
-		<xs:annotation>
-			<xs:documentation>
-				Il nome organizzazione contiene i riferimenti ad un'organizzazione o unità organizzativa
-				
-				Il nome organizzazione è caratterizzata dal nome dell'organizzazione o dell'unità organizzativa e, quando esiste, il codice IPA della stessa
-			</xs:documentation>
-		</xs:annotation>
-		<xs:simpleContent>
-			<xs:extension base="xs:string">
-				<xs:attribute name="codiceIPA" type="xs:string"/>
-			</xs:extension>
-		</xs:simpleContent> 
+	<xs:complexType name="PersonaGiuridicaType">
+		<xs:sequence>
+			<xs:element name="Denominazione" type="xs:string"/>
+			<xs:choice >				
+				<xs:element name="CF" type="prot:CodiceFiscaleType"/>
+				<xs:element name="PIVA" type="prot:PartitaIVA"/>
+			</xs:choice>			
+			<xs:element name="ContattiPersonaGiuridica" type="prot:ContattiType" minOccurs="0"/>
+			<xs:element name="RiferimentoPersonaFisica" type="prot:PersonaFisicaType" minOccurs="0"/>			
+		</xs:sequence>
 	</xs:complexType>
 	
 	<xs:complexType name="IndirizzoPostaleType">
@@ -389,7 +384,7 @@
 		</xs:simpleContent>
 	</xs:complexType>
 			
-	<xs:complexType name="PersonaType">
+	<xs:complexType name="PersonaFisicaType">
 		<xs:annotation>
 			<xs:documentation>
 				La persona contiene i dati relativi ad una persona fisica
@@ -407,7 +402,7 @@
 			<xs:element name="Cognome" type="xs:string"/>					
 			<xs:element name="Titolo" type="xs:string" minOccurs="0"/>
 			<xs:element name="CodiceFiscale" type="prot:CodiceFiscaleType" minOccurs="0"/>				
-			<xs:element name="Contatti" type="prot:ContattiType">								
+			<xs:element name="Contatti" type="prot:ContattiType" minOccurs="0">								
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
@@ -423,7 +418,7 @@
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="IndirizzoPostale" type="prot:IndirizzoPostaleType" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="IndirizzoTelematico" type="prot:IndirizzoTelematicoType" maxOccurs="unbounded"/>
+			<xs:element name="IndirizzoTelematico" type="prot:IndirizzoTelematicoType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="Telefono" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -458,6 +453,12 @@
 	<xs:simpleType name="CodiceFiscaleType">
 		<xs:restriction base="xs:string">
 			<xs:pattern value="[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="PartitaIVA">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{11}"/>
 		</xs:restriction>
 	</xs:simpleType>
 	

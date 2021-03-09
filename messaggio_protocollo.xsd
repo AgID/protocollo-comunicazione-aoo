@@ -13,8 +13,7 @@
     <xsd:complexType name="MessaggioProtocolloType">
         <xsd:sequence>
             <xsd:element name="Segnatura" type="prot:SegnaturaInformaticaType"/>
-            <xsd:element name="Documento" type="msgprot:FileType"/>
-            <xsd:element name="Allegato" type="msgprot:FileType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="File" type="msgprot:FileType" minOccurs="1" maxOccurs="unbounded"/>
         </xsd:sequence>
     </xsd:complexType>
     

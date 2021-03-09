@@ -1,2 +1,5 @@
 #oXygen Project
 *.xpr
+
+#doc folder
+doc/*
