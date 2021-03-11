@@ -51,14 +51,15 @@
 				
 				L'intestazione è caratterizzata da:
 				- Identificatore, i dati per identificare univocamente il messaggio di protocollo conformemente in attuazione all'art. 55 del DPR 445/2000
-				- PrimaRegistrazione, 
+				- PrimaRegistrazione, si riferisce all'Identificatore di registrazione primario, cioè attribuito per la prima volta ad un documento protocollato che viene ritrasmesso più volte. Deve essere specificato solo se non coincide con l'Identificatore del messaggio protocollato.
 				- Oggetto, sintesi dei contenuti di carattere giuridico, amministrativo e narrativo di un documento 
 				- Classifica, la categoria del Titolario di classificazione associato al messaggio di protocollo 
 				- Fascicolo, opzionalmente, il fascicolo entro cui è presente il messaggio di protocollo
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Identificatore" type="prot:IdentificatoreType"/>			
+			<xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+			<xs:element name="PrimaRegistrazione" type="prot:IdentificatoreType" minOccurs="0"/>					
 			<xs:element name="Oggetto" type="xs:string"/>									
 			<xs:element name="Classifica" type="prot:ClassificaType" />			
 			<xs:element name="Fascicolo" type="prot:FascicoloType" minOccurs="0" />
@@ -86,7 +87,7 @@
 			<xs:element name="CodiceRegistro" type="prot:CodiceRegistroType"/>
 			<xs:element name="NumeroRegistrazione" type="prot:NumeroRegistrazioneType"/>			
 			<xs:element name="DataRegistrazione" type="xs:date"/>
-			<xs:element name="OraRegistrazione" type="xs:time" minOccurs="0"/>
+			<xs:element name="OraRegistrazione" type="xs:time" minOccurs="0"/>			
 		</xs:sequence>
 	</xs:complexType>
 	
@@ -195,13 +196,22 @@
 		</xs:annotation>
 		<xs:sequence>	
 			<xs:element name="Mittente" type="prot:SoggettoType" minOccurs="1"/>
-			<xs:element name="Destinatario" type="prot:SoggettoType" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="Destinatario" type="prot:DestinatarioType" minOccurs="1" maxOccurs="unbounded"/>
 			<xs:element name="DocumentoPrimario" type="prot:DocumentoType"/>			
 			<xs:element name="Allegato" type="prot:DocumentoType" minOccurs="0" maxOccurs="unbounded"/>						
 		</xs:sequence>
 	</xs:complexType>
 	
-		<xs:complexType name="DocumentoType">
+	<xs:complexType name="DestinatarioType">
+		<xs:complexContent>
+			<xs:extension base="prot:SoggettoType">
+				<xs:attribute name="confermaRicezione" type="xs:boolean" default="true"/>
+				<xs:attribute name="perConoscenza" type="xs:boolean" default="false"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="DocumentoType">
 		<xs:annotation>
 			<xs:documentation>
 				Il documento contiene i dati per referenziare un documento (documento primario o allegato) del messaggio di protocollo
