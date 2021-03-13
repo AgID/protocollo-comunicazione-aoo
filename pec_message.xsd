@@ -12,19 +12,7 @@
     version="3.0"		  
     > 
     <xs:import namespace="http://www.agid.gov.it/protocollo/" schemaLocation="segnatura_protocollo.xsd"/>
-    
-    
-    <xs:simpleType name="Segnatura">
-        <xs:sequence>
-            <xs:element ref="tns:Intestazione"/>
-            <xs:element ref="tns:Riferimenti" minOccurs="0"/>
-            <xs:element ref="tns:Descrizione"/>
-            <xs:element ref="tns:PiuInfo" minOccurs="0"/>
-        </xs:sequence>
-        <xs:attribute name="versione" type="xs:NMTOKEN" fixed="aaaa-mm-gg"/>
-        <xs:attribute name="xml-lang" fixed="it"/>
-    </xs:simpleType>
-    
+        
     <xs:element name="Segnatura" type="prot:SegnaturaInformaticaType"/>
     
     <xs:element name="ConfermaRicezione" type="pec:ConfermaType"/>
