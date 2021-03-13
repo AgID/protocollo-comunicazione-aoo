@@ -207,13 +207,7 @@
 			<xs:documentation>
 				Estende il data type SoggettoType con gli attributi:
 				- confermaRicezione, per permettere al mittende di indicare che richiede la conferma di ricezione del messaggio inoltrato
-				- perConoscenza, per permettere al mittende di indicare che il messaggio è stato inoltrato per conoscenza
-				
-				La descrizione è caratterizzata da:
-				- Mittente, riferimento del mittente (organizzazione o persona)
-				- Destinatario, riferimento del destinatario (organizzazione o persona) con l'opzione di richiesta della conferma di ricezione e l'indicazione se inoltrato per conoscenza
-				- DocumentoPrimario, riferimento al documento primario del messaggio di protocollo
-				- Allegato, riferimento ad uno degli allegati del messaggio di protocollo se presente
+				- perConoscenza, per permettere al mittende di indicare che il messaggio è stato inoltrato per conoscenza					
 			</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
