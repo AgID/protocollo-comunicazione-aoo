@@ -221,21 +221,30 @@
 				- Impronta, l'impronta digitale (digest) del documento
 				- nomeFile, il nome del file relativo al documento
 				- mimeType, il mime type (RFC 6838) associto al documento
-				- firmatoDigitalmente, flag per indicare il documento è firmato digitalmente (sezione 4 Regolamento UE 910/2014)				
-				- sigillatoElettronicamente, flag per indicare che al documento è apposto un sigillo elettronico (sezione 5 Regolamento UE 910/2014)
-				- marcaturaTemporale, flag per indicare che al documento è apposta una marca temporale (sezione 6 Regolamento UE 910/2014)
+				- firmatoDigitalmente, flag per indicare il documento è firmato digitalmente (sezione 4 Regolamento UE 910/2014) ed eventuale nome file detached e mime type (RFC 6838) associto allo stesso 				
+				- sigillatoElettronicamente, flag per indicare che al documento è apposto un sigillo elettronico (sezione 5 Regolamento UE 910/2014) ed eventuale nome file detached e mime type (RFC 6838) associto allo stesso
+				- marcaturaTemporale, flag per indicare che al documento è apposta una marca temporale (sezione 6 Regolamento UE 910/2014) ed eventuale nome file detached
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>			
 			<xs:element name="Descrizione" type="xs:string" minOccurs="0"/>
 			<xs:element name="Impronta" type="prot:ImprontaType"/>
-			<xs:element name="CollocazioneTelematica" type="prot:CollocazioneTelematicaType"/>			
+			<xs:element name="CollocazioneTelematica" type="prot:CollocazioneTelematicaType"/>
+			<xs:element name="firmatoDigitalmente" type="prot:DetachedType"/>
+			<xs:element name="sigillatoElettronicamente" type="prot:DetachedType"/>					
+			<xs:element name="sigillatoElettronicamente" type="prot:DetachedType" minOccurs="0"/>			
 		</xs:sequence>
 		<xs:attribute name="nomeFile" type="xs:string" use="required"/>
-		<xs:attribute name="mimeType" type="xs:string" use="required"/>
-		<xs:attribute name="firmatoDigitalmente" type="xs:boolean"/>
-		<xs:attribute name="marcaturaTemporale" type="xs:boolean"/>
-		<xs:attribute name="sigillatoElettronicamente" type="xs:boolean"/>
+		<xs:attribute name="mimeType" type="xs:string" use="required"/>		
+	</xs:complexType>
+	
+	<xs:complexType name="DetachedType">
+		<xs:simpleContent>
+			<xs:extension base="xs:boolean">
+				<xs:attribute name="nomeFile" type="xs:string" use="required"/>
+				<xs:attribute name="mimeType" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
 	</xs:complexType>
 	
 	<xs:complexType name="CollocazioneTelematicaType">
