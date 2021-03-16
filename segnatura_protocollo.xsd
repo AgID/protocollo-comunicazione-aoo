@@ -304,7 +304,7 @@
 			<xs:element name="Denominazione" type="xs:string"/>
 			<xs:choice >				
 				<xs:element name="CF" type="prot:CodiceFiscaleType"/>
-				<xs:element name="PIVA" type="prot:PartitaIVA" minOccurs="0"/>
+				<xs:element name="PIVA" type="prot:PartitaIVA"/>
 			</xs:choice>			
 			<xs:element name="ContattiPersonaGiuridica" type="prot:ContattiType" minOccurs="0"/>
 			<xs:element name="RiferimentoPersonaFisica" type="prot:PersonaFisicaType" minOccurs="0"/>			
