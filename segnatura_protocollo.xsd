@@ -237,9 +237,9 @@
 			<xs:element name="Descrizione" type="xs:string" minOccurs="0"/>
 			<xs:element name="Impronta" type="prot:ImprontaType"/>
 			<xs:element name="CollocazioneTelematica" type="prot:CollocazioneTelematicaType"/>
-			<xs:element name="firmatoDigitalmente" type="prot:DetachedType"/>
-			<xs:element name="sigillatoElettronicamente" type="prot:DetachedType"/>					
-			<xs:element name="sigillatoElettronicamente" type="prot:DetachedType" minOccurs="0"/>			
+			<xs:element name="firmatoDigitalmente" type="prot:DetachedType" minOccurs="0"/>
+			<xs:element name="sigillatoElettronicamente" type="prot:DetachedType" minOccurs="0"/>					
+			<xs:element name="marcaturaTemporale" type="prot:DetachedType" minOccurs="0"/>			
 		</xs:sequence>
 		<xs:attribute name="nomeFile" type="xs:string" use="required"/>
 		<xs:attribute name="mimeType" type="xs:string" use="required"/>		
@@ -288,7 +288,7 @@
 	<xs:complexType name="AmministrazioneType">
 		<xs:sequence>
 			<xs:element name="DenominazionePA" type="xs:string"/>
-			<xs:element name="CFPA" type="prot:CodiceFiscaleType"/>
+			<xs:element name="CFPA" type="prot:PartitaIVA"/>
 			<xs:element name="CodiceIPAPA" type="xs:string" minOccurs="0"/>
 			<xs:element name="CodiceIPAAOO" type="prot:CodiceIPA" minOccurs="0"/>
 			<xs:element name="ContattiAOO" type="prot:ContattiType" minOccurs="0"/>		
@@ -304,7 +304,7 @@
 			<xs:element name="Denominazione" type="xs:string"/>
 			<xs:choice >				
 				<xs:element name="CF" type="prot:CodiceFiscaleType"/>
-				<xs:element name="PIVA" type="prot:PartitaIVA"/>
+				<xs:element name="PIVA" type="prot:PartitaIVA" minOccurs="0"/>
 			</xs:choice>			
 			<xs:element name="ContattiPersonaGiuridica" type="prot:ContattiType" minOccurs="0"/>
 			<xs:element name="RiferimentoPersonaFisica" type="prot:PersonaFisicaType" minOccurs="0"/>			
