@@ -211,7 +211,7 @@
 			</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="prot:SoggettoType">
+			<xs:extension base="prot:SoggettoType">			
 				<xs:attribute name="confermaRicezione" type="xs:boolean" default="true"/>
 				<xs:attribute name="perConoscenza" type="xs:boolean" default="false"/>
 			</xs:extension>
@@ -236,7 +236,7 @@
 		<xs:sequence>			
 			<xs:element name="Descrizione" type="xs:string" minOccurs="0"/>
 			<xs:element name="Impronta" type="prot:ImprontaType"/>
-			<xs:element name="CollocazioneTelematica" type="prot:CollocazioneTelematicaType"/>
+			<xs:element name="CollocazioneTelematica" type="prot:CollocazioneTelematicaType" minOccurs="0"/>
 			<xs:element name="firmatoDigitalmente" type="prot:DetachedType" minOccurs="0"/>
 			<xs:element name="sigillatoElettronicamente" type="prot:DetachedType" minOccurs="0"/>					
 			<xs:element name="marcaturaTemporale" type="prot:DetachedType" minOccurs="0"/>			
