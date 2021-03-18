@@ -237,19 +237,27 @@
 			<xs:element name="Descrizione" type="xs:string" minOccurs="0"/>
 			<xs:element name="Impronta" type="prot:ImprontaType"/>
 			<xs:element name="CollocazioneTelematica" type="prot:CollocazioneTelematicaType" minOccurs="0"/>
-			<xs:element name="firmatoDigitalmente" type="prot:DetachedType" minOccurs="0"/>
-			<xs:element name="sigillatoElettronicamente" type="prot:DetachedType" minOccurs="0"/>					
-			<xs:element name="marcaturaTemporale" type="prot:DetachedType" minOccurs="0"/>			
+			<xs:element name="firmatoDigitalmente" type="prot:SignType" minOccurs="0"/>
+			<xs:element name="sigillatoElettronicamente" type="prot:SignType" minOccurs="0"/>					
+			<xs:element name="marcaturaTemporale" type="prot:SignType" minOccurs="0"/>			
 		</xs:sequence>
 		<xs:attribute name="nomeFile" type="xs:string" use="required"/>
 		<xs:attribute name="mimeType" type="xs:string" use="required"/>		
+	</xs:complexType>
+	
+	<xs:complexType name="SignType">
+			<xs:choice>
+				<xs:element name="UnDetached" type="xs:boolean" fixed="true"/>
+				<xs:element name="Detached" type="prot:DetachedType" fixed="true" maxOccurs="unbounded"/>
+			</xs:choice>
 	</xs:complexType>
 	
 	<xs:complexType name="DetachedType">
 		<xs:simpleContent>
 			<xs:extension base="xs:boolean">
 				<xs:attribute name="nomeFile" type="xs:string" use="required"/>
-				<xs:attribute name="mimeType" type="xs:string" use="required"/>
+				<xs:attribute name="mimeType" type="xs:string" />
+				<xs:attribute name="order" type="xs:integer" use="required"/>
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
@@ -263,7 +271,7 @@
 		</xs:annotation>		
 		<xs:simpleContent>
 			<xs:extension base="xs:anyURI">
-				<xs:attribute name="TimeToLive" type="xs:integer"/>
+				<xs:attribute name="TimeToLive" type="xs:integer" />				
 				<xs:attribute name="AuthorizationHTTPHeaderValue" type="xs:string"/>
 			</xs:extension>
 		</xs:simpleContent>
@@ -280,7 +288,7 @@
 		</xs:annotation>
 		<xs:choice>
 			<xs:element name="PA" type="prot:AmministrazioneType"/>
-			<xs:element name="PersonaGuiridica" type="prot:PersonaGiuridicaType"/>
+			<xs:element name="PersonaGiuridica" type="prot:PersonaGiuridicaType"/>
 			<xs:element name="PersonaFisica" type="prot:PersonaFisicaType"/>								
 		</xs:choice>				
 	</xs:complexType>
