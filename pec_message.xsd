@@ -13,7 +13,7 @@
     > 
     <xs:import namespace="http://www.agid.gov.it/protocollo/" schemaLocation="segnatura_protocollo.xsd"/>
         
-    <xs:element name="Segnatura" type="prot:SegnaturaInformaticaType"/>
+    <xs:element name="SegnaturaInformatica" type="prot:SegnaturaInformaticaType"/>
     
     <xs:element name="ConfermaRicezione" type="pec:ConfermaType"/>
     
