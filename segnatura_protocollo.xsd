@@ -265,16 +265,30 @@
 	<xs:complexType name="CollocazioneTelematicaType">
 		<xs:annotation>
 			<xs:documentation>
-				Specifica un riferimento esterno come URI, cioe` Uniform Resource Identifier (RFC 1738)
-				- TimeToLive, numero di millisecondi di disponibilità della risorsa
+				Specifica un riferimento telematico per recuperare la risorsa.
+				
+				Il recupero della risorsa avviene tramite HTTP GET con autenticazione conforme all’RFC 7617 su canale di trasporto TLS.
+				
+					Esempio di chiamata:
+						GET /PathValue HTTP/1.1
+						Host: HostValue
+						Authorization: Basic basic-credentials
+						
+						
+				- HostValue, server che espone la risorsa
+				- PathValue, riferimento alla risorsa da recuperare
+				- timeToLive, numero di millisecondi di disponibilità della risorsa
+				- userId, user-id comunicata dall’AOO Mittente													
+				- password, password comunicata dall’AOO Mittente
 			</xs:documentation>			
-		</xs:annotation>		
-		<xs:simpleContent>
-			<xs:extension base="xs:anyURI">
-				<xs:attribute name="TimeToLive" type="xs:integer" />				
-				<xs:attribute name="AuthorizationHTTPHeaderValue" type="xs:string"/>
-			</xs:extension>
-		</xs:simpleContent>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="HostValue" type="xs:anyURI"/>
+			<xs:element name="PathValue" type="xs:anyURI"/>
+		</xs:sequence>
+		<xs:attribute name="timeToLive" type="xs:integer" />				
+		<xs:attribute name="userId" type="xs:string"/>
+		<xs:attribute name="password " type="xs:string"/>
 	</xs:complexType>	
 	
 	<xs:complexType name="SoggettoType">
