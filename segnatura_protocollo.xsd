@@ -311,7 +311,7 @@
 		<xs:sequence>
 			<xs:element name="DenominazionePA" type="xs:string"/>
 			<xs:element name="CFPA" type="prot:PartitaIVA"/>
-			<xs:element name="CodiceIPAPA" type="xs:string" minOccurs="0"/>
+			<xs:element name="CodiceIPAPA" type="prot:CodiceIPA" minOccurs="0"/>
 			<xs:element name="CodiceIPAAOO" type="prot:CodiceIPA" minOccurs="0"/>
 			<xs:element name="ContattiAOO" type="prot:ContattiType" minOccurs="0"/>		
 			<xs:element name="CodiceIPAUO" type="prot:CodiceIPA" minOccurs="0"/>
