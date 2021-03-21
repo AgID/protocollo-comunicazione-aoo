@@ -32,35 +32,32 @@
         <xs:attribute name="lang" type="xs:NMTOKEN" fixed="it" use="required"/>
     </xs:complexType>
     
-    
     <xs:complexType name="MessaggioRicevuto">        
             <xs:sequence>
                 <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
                 <xs:element name="PrimaRegistrazione" type="prot:IdentificatoreType" minOccurs="0"/>
+                <xs:element name="DescrizioneMessaggio" type="xs:string" />
             </xs:sequence>        
     </xs:complexType>
    
     <xs:complexType name="NotificaEccezioneType">
         <xs:sequence>
-            <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+            <xs:element name="Identificatore" type="prot:IdentificatoreType" minOccurs="0"/>
             <xs:element name="MessaggioRicevuto" type="pec:MessaggioRicevuto"/>
             <xs:element name="Motivo" type="xs:string"/>
         </xs:sequence>
         <xs:attribute name="versione" type="xs:NMTOKEN" fixed="3.0.0" use="required"/>
         <xs:attribute name="lang" type="xs:NMTOKEN" fixed="it" use="required"/>
     </xs:complexType>
-   
     
     <xs:complexType name="AnnullamentoProtocollazioneType">
         <xs:sequence>            
-            <xs:element name="MessaggioRicevuto" type="pec:MessaggioRicevuto"/>
+            <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
             <xs:element name="Motivo" type="xs:string"/>
             <xs:element name="Provvedimento" type="xs:string"/>
         </xs:sequence>
         <xs:attribute name="versione" type="xs:NMTOKEN" fixed="3.0.0" use="required"/>
         <xs:attribute name="lang" type="xs:NMTOKEN" fixed="it" use="required"/>
     </xs:complexType>
-    
-    
-    
+   
 </xs:schema>
