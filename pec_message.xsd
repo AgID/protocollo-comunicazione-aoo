@@ -32,12 +32,14 @@
         <xs:attribute name="lang" type="xs:NMTOKEN" fixed="it" use="required"/>
     </xs:complexType>
     
-    <xs:complexType name="MessaggioRicevuto">        
-            <xs:sequence>
-                <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
-                <xs:element name="PrimaRegistrazione" type="prot:IdentificatoreType" minOccurs="0"/>
-                <xs:element name="DescrizioneMessaggio" type="xs:string" />
-            </xs:sequence>        
+    <xs:complexType name="MessaggioRicevuto"> 
+           <xs:choice>
+               <xs:sequence>
+                   <xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+                   <xs:element name="PrimaRegistrazione" type="prot:IdentificatoreType" minOccurs="0"/>                   
+               </xs:sequence>
+               <xs:element name="DescrizioneMessaggio" type="xs:string" />
+           </xs:choice>                   
     </xs:complexType>
    
     <xs:complexType name="NotificaEccezioneType">
