@@ -295,9 +295,10 @@
 		<xs:annotation>			
 			<xs:documentation>
 				Il soggetto contiene i dati per referenziare un corrispondente, che può essere:
-				- una Amministrazione (amministrazione -> AOO -> UO) ed opzionalmente una persona fisica interna dell'amministrazione
+				- una Amministrazione italiana (Amministrazione e opzionalmente AOO e UO) ed opzionalmente una persona fisica interna dell'amministrazione
 				- una persona fisica
 				- una persona giuridica ed opzionalmente un riferimento ad persona fisica interna
+				- una Amministrazione estera
 			</xs:documentation>
 		</xs:annotation>
 		<xs:choice>
@@ -314,7 +315,7 @@
 			<xs:element name="CFAmministrazione" type="prot:PartitaIVA" minOccurs="0"/>
 			<xs:element name="CodiceIPAAmministrazione" type="prot:CodiceIPA"/>
 			<xs:element name="ContattiAmministrazione" type="prot:ContattiType" minOccurs="0"/>
-			<xs:element name="CodiceIPAAOO" type="prot:CodiceIPA"/>
+			<xs:element name="CodiceIPAAOO" type="prot:CodiceIPA" minOccurs="0"/>
 			<xs:element name="ContattiAOO" type="prot:ContattiType" minOccurs="0"/>		
 			<xs:element name="CodiceIPAUO" type="prot:CodiceIPA" minOccurs="0"/>
 			<xs:element name="ContattiUO" type="prot:ContattiType" minOccurs="0"/>			
