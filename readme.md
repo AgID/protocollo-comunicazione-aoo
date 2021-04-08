@@ -31,3 +31,8 @@ Per completezza sono riportati i file:
 * previous_schemas/segnatura_protocollo_circolare 28_2001.dtd, in cui è riportato il Document Type Definition relativo alla segnatura di protocollo emanato con Circolare AIPA del 7 maggio 2001, n. 28 
 * previous_schemas/segnatura_protocollo_circolare 60_2013.xsd, in cui è riportato il XML Schema relativo alla segnatura di protocollo emanato con Circolare AgID del 23 gennaio 2013, n. 60
 
+
+
+
+
+## IMPORTANTE: sono in corso di aggiornamento gli schemi dati (XSD) prodotti, l'anteprima degli stessi è disponibile all'URL https://github.com/AgID/protocollo-comunicazione-aoo/tree/fixbug-2021
