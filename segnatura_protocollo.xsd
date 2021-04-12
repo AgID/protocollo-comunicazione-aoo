@@ -74,7 +74,7 @@
 				
 				L'indentificativo è caratterizzato da:
 					- CodiceAmministrazione, il codice IPA dell'amministrazione
-					- CodiceAOO, il codice IPA dell'AOO
+					- CodiceAOO, il codice IPA dell'AOO (attributo cod_uni_aoo dell’entità AOO dell’IPA)
 					- CodiceRegistro, il codice del Registro  
 					- NumeroRegistrazione, il progressivo di protocollo 
 					- DataRegistrazione, la data di registrazione 
