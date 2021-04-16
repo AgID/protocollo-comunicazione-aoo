@@ -74,7 +74,7 @@
 				
 				L'indentificativo è caratterizzato da:
 					- CodiceAmministrazione, il codice IPA dell'amministrazione
-					- CodiceAOO, il codice IPA dell'AOO
+					- CodiceAOO, il codice IPA dell'AOO (attributo cod_uni_aoo dell’entità AOO dell’IPA)
 					- CodiceRegistro, il codice del Registro  
 					- NumeroRegistrazione, il progressivo di protocollo 
 					- DataRegistrazione, la data di registrazione 
@@ -94,7 +94,7 @@
 	<xs:complexType name="CodiceIPA">
 		<xs:annotation>
 			<xs:documentation>
-				Contiene il codice IPA dell'amministrazione o dell'AOO indica all'amministrazione e, in maniera opzionale, la descrizione della stessa.
+				Contiene il codice IPA dell'amministrazione o o dell'UO o dell'AOO e, in maniera opzionale, la descrizione della stessa.
 			</xs:documentation>
 		</xs:annotation>
 		<xs:simpleContent>
@@ -295,41 +295,48 @@
 		<xs:annotation>			
 			<xs:documentation>
 				Il soggetto contiene i dati per referenziare un corrispondente, che può essere:
-				- una PA (amministrazione -> AOO -> UO) ed opzionalmente una persona fisica interna dell'amministrazione
+				- una Amministrazione italiana (Amministrazione e opzionalmente AOO e UO) ed opzionalmente una persona fisica interna dell'amministrazione
 				- una persona fisica
 				- una persona giuridica ed opzionalmente un riferimento ad persona fisica interna
+				- una Amministrazione estera
 			</xs:documentation>
 		</xs:annotation>
 		<xs:choice>
-			<xs:element name="PA" type="prot:AmministrazioneType"/>
+			<xs:element name="Amministrazione" type="prot:AmministrazioneType"/>
 			<xs:element name="PersonaGiuridica" type="prot:PersonaGiuridicaType"/>
-			<xs:element name="PersonaFisica" type="prot:PersonaFisicaType"/>								
+			<xs:element name="PersonaFisica" type="prot:PersonaFisicaType"/>
+			<xs:element name="AmministrazioneEstera" type="prot:AmministrazioneEsteraType"/>
 		</xs:choice>				
 	</xs:complexType>
 	
 	<xs:complexType name="AmministrazioneType">
 		<xs:sequence>
-			<xs:element name="DenominazionePA" type="xs:string"/>
-			<xs:element name="CFPA" type="prot:PartitaIVA"/>
-			<xs:element name="CodiceIPAPA" type="prot:CodiceIPA" minOccurs="0"/>
+			<xs:element name="DenominazioneAmministrazione" type="xs:string"/>
+			<xs:element name="CFAmministrazione" type="prot:PartitaIVA" minOccurs="0"/>
+			<xs:element name="CodiceIPAAmministrazione" type="prot:CodiceIPA"/>
+			<xs:element name="ContattiAmministrazione" type="prot:ContattiType" minOccurs="0"/>
 			<xs:element name="CodiceIPAAOO" type="prot:CodiceIPA" minOccurs="0"/>
 			<xs:element name="ContattiAOO" type="prot:ContattiType" minOccurs="0"/>		
 			<xs:element name="CodiceIPAUO" type="prot:CodiceIPA" minOccurs="0"/>
-			<xs:element name="ContattiUO" type="prot:ContattiType" minOccurs="0"/>
-			<xs:element name="ContattiAmministrazione" type="prot:ContattiType" minOccurs="0"/>
-			<xs:element name="PersonaFisica" type="prot:PersonaFisicaType" minOccurs="0"/>
+			<xs:element name="ContattiUO" type="prot:ContattiType" minOccurs="0"/>			
+			<xs:element name="PersonaFisica" type="prot:PersonaFisicaType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AmministrazioneEsteraType">
+		<xs:sequence>
+			<xs:element name="DenominazioneAmministrazione" type="xs:string"/>
+			<xs:element name="DenominazioneUfficio" type="xs:string" minOccurs="0"/>
+			<xs:element name="ContattiAmministrazione" type="prot:ContattiType" minOccurs="0"/>			
+		</xs:sequence>		
 	</xs:complexType>
 	
 	<xs:complexType name="PersonaGiuridicaType">
 		<xs:sequence>
 			<xs:element name="Denominazione" type="xs:string"/>
-			<xs:choice >				
-				<xs:element name="CF" type="prot:CodiceFiscaleType"/>
-				<xs:element name="PIVA" type="prot:PartitaIVA"/>
-			</xs:choice>			
+			<xs:element name="PIVAoCF" type="prot:PartitaIVA" minOccurs="0"/>
 			<xs:element name="ContattiPersonaGiuridica" type="prot:ContattiType" minOccurs="0"/>
-			<xs:element name="RiferimentoPersonaFisica" type="prot:PersonaFisicaType" minOccurs="0"/>			
+			<xs:element name="PersonaFisica" type="prot:PersonaFisicaType" minOccurs="0" maxOccurs="unbounded"/>			
 		</xs:sequence>
 	</xs:complexType>
 	
