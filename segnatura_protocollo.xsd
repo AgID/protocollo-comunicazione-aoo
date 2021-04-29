@@ -31,12 +31,14 @@
 
 				La segnatura di protocollo è caratterizzata da:
 				- Intestazione, i dati necessari per idividuare univocamente il messaggio di protocollo
+				- Riferimento, gli eventuali dati per permettere al mittente di indicare il messaggio di protocollo ricevuto che ha determinato l'inoltro
 				- Descrizione, i dati aggiuntivi del messaggio di protocollo
 				- Signature, i dati e metadati della firma dell'XML (profilo XAdES baseline B level signatures definito in ETSI EN 319 132-1 v1.1.1) 
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Intestazione" type="prot:IntestazioneType"/>	
+			<xs:element name="Intestazione" type="prot:IntestazioneType"/>
+			<xs:element name="Riferimenti" type="prot:RiferimentiType" minOccurs="0"/>
 			<xs:element name="Descrizione" type="prot:DescrizioneType"/>					
 			<xs:element ref="ds:Signature"/>
 		</xs:sequence>
@@ -46,11 +48,11 @@
 	
 	<xs:complexType name="IntestazioneType">
 		<xs:annotation>
-			<xs:documentation>
+			<xs:documentation>				
 				L'intestazione contiene i dati essenziali per l'identificazione e caratterizzazione amministrativa del messaggio di protocollato.
 				
 				L'intestazione è caratterizzata da:
-				- Identificatore, i dati per identificare univocamente il messaggio di protocollo conformemente in attuazione all'art. 55 del DPR 445/2000
+				- Identificatore, i dati per identificare univocamente il messaggio di protocollo in attuazione all'art. 55 del DPR 445/2000
 				- PrimaRegistrazione, si riferisce all'Identificatore di registrazione primario, cioè attribuito per la prima volta ad un documento protocollato che viene ritrasmesso più volte. Deve essere specificato solo se non coincide con l'Identificatore del messaggio protocollato.
 				- Oggetto, sintesi dei contenuti di carattere giuridico, amministrativo e narrativo di un documento 
 				- Classifica, la categoria del Titolario di classificazione associato al messaggio di protocollo 
@@ -65,6 +67,27 @@
 			<xs:element name="Fascicolo" type="prot:FascicoloType" minOccurs="0" />
 			<xs:element name="Riservato" type="prot:RiservatoType" minOccurs="0"/>
 		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RiferimentiType">
+		<xs:annotation>
+			<xs:documentation>
+				Dati per permettere al mittente di indicare il messaggio di protocollo ricevuto che ha determinato l'inoltro
+				
+				- Identificatore, i dati per identificare univocamente il messaggio di protocollo in attuazione all'art. 55 del DPR 445/2000
+				- PrimaRegistrazione, si riferisce all'Identificatore di registrazione primario, cioè attribuito per la prima volta ad un documento protocollato che viene ritrasmesso più volte. Deve essere specificato solo se non coincide con l'Identificatore del messaggio protocollato.
+				- Oggetto, sintesi dei contenuti di carattere giuridico, amministrativo e narrativo di un documento 
+				- Classifica, la categoria del Titolario di classificazione associato al messaggio di protocollo 
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Identificatore" type="prot:IdentificatoreType"/>
+			<xs:element name="PrimaRegistrazione" type="prot:IdentificatoreType" minOccurs="0"/>
+			<xs:element name="Oggetto" type="xs:string"/>									
+			<xs:element name="Classifica" type="prot:ClassificaType" />			
+			<xs:element name="Fascicolo" type="prot:FascicoloType" minOccurs="0" />
+		</xs:sequence>
+		
 	</xs:complexType>
 	
 	<xs:complexType name="IdentificatoreType">
