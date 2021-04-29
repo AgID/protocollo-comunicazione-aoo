@@ -57,6 +57,7 @@
 				- Oggetto, sintesi dei contenuti di carattere giuridico, amministrativo e narrativo di un documento 
 				- Classifica, la categoria del Titolario di classificazione associato al messaggio di protocollo 
 				- Fascicolo, opzionalmente, il fascicolo entro cui è presente il messaggio di protocollo
+				- Riservato, opzionalmente, indicazione dell'eventuale stato di riservato del messaggio
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
@@ -77,7 +78,8 @@
 				- Identificatore, i dati per identificare univocamente il messaggio di protocollo in attuazione all'art. 55 del DPR 445/2000
 				- PrimaRegistrazione, si riferisce all'Identificatore di registrazione primario, cioè attribuito per la prima volta ad un documento protocollato che viene ritrasmesso più volte. Deve essere specificato solo se non coincide con l'Identificatore del messaggio protocollato.
 				- Oggetto, sintesi dei contenuti di carattere giuridico, amministrativo e narrativo di un documento 
-				- Classifica, la categoria del Titolario di classificazione associato al messaggio di protocollo 
+				- Classifica, la categoria del Titolario di classificazione associato al messaggio di protocollo
+				- Fascicolo, opzionalmente, il fascicolo entro cui è presente il messaggio di protocollo
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
@@ -86,8 +88,7 @@
 			<xs:element name="Oggetto" type="xs:string"/>									
 			<xs:element name="Classifica" type="prot:ClassificaType" />			
 			<xs:element name="Fascicolo" type="prot:FascicoloType" minOccurs="0" />
-		</xs:sequence>
-		
+		</xs:sequence>		
 	</xs:complexType>
 	
 	<xs:complexType name="IdentificatoreType">
