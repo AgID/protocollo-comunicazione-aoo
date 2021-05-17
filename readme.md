@@ -31,6 +31,6 @@ Per completezza sono riportati i file:
 * previous_schemas/segnatura_protocollo_circolare 28_2001.dtd, in cui è riportato il Document Type Definition relativo alla segnatura di protocollo emanato con Circolare AIPA del 7 maggio 2001, n. 28
 * previous_schemas/segnatura_protocollo_circolare 60_2013.xsd, in cui è riportato il XML Schema relativo alla segnatura di protocollo emanato con Circolare AgID del 23 gennaio 2013, n. 60
 
+## IMPORTANTE
 
-
-## IMPORTANTE: il contenuto del presente repo è allineato con la DETERMINAZIONE N. 371 /2021 AgID che ha per oggetto "Modifiche testo Linee Guida sulla formazione, gestione e conservazione dei documenti informatici, allegato 5 - Metadati, allegato 6 - Comunicazione tra AOO di Documenti Amministrativi Protocollati ed estensione dei termini di entrata in vigore".
+Il contenuto del presente repo è allineato con la [DETERMINAZIONE N. 371 /2021 AgID](https://trasparenza.agid.gov.it/archivio28_provvedimenti-amministrativi_0_122874_725_1.html) che ha per oggetto "Modifiche testo Linee Guida sulla formazione, gestione e conservazione dei documenti informatici, allegato 5 - Metadati, allegato 6 - Comunicazione tra AOO di Documenti Amministrativi Protocollati ed estensione dei termini di entrata in vigore".
