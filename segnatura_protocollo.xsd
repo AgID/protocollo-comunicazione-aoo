@@ -312,7 +312,7 @@
 		</xs:sequence>
 		<xs:attribute name="timeToLive" type="xs:integer" />				
 		<xs:attribute name="userId" type="xs:string"/>
-		<xs:attribute name="password " type="xs:string"/>
+		<xs:attribute name="password" type="xs:string"/>
 	</xs:complexType>	
 	
 	<xs:complexType name="SoggettoType">
