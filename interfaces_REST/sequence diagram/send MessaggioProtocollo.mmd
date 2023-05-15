@@ -1,0 +1,89 @@
+sequenceDiagram
+    autonumber
+
+    
+    participant M as mittente
+    participant D as destinatario   
+
+    Note over D,M: send MessaggioProtocollo
+
+    M ->> D: /destinatario/inoltro MessaggioProtocollo
+    activate D
+    alt HTTP status code 200
+        D -->> M: AckRequestSend
+    else HTTP status code 400
+        D -->> M: BadRequest
+    else HTTP status code 401
+        D -->> M: Unauthorized
+    else HTTP status code 500
+        D -->> M: ServerError
+    else HTTP status code 503
+        D -->> M: ServiceUnavaliable    
+    end
+    deactivate D
+
+    Note over D,M: if error into segnature sign
+
+    opt 
+        D ->> M: /mittente/esito-inoltro
+        
+        alt HTTP status code 200
+            M -->> D: AckOutcomeForwarding  (only 001_SEGNATURA_ANOMALIA_VALIDAZIONE_FIRMA)   
+        else HTTP status code 400
+            D -->> M: BadRequest
+        else HTTP status code 401
+            D -->> M: Unauthorized
+        else HTTP status code 500
+            D -->> M: ServerError
+        else HTTP status code 503
+            D -->> M: ServiceUnavaliable
+        end
+    end
+
+    Note over D,M: download all documents
+
+    loop 
+
+        D ->> M: /mittente/documento/ refDocument
+    
+        alt HTTP status code 200
+            M -->> D: bytestream 
+        else HTTP status code 203
+            M -->> D: chunck bytestream
+           
+        else HTTP status code 400
+            D -->> M: BadRequest
+        else HTTP status code 401
+            D -->> M: Unauthorized
+        else HTTP status code 404
+            D -->> M: NotFound
+        else HTTP status code 412
+            D -->> M: PreconditionFailed
+        else HTTP status code 416
+            D -->> M: RangeNotSatisfiable
+        else HTTP status code 428
+            D -->> M: Precondition Required    
+        else HTTP status code 500
+            D -->> M: ServerError
+        else HTTP status code 503
+            D -->> M: ServiceUnavaliable
+        end
+
+    end
+
+    Note over D,M: when completed documents download
+
+    D ->> M: /mittente/esito-inoltro
+    
+    alt HTTP status code 200
+        M -->> D: AckOutcomeForwarding     
+    else HTTP status code 400
+        D -->> M: BadRequest
+    else HTTP status code 401
+        D -->> M: Unauthorized
+    else HTTP status code 500
+        D -->> M: ServerError
+    else HTTP status code 503
+        D -->> M: ServiceUnavaliable
+    end
+    

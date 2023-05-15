@@ -1,0 +1,539 @@
+openapi: 3.0.3
+
+info:
+    title: API Protocollo - AOO
+
+    version: 1.0.0
+
+    description: |-
+        API rese disponibili da una AOO per consentire il protocollo di scambio
+    contact:
+        name: AgID - Agenzia per l'Italia Digitale
+        url: https://www.agid.gov.it/
+
+    license:
+        name: CC BY-NC-SA 4.0
+        url: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+servers:
+    - url: https://<system host+subdomains>.it
+      description: API Protocollo AOO
+
+paths:
+    /status:
+        summary: Restituisce lo stato del servizio
+        description: Ristituisce Http Status 200 se il servizio funziona correttamente, o un errore se il servizio è temporaneamente indisponibile.
+        get:
+            responses:
+                "200":
+                    $ref: "#/components/responses/OKRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "500":
+                    $ref: "#/components/responses/ServerError"
+                "503":
+                    $ref: "#/components/responses/ServiceUnavaliable"
+            security:
+                - bearerAuth: []
+
+
+    /destinatario/annullamento/mittente:
+        description: 
+            Nel caso il mittente adotti un provvedimento per l'annullamento. 
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RequestCancellation'
+                required: true
+            responses:
+                "200":
+                    $ref: "#/components/responses/OKRequestCancellation"
+                "400":
+                    $ref: "#/components/responses/KORequestCancellation"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "500":
+                    $ref: "#/components/responses/ServerError"
+                "503":
+                    $ref: "#/components/responses/ServiceUnavaliable"
+            security:
+                - bearerAuth: []
+
+    /destinatario/inoltro:
+           description: Consente l'invio di un Messaggio di Pro
+           post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/MessaggioProtocollo"
+                required: true
+            responses:
+                "200":
+                    $ref: "#/components/responses/AckRequestSend"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "500":
+                    $ref: "#/components/responses/ServerError"
+                "503":
+                    $ref: "#/components/responses/ServiceUnavaliable"
+            security:
+                - bearerAuth: []
+
+    /mittente/annullamento/destinatario:
+        description: 
+            Nel caso il destinatario adotti un provvedimento per l'annullamento. 
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RequestCancellation'
+                required: true
+            responses:
+                "200":
+                    $ref: "#/components/responses/OKRequestCancellation"
+                "400":
+                    $ref: "#/components/responses/KORequestCancellation"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "500":
+                    $ref: "#/components/responses/ServerError"
+                "503":
+                    $ref: "#/components/responses/ServiceUnavaliable"
+            security:
+                - bearerAuth: []
+
+    /mittente/esito-inoltro:
+        description: 
+            Consente di esistare l'inoltro di un messaggio di protocollo, confermando la ricezione ed il recupero dei documenti relativi, 
+            ed eventualmente segnalando un anomalia sugli stessi.
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/OutcomeForwarding'
+                required: true
+            responses:
+                "200":
+                    $ref: "#/components/responses/AckOutcomeForwarding"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "500":
+                    $ref: "#/components/responses/ServerError"
+                "503":
+                    $ref: "#/components/responses/ServiceUnavaliable"
+            security:
+                - bearerAuth: []
+
+    /mittente/documento/{codice_amministrazione}/{codice_aoo}/{codice_registro}/{numero_registrazione}/{data_registrazione}/{resource_id}:
+        get:
+            description: | 
+                Recupero risorsa documento per un dato Messaggio di Protocollo indicato dall'Identificatore Mittente.
+                Le Range Request (RFC9110) sono supportate soltanto in modalità single part.
+            
+            parameters:
+                - in: header
+                  name: If-Match
+                  description: precondizione contenente l'hash della risorsa
+                  required: true
+                  schema:
+                      type: string
+                - name: codice_amministrazione
+                  in: path
+                  description: Codice Amministrazione parte dell'Identificatore Mittente
+                  required: true
+                  schema:
+                      type: string
+                - name: codice_aoo
+                  in: path
+                  description: Codice AOO parte dell'Identificatore Mittente
+                  required: true
+                  schema:
+                      type: string
+                - name: codice_registro
+                  in: path
+                  description: Codice Registro parte dell'Identificatore Mittente
+                  required: true
+                  schema:
+                      type: string
+
+                - name: numero_registrazione
+                  in: path
+                  description: Numero Registrazione parte dell'Identificatore Mittente
+                  required: true
+                  schema:
+                      type: string
+
+                - name: data_registrazione
+                  in: path
+                  description: Data Registrazione parte dell'Identificatore Mittente
+                  required: true
+                  schema:
+                    type: string
+                    format: date
+               
+                - name: resource_id
+                  in: path
+                  description: id risorsa documento
+                  required: true
+                  schema:
+                      type: string
+
+            responses:
+                "200":
+                    description: risorsa richiesta, codificata in base64, il mime type relativo è specificato nel RiferimentoDocumento del relativo Messaggio di Protocollo
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                format: byte
+                "206":
+                    description: porzione di risorsa richiesta, codificata in base64, il mime type relativo è specificato nel RiferimentoDocumento del relativo Messaggio di Protocollo
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                format: byte
+                    headers:
+                        Content-Range:
+                            description: espressione del range incluso nella risposta
+                            schema:
+                                type: string
+                                example: bytes 21010-47021/47022
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/Unauthorized"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "412":
+                    $ref: "#/components/responses/PreconditionFailed"
+                "416":
+                    $ref: "#/components/responses/RangeNotSatisfiable"
+                "428":
+                   $ref: "#/components/responses/RangeNotSatisfiable"
+                "500":
+                    $ref: "#/components/responses/ServerError"
+                "503":
+                    $ref: "#/components/responses/ServiceUnavaliable"
+
+            security:
+                - bearerAuth: []
+  
+
+components:
+    responses:
+
+        AckOutcomeForwarding:
+            description: Richiesta completata con successo
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        required:
+                          - identificatore_mittente
+                          - identificatore_destinatario
+                        properties:
+                            identificatore_mittente:
+                                $ref: "#/components/schemas/Identificatore"
+                            identificatore_destinatario:
+                                $ref: "#/components/schemas/Identificatore"
+
+        AckRequestSend:
+            description: Richiesta completata con successo
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        required:
+                          - identificatore_mittente
+                        properties:
+                            identificatore_mittente:
+                                $ref: "#/components/schemas/Identificatore"
+
+        OKRequestCancellation:
+            description: Richiesta completata con successo
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        required:
+                          - identificatore_mittente
+                          - identificatore_destinatario
+                        properties:
+                            identificatore_mittente:
+                                $ref: "#/components/schemas/Identificatore"
+                            identificatore_destinatario:
+                                $ref: "#/components/schemas/Identificatore"                           
+
+        KORequestCancellation:
+            description: Richiesta completata con successo
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        required:
+                          - identificatore_mittente
+                          - identificatore_destinatario
+                        properties:
+                            identificatore_mittente:
+                                $ref: "#/components/schemas/Identificatore"
+                            identificatore_destinatario:
+                                $ref: "#/components/schemas/Identificatore"
+                            anomalia:   
+                                $ref: "#/components/schemas/AnomaliaAnnullamento"
+        
+        OKRequest:
+            description: Richiesta completata con successo
+        
+        BadRequest:
+            description: Forma della richiesta non conforme alla specifica
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+
+        ServiceUnavaliable:
+            description: Servizio non disponibile
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+
+        Unauthorized:
+            description: Richiesta non autorizzata
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+
+        NotFound:
+            description: Risorsa non trovata
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+
+        PreconditionRequired:
+            description: precondizione richiesta, rappresentazione risorsa non correttamente individuata
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+
+        PreconditionFailed:
+            description: Precondizione fallita, rappresentazione risorsa non correttamente individuata
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+
+        RangeNotSatisfiable:
+            description: Richiesta di range non soddisfacibile
+            headers:
+                Content-Range:
+                    description: espressione del range non soddisfacibile
+                    schema:
+                        type: string
+                        example: bytes 21010-47021/47022
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+        
+        ServerError:
+            description: Errore processamento richiesta
+            content:
+                application/json:
+                    schema:
+                         $ref: "#/components/schemas/Error"
+        
+
+
+    schemas:
+
+        Identificatore:
+            type: object
+            description: |
+                ### Contiene i dati identificativi della segnatura di protocollo, ovvero:
+                * CodiceAmministrazione, il codice IPA dell'amministrazione
+                * CodiceAOO, il codice IPA dell'AOO 
+                * CodiceRegistro, il codice del Registro  
+                * NumeroRegistrazione, il progressivo di protocollo 
+                * DataRegistrazione, la data di registrazione 
+                * OraRegistrazione, in maniera opzionale l'ora di registrazione
+
+            required:
+            - codice_amministrazione
+            - codice_aoo
+            - codice_registro
+            - numero_registrazione
+            - data_registrazione
+
+            properties:
+                codice_amministrazione:
+                    type: string
+                codice_aoo:
+                    type: string
+                codice_registro:
+                    type: string
+                    pattern: '[A-Za-z0-9_\.\-]{1,16}'
+                numero_registrazione:
+                    type: string
+                    pattern: '[0-9]{7,}'
+                data_registrazione:
+                    type: string
+                    format: date
+                ora_registrazione:
+                    description:  |
+                        full-time as defined by RFC 3339, section 5.6, for example, in  UTC time 17:32:28Z , or offset from UTC time 16:32:28+01:00
+                        This format is not OpenAPI string spec modifier 
+                    type: string
+                    format: time
+
+
+        AnomaliaAnnullamento:
+            type: object
+            description: Anomalia rilevata per richiesta annullamento
+            properties:
+                anomalia:
+                    type: string
+                    enum: 
+                        - 000_IRRICEVIBILITA
+                        - 001_IDENTIFICATORE_NON_TROVATO
+                        - 999_OTHER
+                info:
+                    title: Informazioni eventuale anomalia
+                    type: string
+            required:
+                - anomalia
+                - info
+
+        RiferimentoDocumento:
+            type: object
+            properties:
+            
+                nome_file:
+                    description: Nome originale del file
+                    type: string
+                mimetype:
+                    type: string
+                    # Valutare se inserire enum di mimetype ammissibili (se è prevista qualche limitazione dalle LG)
+
+                resource_id:
+                    description: | 
+                        id della risorsa documento referenziata, univoco per elementi obbligatori dell'Identificatore Mittente, ovvero:
+                        * CodiceAmministrazione, il codice IPA dell'amministrazione
+                        * CodiceAOO, il codice IPA dell'AOO 
+                        * CodiceRegistro, il codice del Registro  
+                        * NumeroRegistrazione, il progressivo di protocollo 
+                        * DataRegistrazione, la data di registrazione 
+
+                    type: string
+                    minLength: 1
+                hash:
+                    title: hash dell'elemento dell'istanza relativo al procedimento
+                    type: string
+                    minLength: 256
+                alg_hash:
+                    title: algoritmo hash applicato
+                    type: string
+                    enum:
+                    - S256
+                    - S384
+                    - S512
+
+        Outcome:
+            type: object
+            description: Anomalia rilevata nel messaggio di protocollo
+            properties:
+                esito:
+                    type: string
+                    enum:  
+                        - 000_CONFERMA_RICEZIONE                       
+                        - 001_SEGNATURA_ANOMALIA_VALIDAZIONE_FIRMA 
+                        - 002_SEGNAURA_ANOMALIA_IMPRONTE_DOCUMENTI 
+                        - 003_IRRICEVIBILE
+                        - 004_ALLEGATI_NON_LEGGIBILI
+                        - 005_ALLEGATI_ANOMALIA_VALIDAZIONE_FIRMA
+                        - 006_ALLEGATI_ANOMALIA_VALIDAZIONE_MARCA_TEMPORALE
+                        - 007_ALLEGATI_ANOMALIA_VALIDAZIONE_SIGILLO
+                info:
+                    title: Informazioni eventuale anomalia
+                    type: string
+            required:
+                - esito
+                - info
+
+        OutcomeForwarding:
+            type: object
+            description: Esito Inoltro Messaggio di Protocollo
+            required:
+                - identificatore_mittente
+                - esito
+            properties:
+                identificatore_mittente:
+                    $ref: "#/components/schemas/Identificatore"
+                identificatore_destinatario:
+                    $ref: "#/components/schemas/Identificatore"
+                esito:
+                    $ref: "#/components/schemas/Outcome" 
+
+        MessaggioProtocollo:
+            type: object
+            description: Messaggio di Protocollo
+            properties:
+                segnatura:
+                    title: Segnatura di Protocollo (XML Base64-encoded)
+                    type: string
+                    format: byte
+                riferimento_primario:
+                    title: Riferimento Documento Primario
+                    $ref: "#/components/schemas/RiferimentoDocumento"
+                riferimenti_allegati:
+                    title: Riferimenti Documenti Allegati
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/RiferimentoDocumento"
+                 
+        RequestCancellation:
+            type: object
+            properties:
+                identificatore_mittente:
+                    $ref: "#/components/schemas/Identificatore"
+                identificatore_destinatario:
+                    $ref: "#/components/schemas/Identificatore"
+                riferimento_provvedimento: 
+                    type: string
+                note: 
+                    type: string
+
+        Error:
+            type: object
+            description: codice e descrizione condizione di errore
+            properties:
+                code:
+                    type: string
+                message:
+                    type: string
+            required:
+                - code
+                - message
+      
+
+   
+    securitySchemes:
+    
+        bearerAuth:
+            scheme: bearer
+            bearerFormat: JWT
+            type: http
+            description: Implementazione conforme ad RFC8725

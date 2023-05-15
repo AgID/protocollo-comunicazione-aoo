@@ -1,0 +1,21 @@
+sequenceDiagram
+    autonumber
+
+    participant D as destinatario   
+    participant M as mittente
+
+    D ->> M: /mittente/annullamento/destinatario RequestCancellation
+    activate M
+    alt HTTP status code 200
+        M -->> D: OKRequestCancellation
+    else HTTP status code 400
+        M -->> D: KORequestCancellation
+    else HTTP status code 401
+        M -->> D: Unauthorized
+    else HTTP status code 500
+        M -->> D: ServerError
+    else HTTP status code 503
+        M -->> D: ServiceUnavaliable    
+    end
+    deactivate M
+    
